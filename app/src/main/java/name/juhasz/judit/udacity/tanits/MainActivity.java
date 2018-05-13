@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
     public void selectDrawerItem(final MenuItem menuItem) {
 
         switch(menuItem.getItemId()) {
+            case R.id.nav_messages:
+                Toast.makeText(this,
+                        "Messages", Toast.LENGTH_LONG).show();
+                break;
             case R.id.nav_profile:
                 Toast.makeText(this,
                         "Profile", Toast.LENGTH_LONG).show();

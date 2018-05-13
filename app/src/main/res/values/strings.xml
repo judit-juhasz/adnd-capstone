@@ -3,4 +3,5 @@
 
     <string name="navigation_menu_item_title_profile">Profile</string>
     <string name="navigation_menu_item_title_about">About Us</string>
+    <string name="navigation_menu_item_title_messages">Messages</string>
 </resources>
