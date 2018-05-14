@@ -8,20 +8,23 @@
     android:fitsSystemWindows="true"
     tools:context="name.juhasz.judit.udacity.tanits.MainActivity">
 
-    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <include
+            layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:layout_height="wrap_content" />
 
-    </FrameLayout>
+        <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
     <android.support.design.widget.NavigationView
