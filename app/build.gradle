@@ -31,4 +31,5 @@ dependencies {
     }
 
     implementation 'com.android.support:design:26.1.0'
+    compile 'com.github.clans:fab:1.6.4'
 }
