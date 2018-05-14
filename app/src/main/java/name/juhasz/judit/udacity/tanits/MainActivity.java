@@ -1,6 +1,8 @@
 package name.juhasz.judit.udacity.tanits;
 
+import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -55,27 +57,33 @@ public class MainActivity extends AppCompatActivity {
 
     public void selectDrawerItem(final MenuItem menuItem) {
 
+        Fragment fragment = null;
+        Class fragmentClass;
+
         switch(menuItem.getItemId()) {
             case R.id.nav_messages:
-                Toast.makeText(this,
-                        "Messages", Toast.LENGTH_LONG).show();
+                fragmentClass = MessagesFragment.class;
                 break;
             case R.id.nav_profile:
-                Toast.makeText(this,
-                        "Profile", Toast.LENGTH_LONG).show();
+                fragmentClass = ProfileFragment.class;
                 break;
             case R.id.nav_about:
-                Toast.makeText(this,
-                        "About us", Toast.LENGTH_LONG).show();
+                fragmentClass = AboutFragment.class;
                 break;
             default:
-                Toast.makeText(this,
-                        "Home", Toast.LENGTH_LONG).show();
+                fragmentClass = MessagesFragment.class;
         }
 
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         mDrawerLayout.closeDrawers();
     }
-
 }
