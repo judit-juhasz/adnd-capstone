@@ -1,11 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="About us"/>
+        android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:id="@+id/iv_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:src="@drawable/image_about"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:text="@string/text_three_about"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_text_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_one_about"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_text_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_two_about"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        
+    </LinearLayout>
+
+</ScrollView>

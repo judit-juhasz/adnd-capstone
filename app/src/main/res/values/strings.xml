@@ -4,4 +4,9 @@
     <string name="navigation_menu_item_title_profile">Profile</string>
     <string name="navigation_menu_item_title_about">About Us</string>
     <string name="navigation_menu_item_title_messages">Messages</string>
+
+    <string name="text_one_about">We help you to bring healthy and successful children up by building your very own personalized early childhood development assistant. We combine artificial intelligence with the latest early childhood education results.</string>
+    <string name="text_two_about">Early childhood education has significant impact on the areas of cognition, language, socioemotional health, education, and the labor market. Despite of its importance, most children do not get proper care from their parents. Some of the reasons are the lack of time to learn, the multidisciplinary nature of early childhood education, and the uniqueness of children.</string>
+    <string name="text_three_about">Genius was born. Tanits.</string>
+
 </resources>
