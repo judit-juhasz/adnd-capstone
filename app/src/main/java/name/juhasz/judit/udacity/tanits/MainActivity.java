@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
-
         setupDrawerContent(navigationView);
+
+        loadHomeFragment();
     }
 
     @Override
@@ -85,5 +85,12 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         mDrawerLayout.closeDrawers();
+    }
+
+    private void loadHomeFragment() {
+        Fragment homeFragment = new MessagesFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, homeFragment).commit();
+        setTitle(R.string.navigation_menu_item_title_messages);
     }
 }
