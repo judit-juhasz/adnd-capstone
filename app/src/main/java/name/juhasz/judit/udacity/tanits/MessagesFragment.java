@@ -29,7 +29,7 @@ public class MessagesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_messages, container, false);
 
         questionFloatingActionButton = rootView.findViewById(R.id.fab_question);
-        feedbackFloatingActionButton = rootView.findViewById(R.id.fab_question);
+        feedbackFloatingActionButton = rootView.findViewById(R.id.fab_feedback);
 
         questionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
