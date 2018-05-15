@@ -45,7 +45,7 @@ public class MessagesFragment extends Fragment {
             public void onClick(View v) {
                 Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
                         Uri.fromParts("mailto","judit@juhasz.name", null));
-                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question");
+                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
                 sendEmailIntent.putExtra(Intent.EXTRA_TEXT, "Write your message here.");
                 startActivity(Intent.createChooser(sendEmailIntent, "Choose an Email client: "));
             }
