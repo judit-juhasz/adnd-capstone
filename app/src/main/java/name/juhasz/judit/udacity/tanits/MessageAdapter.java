@@ -10,13 +10,15 @@ import android.widget.TextView;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     private static final Message[] sDummyData = {
-            new Message("Me before you", "2018.05.15"),
-            new Message("Avatar", "2018.05.15"),
-            new Message("A beautiful mind", "2018.05.15"),
-            new Message("A beautiful mind", "2018.05.15"),
-            new Message("Pearl Harbour", "2018.05.15"),
-            new Message("Saving private Ryan", "2018.05.15"),
-            new Message("Son of Saul", "2018.05.15")
+            new Message("Welcoming a new baby into your family", "2018-05-14T22:02:54+00:00"),
+            new Message("Why art and creativity are important", "2018-05-15T22:02:54+00:00"),
+            new Message("The role of parents in infant/toddler development", "2018-05-16T20:02:54+00:00"),
+            new Message("Why parents sing to babies", "2018-05-17T13:02:54+00:00"),
+            new Message("What role do parents play in a baby's brain development?", "2018-05-18T13:02:54+00:00"),
+            new Message("How to support your child’s communication skills", "2018-05-19T18:02:54+00:00"),
+            new Message("Baby sleep basics: birth to three months", "2018-05-20T18:02:54+00:00"),
+            new Message("Why parents sing to babies 2", "2018-05-21T13:02:54+00:00"),
+            new Message("How to support your child’s communication skills 2", "2018-05-22T18:02:54+00:00")
     };
 
 
