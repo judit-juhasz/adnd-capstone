@@ -10,10 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 
-public class MessagesFragment extends Fragment {
+public class MessagesFragment extends Fragment implements MessageAdapter.MessageOnClickListener {
 
     private RecyclerView mMessagesRecycleView;
     FloatingActionButton questionFloatingActionButton;
@@ -52,11 +53,16 @@ public class MessagesFragment extends Fragment {
         });
 
         mMessagesRecycleView = rootView.findViewById(R.id.rv_messages);
-        final MessageAdapter adapter = new MessageAdapter();
+        final MessageAdapter adapter = new MessageAdapter(this);
         mMessagesRecycleView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mMessagesRecycleView.setLayoutManager(layoutManager);
 
         return rootView;
+    }
+
+    @Override
+    public void onItemClick(Message message) {
+        Toast.makeText(getContext(), message.getSubject(), Toast.LENGTH_SHORT).show();
     }
 }

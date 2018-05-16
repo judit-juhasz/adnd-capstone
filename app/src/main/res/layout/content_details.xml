@@ -14,5 +14,4 @@
         android:layout_height="wrap_content"
         android:text="Here You can find the details of the selected message."/>
 
-
 </android.support.constraint.ConstraintLayout>

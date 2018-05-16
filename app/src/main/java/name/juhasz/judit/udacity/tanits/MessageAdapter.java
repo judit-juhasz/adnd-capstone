@@ -21,6 +21,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             new Message("How to support your child’s communication skills 2", "2018-05-22T18:02:54+00:00")
     };
 
+    private MessageOnClickListener mListener;
+
+    public interface MessageOnClickListener {
+        void onItemClick(Message message);
+    }
+
+    public MessageAdapter(MessageOnClickListener listener) {
+        mListener = listener;
+    }
 
     @Override
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,7 +56,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return sDummyData.length;
     }
 
-    public static class MessageViewHolder extends RecyclerView.ViewHolder {
+    public class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public TextView subjectTextView;
         public TextView dateTextView;
@@ -57,6 +66,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             subjectTextView = (TextView) itemView.findViewById(R.id.tv_subject);
             dateTextView = (TextView) itemView.findViewById(R.id.tv_date);
+            itemView.setOnClickListener(this);
         }
 
         void bind(int position) {
@@ -65,6 +75,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             subjectTextView.setText(subjectOfMessage);
             String dateOfMessage = message.getDate();
             dateTextView.setText(dateOfMessage);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Message message = sDummyData[adapterPosition];
+            mListener.onItemClick(message);
         }
     }
 }
