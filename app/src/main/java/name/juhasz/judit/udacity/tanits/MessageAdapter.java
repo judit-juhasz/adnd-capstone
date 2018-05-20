@@ -21,13 +21,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             new Message("How to support your child’s communication skills 2", "2018-05-22T18:02:54+00:00")
     };
 
-    private MessageOnClickListener mListener;
+    private OnClickListener mListener;
+    private Context mContext = null;
 
-    public interface MessageOnClickListener {
+    public interface OnClickListener {
         void onItemClick(Message message);
     }
 
-    public MessageAdapter(MessageOnClickListener listener) {
+    public MessageAdapter(final Context context, final OnClickListener listener) {
+        mContext = context;
         mListener = listener;
     }
 

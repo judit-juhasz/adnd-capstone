@@ -11,4 +11,6 @@
     <string name="text_three_about">Genius was born. Tanits.</string>
     <string name="title_activity_details">DetailsActivity</string>
 
+    <string name="exception_text"> must implement </string>
+
 </resources>

@@ -1,5 +1,6 @@
 package name.juhasz.judit.udacity.tanits;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,20 +14,38 @@ import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
 
-public class MessagesFragment extends Fragment implements MessageAdapter.MessageOnClickListener {
-
-    private RecyclerView mMessagesRecycleView;
+public class MessagesFragment extends Fragment {
+    private MessageAdapter mMessageAdapter;
     FloatingActionButton questionFloatingActionButton;
     FloatingActionButton feedbackFloatingActionButton;
 
     public MessagesFragment() {
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mMessageAdapter = new MessageAdapter(context, (MessageAdapter.OnClickListener) context);
+        } catch(ClassCastException e) {
+            throw new ClassCastException(context.toString() + getString(R.string.exception_text) +
+                    MessageAdapter.OnClickListener.class.getSimpleName());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_messages, container, false);
+    public View onCreateView(final LayoutInflater inflater,
+                             @Nullable final ViewGroup container,
+                             @Nullable final Bundle savedInstanceState) {
+        final View rootView =
+                inflater.inflate(R.layout.fragment_messages, container, false);
 
         questionFloatingActionButton = rootView.findViewById(R.id.fab_question);
         feedbackFloatingActionButton = rootView.findViewById(R.id.fab_feedback);
@@ -51,19 +70,10 @@ public class MessagesFragment extends Fragment implements MessageAdapter.Message
             }
         });
 
-        mMessagesRecycleView = rootView.findViewById(R.id.rv_messages);
-        final MessageAdapter adapter = new MessageAdapter(this);
-        mMessagesRecycleView.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mMessagesRecycleView.setLayoutManager(layoutManager);
+        final RecyclerView messagesRecycleView = rootView.findViewById(R.id.rv_messages);
+        messagesRecycleView.setAdapter(mMessageAdapter);
+        messagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return rootView;
-    }
-
-    @Override
-    public void onItemClick(Message message) {
-        Intent intentToStartDetailsActivity = new Intent(getContext(), DetailsActivity.class);
-        intentToStartDetailsActivity.putExtra(Intent.EXTRA_TEXT, message.getSubject());
-        startActivity(intentToStartDetailsActivity);
     }
 }

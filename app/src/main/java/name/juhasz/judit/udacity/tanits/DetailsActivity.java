@@ -2,38 +2,35 @@ package name.juhasz.judit.udacity.tanits;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.TextView;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private TextView mDisplayTextView;
+    public static final String MESSAGE_DATA = "MESSAGE_DATA";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        mDisplayTextView = findViewById(R.id.tv_display_text);
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            mDisplayTextView.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
+        final Intent intent = getIntent();
+        final boolean hasMessageExtra = (null != intent && intent.hasExtra(MESSAGE_DATA));
+        final boolean firstStart = (null == savedInstanceState);
+        if (hasMessageExtra && firstStart) {
+            final Bundle arguments = new Bundle();
+            final Message message = intent.getParcelableExtra(MESSAGE_DATA);
+            arguments.putParcelable(MessageDetailsFragment.MESSAGE_DATA, message);
+            final MessageDetailsFragment fragment = new MessageDetailsFragment();
+            fragment.setArguments(arguments);
+            final FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.content_frame_detail, fragment)
+                    .commit();
         }
     }
 }

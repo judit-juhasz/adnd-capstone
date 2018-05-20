@@ -1,5 +1,6 @@
 package name.juhasz.judit.udacity.tanits;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
 
     private DrawerLayout mDrawerLayout;
 
@@ -92,5 +93,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, homeFragment).commit();
         setTitle(R.string.navigation_menu_item_title_messages);
+    }
+
+    @Override
+    public void onItemClick(final Message message) {
+        final Intent intentToStartDetailsActivity = new Intent(this, DetailsActivity.class);
+        intentToStartDetailsActivity.putExtra(DetailsActivity.MESSAGE_DATA, message);
+        startActivity(intentToStartDetailsActivity);
     }
 }
