@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private Toolbar toolbar;
     private String[] fragmentTitles;
     private View navigationHeaderView;
     private TextView usernameTextView;
@@ -29,17 +30,18 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
         navigationHeaderView = mNavigationView.getHeaderView(0);
         usernameTextView = navigationHeaderView.findViewById(R.id.tv_username);
         emailTextView = navigationHeaderView.findViewById(R.id.tv_email);
+
         loadNavigationHeader();
         setupDrawerContent(mNavigationView);
+        loadActionBarDrawerToggle(mDrawerLayout);
 
         fragmentTitles = getResources().getStringArray(R.array.nav_item_fragment_titles);
 
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             navigationItemIndex = 0;
             loadHomeFragment();
         }
+    }
 
+    private void loadActionBarDrawerToggle(DrawerLayout layout) {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,
                 mDrawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
