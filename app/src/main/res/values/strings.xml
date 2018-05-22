@@ -2,6 +2,9 @@
     <string name="app_name">Tanits</string>
     <string name="detail_activity_name">Message</string>
 
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
     <!-- Navigation Drawer menu labels -->
     <string name="navigation_menu_item_title_messages">Messages</string>
     <string name="navigation_menu_item_title_profile">Profile</string>
