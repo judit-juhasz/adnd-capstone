@@ -9,17 +9,7 @@ import android.widget.TextView;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
-    private static final Message[] sDummyData = {
-            new Message("Welcoming a new baby into your family", "2018-05-14T22:02:54+00:00"),
-            new Message("Why art and creativity are important", "2018-05-15T22:02:54+00:00"),
-            new Message("The role of parents in infant/toddler development", "2018-05-16T20:02:54+00:00"),
-            new Message("Why parents sing to babies", "2018-05-17T13:02:54+00:00"),
-            new Message("What role do parents play in a baby's brain development?", "2018-05-18T13:02:54+00:00"),
-            new Message("How to support your child’s communication skills", "2018-05-19T18:02:54+00:00"),
-            new Message("Baby sleep basics: birth to three months", "2018-05-20T18:02:54+00:00"),
-            new Message("Why parents sing to babies 2", "2018-05-21T13:02:54+00:00"),
-            new Message("How to support your child’s communication skills 2", "2018-05-22T18:02:54+00:00")
-    };
+    private Message[] mMessages = null;
 
     private OnClickListener mListener;
     private Context mContext = null;
@@ -31,6 +21,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageAdapter(final Context context, final OnClickListener listener) {
         mContext = context;
         mListener = listener;
+    }
+
+    public void setMessages(final Message[] messages) {
+        this.mMessages = messages;
     }
 
     @Override
@@ -55,7 +49,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public int getItemCount() {
-        return sDummyData.length;
+        if (null == mMessages) {
+            return 0;
+        } else {
+            return mMessages.length;
+        }
     }
 
     public class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -72,7 +70,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
 
         void bind(int position) {
-            final Message message = sDummyData[position];
+            final Message message = mMessages[position];
             String subjectOfMessage = message.getSubject();
             subjectTextView.setText(subjectOfMessage);
             String dateOfMessage = message.getDate();
@@ -82,7 +80,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            Message message = sDummyData[adapterPosition];
+            Message message = mMessages[adapterPosition];
             mListener.onItemClick(message);
         }
     }
