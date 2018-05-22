@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,9 +31,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
             }
-            
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
