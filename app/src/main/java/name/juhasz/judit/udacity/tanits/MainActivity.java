@@ -14,6 +14,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
 
+    public static int navigationItemIndex = 0;
+
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -59,27 +61,22 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     public void selectDrawerItem(final MenuItem menuItem) {
 
         Fragment fragment = null;
-        Class fragmentClass;
 
         switch(menuItem.getItemId()) {
             case R.id.nav_messages:
-                fragmentClass = MessagesFragment.class;
+                navigationItemIndex = 0;
                 break;
             case R.id.nav_profile:
-                fragmentClass = ProfileFragment.class;
+                navigationItemIndex = 1;
                 break;
             case R.id.nav_about:
-                fragmentClass = AboutFragment.class;
+                navigationItemIndex = 2;
                 break;
             default:
-                fragmentClass = MessagesFragment.class;
+                navigationItemIndex = 0;
         }
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        getHomeFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -93,6 +90,23 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, homeFragment).commit();
         setTitle(R.string.navigation_menu_item_title_messages);
+    }
+
+    private Fragment getHomeFragment () {
+        switch (navigationItemIndex) {
+            case 0:
+                MessagesFragment messagesFragment = new MessagesFragment();
+                return messagesFragment;
+            case 1:
+                ProfileFragment profileFragment = new ProfileFragment();
+                return profileFragment;
+            case 2:
+                AboutFragment aboutFragment = new AboutFragment();
+                return aboutFragment;
+            default:
+                return new MessagesFragment();
+
+        }
     }
 
     @Override
