@@ -11,12 +11,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
 
     public static int navigationItemIndex = 0;
 
     private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+    private String[] fragmentTitles;
+    private View navigationHeaderView;
+    private TextView usernameTextView;
+    private TextView emailTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +37,19 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        final NavigationView navigationView = findViewById(R.id.nav_view);
-        setupDrawerContent(navigationView);
+        mNavigationView = findViewById(R.id.nav_view);
+        navigationHeaderView = mNavigationView.getHeaderView(0);
+        usernameTextView = navigationHeaderView.findViewById(R.id.tv_username);
+        emailTextView = navigationHeaderView.findViewById(R.id.tv_email);
+        loadNavigationHeader();
+        setupDrawerContent(mNavigationView);
 
-        loadHomeFragment();
+        fragmentTitles = getResources().getStringArray(R.array.nav_item_fragment_titles);
+
+        if (savedInstanceState == null) {
+            navigationItemIndex = 0;
+            loadHomeFragment();
+        }
     }
 
     @Override
@@ -60,8 +76,6 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     public void selectDrawerItem(final MenuItem menuItem) {
 
-        Fragment fragment = null;
-
         switch(menuItem.getItemId()) {
             case R.id.nav_messages:
                 navigationItemIndex = 0;
@@ -75,21 +89,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             default:
                 navigationItemIndex = 0;
         }
-
-        getHomeFragment();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        menuItem.setChecked(true);
-        setTitle(menuItem.getTitle());
-        mDrawerLayout.closeDrawers();
-    }
-
-    private void loadHomeFragment() {
-        Fragment homeFragment = new MessagesFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, homeFragment).commit();
-        setTitle(R.string.navigation_menu_item_title_messages);
+        loadHomeFragment();
     }
 
     private Fragment getHomeFragment () {
@@ -108,6 +108,30 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
         }
     }
+
+    private void selectNavigationMenu() {
+        mNavigationView.getMenu().getItem(navigationItemIndex).setChecked(true);
+    }
+
+    private void setToolbarTitles() {
+        getSupportActionBar().setTitle(fragmentTitles[navigationItemIndex]);
+    }
+
+    private void loadNavigationHeader() {
+        usernameTextView.setText("Username");
+        emailTextView.setText("user@emailaddress.com");
+    }
+
+    private void loadHomeFragment() {
+        selectNavigationMenu();
+        setToolbarTitles();
+
+        Fragment fragment = getHomeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        mDrawerLayout.closeDrawers();
+    }
+
 
     @Override
     public void onItemClick(final Message message) {
