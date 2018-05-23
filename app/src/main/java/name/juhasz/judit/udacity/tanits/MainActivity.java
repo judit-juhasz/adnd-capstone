@@ -16,6 +16,10 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
 
     public static int navigationItemIndex = 0;
+    private static final String TAG_MESSAGES = "messages";
+    private static final String TAG_PROFILE = "profile";
+    private static final String TAG_ABOUT_US = "about_us";
+    public static String CURRENT_TAG = TAG_MESSAGES;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
         if (savedInstanceState == null) {
             navigationItemIndex = 0;
+            CURRENT_TAG = TAG_MESSAGES;
             loadHomeFragment();
         }
     }
@@ -86,12 +91,15 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         switch(menuItem.getItemId()) {
             case R.id.nav_messages:
                 navigationItemIndex = 0;
+                CURRENT_TAG = TAG_MESSAGES;
                 break;
             case R.id.nav_profile:
                 navigationItemIndex = 1;
+                CURRENT_TAG = TAG_PROFILE;
                 break;
             case R.id.nav_about:
                 navigationItemIndex = 2;
+                CURRENT_TAG = TAG_ABOUT_US;
                 break;
             default:
                 navigationItemIndex = 0;
@@ -130,15 +138,18 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     }
 
     private void loadHomeFragment() {
-        selectNavigationMenu();
-        setToolbarTitles();
-
-        Fragment fragment = getHomeFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        mDrawerLayout.closeDrawers();
+        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
+            mDrawerLayout.closeDrawers();
+            return;
+        } else {
+            selectNavigationMenu();
+            setToolbarTitles();
+            Fragment fragment = getHomeFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+            mDrawerLayout.closeDrawers();
+        }
     }
-
 
     @Override
     public void onItemClick(final Message message) {
