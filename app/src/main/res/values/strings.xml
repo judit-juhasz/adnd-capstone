@@ -9,6 +9,7 @@
     <string name="navigation_menu_item_title_messages">Messages</string>
     <string name="navigation_menu_item_title_profile">Profile</string>
     <string name="navigation_menu_item_title_about">About Us</string>
+    <string name="navigation_menu_item_title_logout">Logout</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_fragment_titles">

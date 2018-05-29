@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -92,19 +91,6 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
@@ -147,11 +133,11 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         actionBarDrawerToggle.syncState();
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    private void setupDrawerContent(final NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         selectDrawerItem(menuItem);
                         return true;
                     }
@@ -164,19 +150,25 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             case R.id.nav_messages:
                 navigationItemIndex = 0;
                 CURRENT_TAG = TAG_MESSAGES;
+                loadHomeFragment();
                 break;
             case R.id.nav_profile:
                 navigationItemIndex = 1;
                 CURRENT_TAG = TAG_PROFILE;
+                loadHomeFragment();
                 break;
             case R.id.nav_about:
                 navigationItemIndex = 2;
                 CURRENT_TAG = TAG_ABOUT_US;
+                loadHomeFragment();
+                break;
+            case R.id.nav_logout:
+                mDrawerLayout.closeDrawers();
+                AuthUI.getInstance().signOut(this);
                 break;
             default:
                 navigationItemIndex = 0;
         }
-        loadHomeFragment();
     }
 
     private Fragment getHomeFragment () {
