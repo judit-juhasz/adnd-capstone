@@ -53,9 +53,8 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    onSignedInInitialize(user.getDisplayName());
+                    loadNavigationHeader(user);
                 } else {
-                    onSignedOutCleanup();
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         usernameTextView = navigationHeaderView.findViewById(R.id.tv_username);
         emailTextView = navigationHeaderView.findViewById(R.id.tv_email);
 
-        loadNavigationHeader();
         setupDrawerContent(mNavigationView);
         loadActionBarDrawerToggle(mDrawerLayout);
 
@@ -103,16 +101,6 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
     }
-
-    private void onSignedInInitialize(String username) {
-        mUsername = username;
-    }
-
-    private void onSignedOutCleanup() {
-        mUsername = ANONYMOUS;
-    }
-
-
 
     private void loadActionBarDrawerToggle(DrawerLayout layout) {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,
@@ -196,9 +184,9 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         getSupportActionBar().setTitle(fragmentTitles[navigationItemIndex]);
     }
 
-    private void loadNavigationHeader() {
-        usernameTextView.setText("Username");
-        emailTextView.setText("user@emailaddress.com");
+    private void loadNavigationHeader(FirebaseUser user) {
+        usernameTextView.setText(user.getDisplayName());
+        emailTextView.setText(user.getEmail());
     }
 
     private void loadHomeFragment() {
