@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import java.util.Calendar;
 
 public class ProfileFragment extends Fragment {
 
+    private static final String TAG = ProfileFragment.class.getSimpleName();
+
     private FirebaseDatabase mFirebaseDatabase;
     private EditText mDisplayNameEditText;
     private EditText mEmailEditText;
@@ -35,7 +38,6 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         mSaveButton = rootView.findViewById(R.id.button_save);
@@ -50,60 +52,36 @@ public class ProfileFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid() + "/displayname")
-                        .setValue(mDisplayNameEditText.getText().toString());
-                mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid() + "/email")
-                        .setValue(mEmailEditText.getText().toString());
-                mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid() + "/birthday")
-                        .setValue(mBirthdateOfChildEditText.getText().toString());
+                final UserProfile userProfile =
+                        new UserProfile(mDisplayNameEditText.getText().toString(),
+                                mEmailEditText.getText().toString(),
+                                mBirthdateOfChildEditText.getText().toString());
+                mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid())
+                        .setValue(userProfile);
             }
         });
 
-        mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid() + "/displayname")
+        mFirebaseDatabase.getReference("profiles/" + currentFirebaseUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final String value = dataSnapshot.getValue(String.class);
-                        if (null != value) {
-                            mDisplayNameEditText.setText(value);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-        mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid() + "/email")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final String value = dataSnapshot.getValue(String.class);
-                        if (null != value) {
-                            mEmailEditText.setText(value);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-        mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid() + "/birthday")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final String value = dataSnapshot.getValue(String.class);
-                            if (null != value) {
-                                mBirthdateOfChildEditText.setText(value);
+                        final UserProfile user = dataSnapshot.getValue(UserProfile.class);
+                        if (null != user) {
+                            if (null != user.getName()) {
+                                mDisplayNameEditText.setText(user.getName());
                             }
+                            if (null != user.getEmail()) {
+                                mEmailEditText.setText(user.getEmail());
+                            }
+                            if (null != user.getChildBirthdate()) {
+                                mBirthdateOfChildEditText.setText(user.getChildBirthdate());
+                            }
+                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Log.w(TAG, "User profile data is not available", databaseError.toException());
                     }
                 });
 
