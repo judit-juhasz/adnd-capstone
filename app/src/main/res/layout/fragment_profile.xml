@@ -35,7 +35,8 @@
         android:id="@+id/et_birthdate_of_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date" />
+        android:clickable="true"
+        android:focusable="false" />
 
     <Button
         android:id="@+id/button_save"
