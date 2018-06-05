@@ -42,6 +42,10 @@ dependencies {
     }
 
     implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
+
+    implementation 'com.google.firebase:firebase-database:16.0.1', {
+        exclude group: 'com.google.firebase', module: 'firebase-analytics'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

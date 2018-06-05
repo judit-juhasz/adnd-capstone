@@ -23,7 +23,6 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
 
     public static final int RC_SIGN_IN = 1;
-    public static final String ANONYMOUS = "anonymous";
     public static int navigationItemIndex = 0;
     private static final String TAG_MESSAGES = "messages";
     private static final String TAG_PROFILE = "profile";
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private String mUsername;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
