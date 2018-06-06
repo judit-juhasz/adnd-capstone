@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,25 +12,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MessagesFragment extends Fragment {
     private MessageAdapter mMessageAdapter;
     FloatingActionButton questionFloatingActionButton;
     FloatingActionButton feedbackFloatingActionButton;
-
-    private static final Message[] sDummyData = {
-            new Message("Welcoming a new baby into your family", "2018-05-14T22:02:54+00:00"),
-            new Message("Why art and creativity are important", "2018-05-15T22:02:54+00:00"),
-            new Message("The role of parents in infant/toddler development", "2018-05-16T20:02:54+00:00"),
-            new Message("Why parents sing to babies", "2018-05-17T13:02:54+00:00"),
-            new Message("What role do parents play in a baby's brain development?", "2018-05-18T13:02:54+00:00"),
-            new Message("How to support your child’s communication skills", "2018-05-19T18:02:54+00:00"),
-            new Message("Baby sleep basics: birth to three months", "2018-05-20T18:02:54+00:00"),
-            new Message("Why parents sing to babies 2", "2018-05-21T13:02:54+00:00"),
-            new Message("How to support your child’s communication skills 2", "2018-05-22T18:02:54+00:00")
-    };
 
     public MessagesFragment() {
     }
@@ -83,10 +79,33 @@ public class MessagesFragment extends Fragment {
         });
 
         final RecyclerView messagesRecycleView = rootView.findViewById(R.id.rv_messages);
-        mMessageAdapter.setMessages(sDummyData);
+        queryMessages();
         messagesRecycleView.setAdapter(mMessageAdapter);
         messagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return rootView;
+    }
+
+    private void queryMessages() {
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference("messages")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                        final ArrayList<Message> messages = new ArrayList<>();
+                        for (final DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                            final String dayOffset = messageSnapshot.getKey();
+                            final String subject = messageSnapshot.child("subject").getValue(String.class);
+                            final String content = messageSnapshot.child("content").getValue(String.class);
+                            messages.add(new Message(subject, "2018-05-14T22:02:54+00:00"));
+                        }
+                        mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
