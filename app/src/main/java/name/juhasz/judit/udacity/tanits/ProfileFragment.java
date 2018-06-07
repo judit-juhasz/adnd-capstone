@@ -90,7 +90,6 @@ public class ProfileFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (isInvalidConfig()) {
                     return;
                 }
@@ -101,6 +100,8 @@ public class ProfileFragment extends Fragment {
                                 mBirthdateOfChildEditText.getText().toString());
                 mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid())
                         .setValue(userProfile);
+
+                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
             }
         });
 
