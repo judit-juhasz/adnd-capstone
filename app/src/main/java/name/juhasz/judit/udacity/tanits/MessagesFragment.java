@@ -97,7 +97,7 @@ public class MessagesFragment extends Fragment {
                             final String dayOffset = messageSnapshot.getKey();
                             final String subject = messageSnapshot.child("subject").getValue(String.class);
                             final String content = messageSnapshot.child("content").getValue(String.class);
-                            messages.add(new Message(subject, "2018-05-14T22:02:54+00:00"));
+                            messages.add(new Message(subject, "2018-05-14T22:02:54+00:00", content));
                         }
                         mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
                     }

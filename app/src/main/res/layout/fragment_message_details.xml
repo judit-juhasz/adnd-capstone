@@ -5,9 +5,24 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_display_text"
+        android:id="@+id/tv_subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Here You can find the details of the selected message."/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_subject"/>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_date"/>
 
 </RelativeLayout>

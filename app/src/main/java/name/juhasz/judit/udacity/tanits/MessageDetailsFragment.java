@@ -26,8 +26,12 @@ public class MessageDetailsFragment extends Fragment {
         final Bundle arguments = getArguments();
         final Message message = arguments.getParcelable(MESSAGE_DATA);
 
-        final TextView displayTextView = rootView.findViewById(R.id.tv_display_text);
-        displayTextView.setText(message.getSubject());
+        final TextView subjectTextView = rootView.findViewById(R.id.tv_subject);
+        subjectTextView.setText(message.getSubject());
+        final TextView dateTextView = rootView.findViewById(R.id.tv_date);
+        dateTextView.setText(message.getDate());
+        final TextView contentTextView = rootView.findViewById(R.id.tv_content);
+        contentTextView.setText(message.getContent());
 
         return rootView;
     }
