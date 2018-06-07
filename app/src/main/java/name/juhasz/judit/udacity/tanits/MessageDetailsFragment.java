@@ -7,10 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionButton;
 
 public class MessageDetailsFragment extends Fragment {
 
     public static final String MESSAGE_DATA = "MESSAGE_DATA";
+    FloatingActionButton doneFloatingActionButton;
+    FloatingActionButton rejectFloatingActionButton;
 
     public MessageDetailsFragment() {
     }
@@ -32,6 +37,21 @@ public class MessageDetailsFragment extends Fragment {
         dateTextView.setText(message.getDate());
         final TextView contentTextView = rootView.findViewById(R.id.tv_content);
         contentTextView.setText(message.getContent());
+
+        doneFloatingActionButton = rootView.findViewById(R.id.fab_done);
+        rejectFloatingActionButton = rootView.findViewById(R.id.fab_reject);
+
+        doneFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Task is done", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        rejectFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Task is rejected", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return rootView;
     }
