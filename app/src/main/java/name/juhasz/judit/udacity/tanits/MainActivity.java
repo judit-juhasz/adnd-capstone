@@ -10,9 +10,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     private static final String TAG_PROFILE = "profile";
     private static final String TAG_ABOUT_US = "about_us";
     public static String CURRENT_TAG = TAG_MESSAGES;
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -199,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
             mDrawerLayout.closeDrawers();
         }
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -206,5 +211,36 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         final Intent intentToStartDetailsActivity = new Intent(this, DetailsActivity.class);
         intentToStartDetailsActivity.putExtra(DetailsActivity.MESSAGE_DATA, message);
         startActivity(intentToStartDetailsActivity);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (navigationItemIndex == 0) {
+            getMenuInflater().inflate(R.menu.menu_message_categorization, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.messages_all:
+                Toast.makeText(this, "All messages", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.messages_active:
+                Toast.makeText(this, "Active messages", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.messages_done:
+                Toast.makeText(this, "Done messages", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.messages_rejected:
+                Toast.makeText(this, "Rejected messages", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Log.w(LOG_TAG, "Menu selection is not handled. ItemId: " + itemId);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

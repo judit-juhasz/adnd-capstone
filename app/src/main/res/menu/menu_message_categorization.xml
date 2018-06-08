@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/messages_all"
+        android:title="@string/menuitem_categorization_all"
+        android:orderInCategory="1" />
+
+    <item android:id="@+id/messages_active"
+        android:title="@string/menuitem_categorization_active"
+        android:orderInCategory="2" />
+
+    <item android:id="@+id/messages_done"
+        android:title="@string/menuitem_categorization_done"
+        android:orderInCategory="3" />
+
+    <item android:id="@+id/messages_rejected"
+        android:title="@string/menuitem_categorization_rejected"
+        android:orderInCategory="4" />
+
+</menu>
