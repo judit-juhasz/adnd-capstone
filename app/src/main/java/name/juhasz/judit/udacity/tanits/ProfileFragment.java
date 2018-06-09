@@ -24,9 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import org.joda.time.LocalDate;
 
 public class ProfileFragment extends Fragment {
 
@@ -55,19 +53,11 @@ public class ProfileFragment extends Fragment {
         inputLayoutName = rootView.findViewById(R.id.input_layout_name);
         inputLayoutBirthdateOfChild = rootView.findViewById(R.id.input_layout_birthdate);
 
-        final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                String myFormat = "dd/MM/yy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-                mBirthdateOfChildEditText.setText(sdf.format(myCalendar.getTime()));
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                final String childBirthdate =  new LocalDate(year, monthOfYear+1, dayOfMonth).toString();
+                mBirthdateOfChildEditText.setText(childBirthdate);
             }
 
         };
@@ -75,9 +65,15 @@ public class ProfileFragment extends Fragment {
         mBirthdateOfChildEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(getContext(), date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                final String currentBirthdate = mBirthdateOfChildEditText.getText().toString();
+                LocalDate childBirthdate;
+                try {
+                    childBirthdate = new LocalDate(currentBirthdate);
+                } catch (Exception e) {
+                    childBirthdate = new LocalDate();
+                }
+                new DatePickerDialog(getContext(), date, childBirthdate.getYear(),
+                        childBirthdate.getMonthOfYear()-1, childBirthdate.getDayOfMonth()).show();
             }
         });
 

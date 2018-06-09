@@ -9,20 +9,27 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
 
 public class MessagesFragment extends Fragment {
+    private static final String TAG = MessagesFragment.class.getSimpleName();
+
     private MessageAdapter mMessageAdapter;
     FloatingActionButton questionFloatingActionButton;
     FloatingActionButton feedbackFloatingActionButton;
@@ -87,24 +94,47 @@ public class MessagesFragment extends Fragment {
     }
 
     private void queryMessages() {
+        final LocalDate now = new LocalDate();
+
+        final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset")
+
+        firebaseDatabase.getReference("profiles/" + currentFirebaseUser.getUid() + "/childBirthdate")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                        final ArrayList<Message> messages = new ArrayList<>();
-                        for (final DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                            final String messageId = messageSnapshot.getKey();
-                            final long dayOffset = messageSnapshot.child("dayOffset").getValue(Long.class);
-                            final String subject = messageSnapshot.child("subject").getValue(String.class);
-                            messages.add(new Message(messageId, subject, "2018-05-14T22:02:54+00:00"));
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        final String birthdate = dataSnapshot.getValue(String.class);
+                        if (null != birthdate) {
+                            try {
+                                final LocalDate childBirthdate = new LocalDate(birthdate);
+                                firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset")
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                                final ArrayList<Message> messages = new ArrayList<>();
+                                                for (final DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                                                    final String messageId = messageSnapshot.getKey();
+                                                    final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
+                                                    final String subject = messageSnapshot.child("subject").getValue(String.class);
+                                                    messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                                }
+                                                mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                            } catch (Exception e) {
+                                // Instruct the user to set the birthdate on the profile
+                            }
                         }
-                        mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
+                        Log.w(TAG, "User birthdate is not available", databaseError.toException());
                     }
                 });
     }
