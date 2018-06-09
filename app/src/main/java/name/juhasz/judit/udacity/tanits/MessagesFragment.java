@@ -88,13 +88,14 @@ public class MessagesFragment extends Fragment {
 
     private void queryMessages() {
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference("messages")
+        firebaseDatabase.getReference("messages").orderByChild("dayOffset")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                         final ArrayList<Message> messages = new ArrayList<>();
                         for (final DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                            final String dayOffset = messageSnapshot.getKey();
+                            final String messageId = messageSnapshot.getKey();
+                            final long dayOffset = messageSnapshot.child("dayOffset").getValue(Long.class);
                             final String subject = messageSnapshot.child("subject").getValue(String.class);
                             final String content = messageSnapshot.child("content").getValue(String.class);
                             messages.add(new Message(subject, "2018-05-14T22:02:54+00:00", content));
