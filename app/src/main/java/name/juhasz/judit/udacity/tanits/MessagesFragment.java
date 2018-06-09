@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
@@ -107,7 +108,9 @@ public class MessagesFragment extends Fragment {
                         if (null != birthdate) {
                             try {
                                 final LocalDate childBirthdate = new LocalDate(birthdate);
-                                firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset")
+                                final LocalDate currentDate = new LocalDate();
+                                final int days = Days.daysBetween(childBirthdate, currentDate).getDays();
+                                firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(days)
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
