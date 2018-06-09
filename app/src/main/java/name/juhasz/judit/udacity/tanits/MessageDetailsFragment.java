@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,8 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 public class MessageDetailsFragment extends Fragment {
 
     public static final String MESSAGE_DATA = "MESSAGE_DATA";
-    FloatingActionButton doneFloatingActionButton;
-    FloatingActionButton rejectFloatingActionButton;
 
     public MessageDetailsFragment() {
     }
@@ -57,18 +58,27 @@ public class MessageDetailsFragment extends Fragment {
                     }
                 });
 
-        doneFloatingActionButton = rootView.findViewById(R.id.fab_done);
-        rejectFloatingActionButton = rootView.findViewById(R.id.fab_reject);
+        final FloatingActionMenu statusFloatingActionMenu = rootView.findViewById(R.id.fab_menu_status);
+        final FloatingActionButton doneFloatingActionButton = rootView.findViewById(R.id.fab_done);
+        final FloatingActionButton rejectFloatingActionButton = rootView.findViewById(R.id.fab_reject);
 
         doneFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Task is done", Toast.LENGTH_SHORT).show();
+                final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                firebaseDatabase.getReference("messageStatus/" +  currentFirebaseUser.getUid() + "/" + message.getId() + "/status").setValue("done");
+                statusFloatingActionMenu.close(false);
+                statusFloatingActionMenu.setIconAnimated(false);
+                statusFloatingActionMenu.getMenuIconView().setImageResource(R.drawable.ic_done);
             }
         });
 
         rejectFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Task is rejected", Toast.LENGTH_SHORT).show();
+                final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                firebaseDatabase.getReference("messageStatus/" +  currentFirebaseUser.getUid() + "/" + message.getId() + "/status").setValue("rejected");
+                statusFloatingActionMenu.close(false);
+                statusFloatingActionMenu.setIconAnimated(false);
+                statusFloatingActionMenu.getMenuIconView().setImageResource(R.drawable.ic_reject);
             }
         });
 
