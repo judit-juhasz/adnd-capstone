@@ -5,14 +5,19 @@ import android.os.Parcelable;
 
 public class Message implements Parcelable{
 
+
+    private String mId;
     private String mSubject;
     private String mDate;
-    private String mContent;
 
-    public Message(final String subject, final String date, String content) {
+    public Message(final String id, final String subject, final String date) {
+        this.mId = id;
         this.mSubject = subject;
         this.mDate = date;
-        this.mContent = content;
+    }
+
+    public String getId() {
+        return mId;
     }
 
     public String getSubject() {
@@ -21,7 +26,9 @@ public class Message implements Parcelable{
 
     public String getDate() { return mDate; }
 
-    public String getContent() { return mContent; }
+    public void setId(String id) {
+        this.mId = id;
+    }
 
     public void setSubject(final String subject) {
         this.mSubject = subject;
@@ -31,10 +38,6 @@ public class Message implements Parcelable{
         this.mDate = date;
     }
 
-    public void setContent(final String content) {
-        this.mContent = content;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -42,15 +45,15 @@ public class Message implements Parcelable{
 
     @Override
     public void writeToParcel(final Parcel parcel, final int i) {
+        parcel.writeString(mId);
         parcel.writeString(mSubject);
         parcel.writeString(mDate);
-        parcel.writeString(mContent);
     }
 
     public Message(final Parcel in) {
+        mId = in.readString();
         mSubject = in.readString();
         mDate = in.readString();
-        mContent = in.readString();
     }
 
     public static final Creator<Message> CREATOR = new Creator<Message>() {
