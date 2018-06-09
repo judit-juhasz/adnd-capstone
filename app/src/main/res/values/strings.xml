@@ -26,6 +26,7 @@
     <string name="exception_text"> must implement </string>
 
     <!-- Profile fragment -->
+    <string name="button_text_save">Save</string>
     <string name="hint_name">Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_birthdate">Birthdate of your child</string>
@@ -33,5 +34,11 @@
     <string name="error_message_name">Enter your name</string>
     <string name="error_message_birthdate">Enter the birthdate of your child</string>
     <string name="error_message_missing_name_birthdate">Enter your name and the birthdate of your child</string>
+
+    <!-- Messages categorization menuitems -->
+    <string name="menuitem_categorization_all">All</string>
+    <string name="menuitem_categorization_active">Active</string>
+    <string name="menuitem_categorization_done">Done</string>
+    <string name="menuitem_categorization_rejected">Rejected</string>
 
 </resources>

@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_details">
 
     <TextView
-        android:id="@+id/tv_display_text"
+        android:id="@+id/tv_subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Here You can find the details of the selected message."/>
