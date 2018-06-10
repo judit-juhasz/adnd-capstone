@@ -100,45 +100,47 @@ public class MessagesFragment extends Fragment {
         final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-        firebaseDatabase.getReference("profiles/" + currentFirebaseUser.getUid() + "/childBirthdate")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final String birthdate = dataSnapshot.getValue(String.class);
-                        if (null != birthdate) {
-                            try {
-                                final LocalDate childBirthdate = new LocalDate(birthdate);
-                                final LocalDate currentDate = new LocalDate();
-                                final int days = Days.daysBetween(childBirthdate, currentDate).getDays();
-                                firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(days)
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                                                final ArrayList<Message> messages = new ArrayList<>();
-                                                for (final DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                                                    final String messageId = messageSnapshot.getKey();
-                                                    final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
-                                                    final String subject = messageSnapshot.child("subject").getValue(String.class);
-                                                    messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+        if (currentFirebaseUser != null) {
+            firebaseDatabase.getReference("profiles/" + currentFirebaseUser.getUid() + "/childBirthdate")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            final String birthdate = dataSnapshot.getValue(String.class);
+                            if (null != birthdate) {
+                                try {
+                                    final LocalDate childBirthdate = new LocalDate(birthdate);
+                                    final LocalDate currentDate = new LocalDate();
+                                    final int days = Days.daysBetween(childBirthdate, currentDate).getDays();
+                                    firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(days)
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                                    final ArrayList<Message> messages = new ArrayList<>();
+                                                    for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                                                        final String messageId = messageSnapshot.getKey();
+                                                        final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
+                                                        final String subject = messageSnapshot.child("subject").getValue(String.class);
+                                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                                    }
+                                                    mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
                                                 }
-                                                mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
-                                            }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                            } catch (Exception e) {
-                                // Instruct the user to set the birthdate on the profile
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                    Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                } catch (Exception e) {
+                                    // Instruct the user to set the birthdate on the profile
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.w(TAG, "User birthdate is not available", databaseError.toException());
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.w(TAG, "User birthdate is not available", databaseError.toException());
+                        }
+                    });
+        }
     }
 }
