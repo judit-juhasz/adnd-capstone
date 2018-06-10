@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
         if (savedInstanceState == null) {
             navigationItemIndex = 0;
-            loadHomeFragment();
+            loadFragment();
         }
     }
 
@@ -137,15 +137,15 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         switch(menuItem.getItemId()) {
             case R.id.nav_messages:
                 navigationItemIndex = 0;
-                loadHomeFragment();
+                loadFragment();
                 break;
             case R.id.nav_profile:
                 navigationItemIndex = 1;
-                loadHomeFragment();
+                loadFragment();
                 break;
             case R.id.nav_about:
                 navigationItemIndex = 2;
-                loadHomeFragment();
+                loadFragment();
                 break;
             case R.id.nav_logout:
                 mDrawerLayout.closeDrawers();
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         }
     }
 
-    private Fragment getHomeFragment () {
+    private Fragment getFragment() {
         switch (navigationItemIndex) {
             case 0: {
                 final MessagesFragment fragment = new MessagesFragment();
@@ -192,10 +192,10 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         emailTextView.setText(user.getEmail());
     }
 
-    private void loadHomeFragment() {
+    private void loadFragment() {
         selectNavigationMenu();
         setToolbarTitles();
-        Fragment fragment = getHomeFragment();
+        Fragment fragment = getFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         mDrawerLayout.closeDrawers();
