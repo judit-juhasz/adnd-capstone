@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,10 +28,6 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     public static final int RC_SIGN_IN = 1;
     public static int navigationItemIndex = 0;
-    private static final String TAG_MESSAGES = "messages";
-    private static final String TAG_PROFILE = "profile";
-    private static final String TAG_ABOUT_US = "about_us";
-    public static String CURRENT_TAG = TAG_MESSAGES;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAuth mFirebaseAuth;
@@ -89,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
         if (savedInstanceState == null) {
             navigationItemIndex = 0;
-            CURRENT_TAG = TAG_MESSAGES;
             loadHomeFragment();
         }
     }
@@ -143,17 +137,14 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         switch(menuItem.getItemId()) {
             case R.id.nav_messages:
                 navigationItemIndex = 0;
-                CURRENT_TAG = TAG_MESSAGES;
                 loadHomeFragment();
                 break;
             case R.id.nav_profile:
                 navigationItemIndex = 1;
-                CURRENT_TAG = TAG_PROFILE;
                 loadHomeFragment();
                 break;
             case R.id.nav_about:
                 navigationItemIndex = 2;
-                CURRENT_TAG = TAG_ABOUT_US;
                 loadHomeFragment();
                 break;
             case R.id.nav_logout:
@@ -202,17 +193,12 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     }
 
     private void loadHomeFragment() {
-        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
-            mDrawerLayout.closeDrawers();
-            return;
-        } else {
-            selectNavigationMenu();
-            setToolbarTitles();
-            Fragment fragment = getHomeFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-            mDrawerLayout.closeDrawers();
-        }
+        selectNavigationMenu();
+        setToolbarTitles();
+        Fragment fragment = getHomeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        mDrawerLayout.closeDrawers();
         invalidateOptionsMenu();
     }
 
