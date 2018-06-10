@@ -126,11 +126,11 @@ public class MessagesFragment extends Fragment {
                                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                                                            final Map<String, String> messageIdToStatus = new HashMap<>();
+                                                            final Map<String, Integer> messageIdToStatus = new HashMap<>();
                                                             for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                                                                 final String messageId = messageSnapshot.getKey();
                                                                 final String status = messageSnapshot.child("status").getValue(String.class);
-                                                                messageIdToStatus.put(messageId, status);
+                                                                messageIdToStatus.put(messageId, firebaseMessageStatusToClientMessageStatus(status));
                                                             }
                                                             queryMessages(childBirthdate, filter, messageIdToStatus);
                                                         }
@@ -147,11 +147,11 @@ public class MessagesFragment extends Fragment {
                                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                                                            final Map<String, String> messageIdToStatus = new HashMap<>();
+                                                            final Map<String, Integer> messageIdToStatus = new HashMap<>();
                                                             for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                                                                 final String messageId = messageSnapshot.getKey();
                                                                 final String status = messageSnapshot.child("status").getValue(String.class);
-                                                                messageIdToStatus.put(messageId, status);
+                                                                messageIdToStatus.put(messageId, firebaseMessageStatusToClientMessageStatus(status));
                                                             }
                                                             queryMessages(childBirthdate, filter, messageIdToStatus);
                                                         }
@@ -168,11 +168,11 @@ public class MessagesFragment extends Fragment {
                                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                                                            final Map<String, String> messageIdToStatus = new HashMap<>();
+                                                            final Map<String, Integer> messageIdToStatus = new HashMap<>();
                                                             for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                                                                 final String messageId = messageSnapshot.getKey();
                                                                 final String status = messageSnapshot.child("status").getValue(String.class);
-                                                                messageIdToStatus.put(messageId, status);
+                                                                messageIdToStatus.put(messageId, firebaseMessageStatusToClientMessageStatus(status));
                                                             }
                                                             queryMessages(childBirthdate, filter, messageIdToStatus);
                                                         }
@@ -202,7 +202,7 @@ public class MessagesFragment extends Fragment {
     }
 
     private void queryMessages(final LocalDate childBirthdate, final int filter,
-                               @NonNull  final Map<String, String> messageIdToStatus) {
+                               @NonNull  final Map<String, Integer> messageIdToStatus) {
         final LocalDate currentDate = new LocalDate();
         final int days = Days.daysBetween(childBirthdate, currentDate).getDays();
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -217,24 +217,25 @@ public class MessagesFragment extends Fragment {
                             final String subject = messageSnapshot.child("subject").getValue(String.class);
                             switch (filter) {
                                 case FILTER_ALL: {
-                                    messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                    final int messageStatus = messageIdToStatus.containsKey(messageId) ? messageIdToStatus.get(messageId) : Message.STATUS_ACTIVE;
+                                    messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString(), messageStatus));
                                     break;
                                 }
                                 case FILTER_ACTIVE: {
                                     if (!messageIdToStatus.containsKey(messageId)) {
-                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString(), Message.STATUS_ACTIVE));
                                     }
                                     break;
                                 }
                                 case FILTER_DONE: {
-                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals("done")) {
-                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals(Message.STATUS_DONE)) {
+                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString(), Message.STATUS_DONE));
                                     }
                                     break;
                                 }
                                 case FILTER_REJECTED: {
-                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals("rejected")) {
-                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals(Message.STATUS_REJECTED)) {
+                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString(), Message.STATUS_REJECTED));
                                     }
                                     break;
                                 }
@@ -250,5 +251,17 @@ public class MessagesFragment extends Fragment {
                         Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private int firebaseMessageStatusToClientMessageStatus(final String status) {
+        if (status.equals("active")) {
+            return Message.STATUS_ACTIVE;
+        } else if (status.equals("done")) {
+            return Message.STATUS_DONE;
+        } else if (status.equals("rejected")) {
+            return Message.STATUS_REJECTED;
+        } else {
+            return Message.STATUS_ACTIVE;
+        }
     }
 }
