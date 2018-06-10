@@ -1,6 +1,7 @@
 package name.juhasz.judit.udacity.tanits;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +77,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             subjectTextView.setText(subjectOfMessage);
             String dateOfMessage = message.getDate();
             dateTextView.setText(dateOfMessage);
+            switch (message.getStatus()) {
+                case Message.STATUS_ACTIVE:
+                    this.itemView.setBackgroundColor(Color.WHITE);
+                    break;
+                case Message.STATUS_DONE:
+                    this.itemView.setBackgroundColor(Color.GREEN);
+                    break;
+                case Message.STATUS_REJECTED:
+                    this.itemView.setBackgroundColor(Color.RED);
+                    break;
+                default:
+                    // log the message & fallback to STATUS_ACTIVE
+                    this.itemView.setBackgroundColor(Color.WHITE);
+            }
         }
 
         @Override
