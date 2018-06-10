@@ -167,18 +167,24 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     private Fragment getHomeFragment () {
         switch (navigationItemIndex) {
-            case 0:
-                MessagesFragment messagesFragment = new MessagesFragment();
-                return messagesFragment;
+            case 0: {
+                final MessagesFragment fragment = new MessagesFragment();
+                final Bundle arguments = new Bundle();
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
+                fragment.setArguments(arguments);
+                return fragment;
+            }
             case 1:
-                ProfileFragment profileFragment = new ProfileFragment();
-                return profileFragment;
+                return new ProfileFragment();
             case 2:
-                AboutFragment aboutFragment = new AboutFragment();
-                return aboutFragment;
-            default:
-                return new MessagesFragment();
-
+                return new AboutFragment();
+            default: {
+                final MessagesFragment fragment = new MessagesFragment();
+                final Bundle arguments = new Bundle();
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
+                fragment.setArguments(arguments);
+                return fragment;
+            }
         }
     }
 
@@ -229,21 +235,28 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     public boolean onOptionsItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
 
+        final MessagesFragment fragment = new MessagesFragment();
+        final Bundle arguments = new Bundle();
         switch (itemId) {
             case R.id.messages_all:
-                Toast.makeText(this, "All messages", Toast.LENGTH_SHORT).show();
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ALL);
                 break;
             case R.id.messages_active:
-                Toast.makeText(this, "Active messages", Toast.LENGTH_SHORT).show();
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
                 break;
             case R.id.messages_done:
-                Toast.makeText(this, "Done messages", Toast.LENGTH_SHORT).show();
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_DONE);
                 break;
             case R.id.messages_rejected:
-                Toast.makeText(this, "Rejected messages", Toast.LENGTH_SHORT).show();
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_REJECTED);
                 break;
             default:
                 Log.w(LOG_TAG, "Menu selection is not handled. ItemId: " + itemId);
+        }
+        if (!arguments.isEmpty()) {
+            fragment.setArguments(arguments);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
         return super.onOptionsItemSelected(item);
     }

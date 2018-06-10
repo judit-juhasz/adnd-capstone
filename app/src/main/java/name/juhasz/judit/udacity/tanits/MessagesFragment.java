@@ -27,9 +27,17 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MessagesFragment extends Fragment {
     private static final String TAG = MessagesFragment.class.getSimpleName();
+
+    public static final String PARAMETER_FILTER = "PARAMETER_FILTER";
+    public static final int FILTER_ALL = 0;
+    public static final int FILTER_ACTIVE = 1;
+    public static final int FILTER_DONE = 2;
+    public static final int FILTER_REJECTED = 3;
 
     private MessageAdapter mMessageAdapter;
     FloatingActionButton questionFloatingActionButton;
@@ -87,16 +95,18 @@ public class MessagesFragment extends Fragment {
         });
 
         final RecyclerView messagesRecycleView = rootView.findViewById(R.id.rv_messages);
-        queryMessages();
+        final Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            final int filter = bundle.getInt(PARAMETER_FILTER, FILTER_ALL);
+            queryMessages(filter);
+        }
         messagesRecycleView.setAdapter(mMessageAdapter);
         messagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return rootView;
     }
 
-    private void queryMessages() {
-        final LocalDate now = new LocalDate();
-
+    private void queryMessages(final int filter) {
         final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -109,27 +119,74 @@ public class MessagesFragment extends Fragment {
                             if (null != birthdate) {
                                 try {
                                     final LocalDate childBirthdate = new LocalDate(birthdate);
-                                    final LocalDate currentDate = new LocalDate();
-                                    final int days = Days.daysBetween(childBirthdate, currentDate).getDays();
-                                    firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(days)
-                                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                                                    final ArrayList<Message> messages = new ArrayList<>();
-                                                    for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                                                        final String messageId = messageSnapshot.getKey();
-                                                        final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
-                                                        final String subject = messageSnapshot.child("subject").getValue(String.class);
-                                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
-                                                    }
-                                                    mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
-                                                }
+                                    switch (filter) {
+                                        case FILTER_ALL:
+                                        case FILTER_ACTIVE: {
+                                            firebaseDatabase.getReference("messageStatus/" + currentFirebaseUser.getUid())
+                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                                            final Map<String, String> messageIdToStatus = new HashMap<>();
+                                                            for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                                                                final String messageId = messageSnapshot.getKey();
+                                                                final String status = messageSnapshot.child("status").getValue(String.class);
+                                                                messageIdToStatus.put(messageId, status);
+                                                            }
+                                                            queryMessages(childBirthdate, filter, messageIdToStatus);
+                                                        }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                    Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
-                                                }
-                                            });
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                            Toast.makeText(getContext(), "Cannot retrieve message status data", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                            break;
+                                        }
+                                        case FILTER_DONE: {
+                                            firebaseDatabase.getReference("messageStatus/" + currentFirebaseUser.getUid()).orderByChild("status").startAt("done").endAt("done")
+                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                                            final Map<String, String> messageIdToStatus = new HashMap<>();
+                                                            for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                                                                final String messageId = messageSnapshot.getKey();
+                                                                final String status = messageSnapshot.child("status").getValue(String.class);
+                                                                messageIdToStatus.put(messageId, status);
+                                                            }
+                                                            queryMessages(childBirthdate, filter, messageIdToStatus);
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                            Toast.makeText(getContext(), "Cannot retrieve message status data", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                            break;
+                                        }
+                                        case FILTER_REJECTED: {
+                                            firebaseDatabase.getReference("messageStatus/" + currentFirebaseUser.getUid()).orderByChild("status").startAt("rejected").endAt("rejected")
+                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                                            final Map<String, String> messageIdToStatus = new HashMap<>();
+                                                            for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                                                                final String messageId = messageSnapshot.getKey();
+                                                                final String status = messageSnapshot.child("status").getValue(String.class);
+                                                                messageIdToStatus.put(messageId, status);
+                                                            }
+                                                            queryMessages(childBirthdate, filter, messageIdToStatus);
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                            Toast.makeText(getContext(), "Cannot retrieve message status data", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                            break;
+                                        }
+                                        default:
+                                            // Handle the error
+                                    }
                                 } catch (Exception e) {
                                     // Instruct the user to set the birthdate on the profile
                                 }
@@ -142,5 +199,56 @@ public class MessagesFragment extends Fragment {
                         }
                     });
         }
+    }
+
+    private void queryMessages(final LocalDate childBirthdate, final int filter,
+                               @NonNull  final Map<String, String> messageIdToStatus) {
+        final LocalDate currentDate = new LocalDate();
+        final int days = Days.daysBetween(childBirthdate, currentDate).getDays();
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(days)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                        final ArrayList<Message> messages = new ArrayList<>();
+                        for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                            final String messageId = messageSnapshot.getKey();
+                            final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
+                            final String subject = messageSnapshot.child("subject").getValue(String.class);
+                            switch (filter) {
+                                case FILTER_ALL: {
+                                    messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                    break;
+                                }
+                                case FILTER_ACTIVE: {
+                                    if (!messageIdToStatus.containsKey(messageId)) {
+                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                    }
+                                    break;
+                                }
+                                case FILTER_DONE: {
+                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals("done")) {
+                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                    }
+                                    break;
+                                }
+                                case FILTER_REJECTED: {
+                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals("rejected")) {
+                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString()));
+                                    }
+                                    break;
+                                }
+                                default:
+                                    // Handle error
+                            }
+                        }
+                        mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
