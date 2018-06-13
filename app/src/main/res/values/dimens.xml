@@ -3,4 +3,7 @@
     <dimen name="margin_normal_left_right">16dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="padding_save_button">16dp</dimen>
+    <dimen name="margin_top_save_button">32dp</dimen>
+    <dimen name="corner_radius_save_button">4dp</dimen>
+    <dimen name="button_save_height">36dp</dimen>
 </resources>
