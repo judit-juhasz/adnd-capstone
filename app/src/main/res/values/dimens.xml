@@ -6,4 +6,5 @@
     <dimen name="margin_top_save_button">32dp</dimen>
     <dimen name="corner_radius_save_button">4dp</dimen>
     <dimen name="button_save_height">36dp</dimen>
+    <dimen name="appbar_layout_height">296dp</dimen>
 </resources>

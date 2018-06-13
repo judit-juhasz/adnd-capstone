@@ -21,7 +21,7 @@ public class AboutFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_about, container, false);
 
-        mDisplayTextView = rootView.findViewById(R.id.tv_text_one);
+        mDisplayTextView = rootView.findViewById(R.id.tv_display);
         String displaytext = getResources().getString(R.string.text_one_about)
                 + getResources().getString(R.string.text_two_about)
                 + getResources().getString(R.string.text_one_about)
