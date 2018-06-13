@@ -1,6 +1,9 @@
 package name.juhasz.judit.udacity.tanits;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -59,7 +62,6 @@ public class ProfileFragment extends Fragment {
                 final String childBirthdate =  new LocalDate(year, monthOfYear+1, dayOfMonth).toString();
                 mBirthdateOfChildEditText.setText(childBirthdate);
             }
-
         };
 
         mBirthdateOfChildEditText.setOnClickListener(new View.OnClickListener() {
@@ -90,14 +92,31 @@ public class ProfileFragment extends Fragment {
                     return;
                 }
 
-                final UserProfile userProfile =
-                        new UserProfile(mNameEditText.getText().toString(),
-                                mEmailEditText.getText().toString(),
-                                mBirthdateOfChildEditText.getText().toString());
-                mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid())
-                        .setValue(userProfile);
 
-                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Light_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(getContext());
+                }
+                builder.setTitle(R.string.alert_title)
+                        .setMessage(R.string.alert_message)
+                        .setPositiveButton(R.string.alert_positiv, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                final UserProfile userProfile =
+                                        new UserProfile(mNameEditText.getText().toString(),
+                                                mEmailEditText.getText().toString(),
+                                                mBirthdateOfChildEditText.getText().toString());
+                                mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid())
+                                        .setValue(userProfile);
+                            }
+                        })
+                        .setNegativeButton(R.string.alert_negativ, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setIcon(0)
+                        .show();
             }
         });
 
