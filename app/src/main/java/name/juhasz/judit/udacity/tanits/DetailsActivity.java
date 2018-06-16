@@ -6,17 +6,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String MESSAGE_DATA = "MESSAGE_DATA";
+
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
 
         final Intent intent = getIntent();
         final boolean hasMessageExtra = (null != intent && intent.hasExtra(MESSAGE_DATA));
