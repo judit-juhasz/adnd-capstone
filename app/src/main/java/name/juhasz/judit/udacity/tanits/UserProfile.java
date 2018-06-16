@@ -10,7 +10,7 @@ public class UserProfile {
     public String childBirthdate;
 
     public UserProfile() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        // Default constructor is required for calls to DataSnapshot.getValue(User.class)
     }
 
     public UserProfile(final String name, final String email, final String childBirthdate) {
