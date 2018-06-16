@@ -26,20 +26,20 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
 
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final int RC_SIGN_IN = 1;
     public static int navigationItemIndex = 0;
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
-    private Toolbar toolbar;
-    private String[] fragmentTitles;
-    private View navigationHeaderView;
-    private TextView usernameTextView;
-    private TextView emailTextView;
+    private Toolbar mToolbar;
+    private String[] mFragmentTitles;
+    private View mNavigationHeaderView;
+    private TextView mUsernameTextView;
+    private TextView mEmailTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +68,19 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             }
         };
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
-        navigationHeaderView = mNavigationView.getHeaderView(0);
-        usernameTextView = navigationHeaderView.findViewById(R.id.tv_username);
-        emailTextView = navigationHeaderView.findViewById(R.id.tv_email);
+        mNavigationHeaderView = mNavigationView.getHeaderView(0);
+        mUsernameTextView = mNavigationHeaderView.findViewById(R.id.tv_username);
+        mEmailTextView = mNavigationHeaderView.findViewById(R.id.tv_email);
 
         setupDrawerContent(mNavigationView);
         loadActionBarDrawerToggle(mDrawerLayout);
 
-        fragmentTitles = getResources().getStringArray(R.array.nav_item_fragment_titles);
+        mFragmentTitles = getResources().getStringArray(R.array.nav_item_fragment_titles);
 
         if (savedInstanceState == null) {
             navigationItemIndex = 0;
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     private void loadActionBarDrawerToggle(DrawerLayout layout) {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,
-                mDrawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+                mDrawerLayout, mToolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             case 0: {
                 final MessagesFragment fragment = new MessagesFragment();
                 final Bundle arguments = new Bundle();
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ALL);
                 fragment.setArguments(arguments);
                 return fragment;
             }
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             default: {
                 final MessagesFragment fragment = new MessagesFragment();
                 final Bundle arguments = new Bundle();
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ALL);
                 fragment.setArguments(arguments);
                 return fragment;
             }
@@ -184,12 +184,12 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     }
 
     private void setToolbarTitles() {
-        getSupportActionBar().setTitle(fragmentTitles[navigationItemIndex]);
+        getSupportActionBar().setTitle(mFragmentTitles[navigationItemIndex]);
     }
 
     private void loadNavigationHeader(FirebaseUser user) {
-        usernameTextView.setText(user.getDisplayName());
-        emailTextView.setText(user.getEmail());
+        mUsernameTextView.setText(user.getDisplayName());
+        mEmailTextView.setText(user.getEmail());
     }
 
     private void loadFragment() {
