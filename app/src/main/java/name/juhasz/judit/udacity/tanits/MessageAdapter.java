@@ -31,15 +31,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final Context context = parent.getContext();
 
-        Context context = parent.getContext();
+        final int layoutIdForListItem = R.layout.item_messages;
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        final boolean shouldAttachToParentImmediately = false;
 
-        int layoutIdForListItem = R.layout.item_messages;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
-
-        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        MessageViewHolder viewHolder = new MessageViewHolder(view);
+        final View view =
+                inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
+        final MessageViewHolder viewHolder = new MessageViewHolder(view);
 
         return viewHolder;
     }
@@ -60,23 +60,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public TextView subjectTextView;
-        public TextView dateTextView;
+        public TextView mSubjectTextView;
+        public TextView mDateTextView;
 
         public MessageViewHolder(View itemView) {
             super(itemView);
 
-            subjectTextView = (TextView) itemView.findViewById(R.id.tv_subject);
-            dateTextView = (TextView) itemView.findViewById(R.id.tv_date);
+            mSubjectTextView = (TextView) itemView.findViewById(R.id.tv_subject);
+            mDateTextView = (TextView) itemView.findViewById(R.id.tv_date);
             itemView.setOnClickListener(this);
         }
 
         void bind(int position) {
             final Message message = mMessages[position];
-            String subjectOfMessage = message.getSubject();
-            subjectTextView.setText(subjectOfMessage);
-            String dateOfMessage = message.getDate();
-            dateTextView.setText(dateOfMessage);
+            final String subjectOfMessage = message.getSubject();
+            mSubjectTextView.setText(subjectOfMessage);
+            final String dateOfMessage = message.getDate();
+            mDateTextView.setText(dateOfMessage);
             switch (message.getStatus()) {
                 case Message.STATUS_ACTIVE:
                     this.itemView.setBackgroundColor(Color.WHITE);
@@ -95,8 +95,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         @Override
         public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            Message message = mMessages[adapterPosition];
+            final int adapterPosition = getAdapterPosition();
+            final Message message = mMessages[adapterPosition];
             mListener.onItemClick(message);
         }
     }
