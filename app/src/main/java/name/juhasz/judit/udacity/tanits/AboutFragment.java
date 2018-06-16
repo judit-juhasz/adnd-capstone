@@ -10,24 +10,19 @@ import android.widget.TextView;
 
 public class AboutFragment extends Fragment {
 
-    private TextView mDisplayTextView;
-
     public AboutFragment() {
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        final View rootView =
+                inflater.inflate(R.layout.fragment_about, container, false);
 
-        View rootView = inflater.inflate(R.layout.fragment_about, container, false);
-
-        mDisplayTextView = rootView.findViewById(R.id.tv_display);
-        String displaytext = getResources().getString(R.string.text_one_about)
-                + getResources().getString(R.string.text_two_about)
-                + getResources().getString(R.string.text_one_about)
-                + getResources().getString(R.string.text_one_about);
-        mDisplayTextView.setText(displaytext);
+        TextView displayTextView = rootView.findViewById(R.id.tv_display);
+        displayTextView.setText(getResources().getString(R.string.lorem_ipsum_long));
         return rootView;
     }
-
 }
