@@ -18,153 +18,169 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.joda.time.LocalDate;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import name.juhasz.judit.udacity.tanits.util.DateTimeUtils;
+import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = ProfileFragment.class.getSimpleName();
 
-    private FirebaseDatabase mFirebaseDatabase;
-    @BindView(R.id.et_name) EditText mNameEditText;
-    @BindView(R.id.et_email) EditText mEmailEditText;
-    @BindView(R.id.et_birthdate_of_child) EditText mBirthdateOfChildEditText;
-    @BindView(R.id.input_layout_name) TextInputLayout mInputLayoutName;
-    @BindView(R.id.input_layout_birthdate) TextInputLayout mInputLayoutBirthdateOfChild;
-    @BindView(R.id.button_save) Button mSaveButton;
+    @BindView(R.id.et_name)
+    EditText mNameEditText;
+    @BindView(R.id.et_email)
+    EditText mEmailEditText;
+    @BindView(R.id.et_birthdate_of_child)
+    EditText mBirthdateOfChildEditText;
+    @BindView(R.id.input_layout_name)
+    TextInputLayout mInputLayoutName;
+    @BindView(R.id.input_layout_birthdate)
+    TextInputLayout mInputLayoutBirthdateOfChild;
+    @BindView(R.id.button_save)
+    Button mSaveButton;
 
     public ProfileFragment() {
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        ButterKnife.bind(getActivity(), rootView);
+        ButterKnife.bind(this, rootView);
 
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        setupNameField();
+        setupBirthdateCalendarPopup();
+        setupSavePopup();
+        queryUserProfileData();
+        updateSaveButtonStatus();
+
+        return rootView;
+    }
+
+    private void queryUserProfileData() {
+        FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                final String childBirthdate =  new LocalDate(year, monthOfYear+1, dayOfMonth).toString();
-                mBirthdateOfChildEditText.setText(childBirthdate);
-            }
-        };
-
-        mBirthdateOfChildEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String currentBirthdate = mBirthdateOfChildEditText.getText().toString();
-                LocalDate childBirthdate;
-                try {
-                    childBirthdate = new LocalDate(currentBirthdate);
-                } catch (Exception e) {
-                    childBirthdate = new LocalDate();
+            public void onReceive(UserProfile userProfile) {
+                if (null != userProfile) {
+                    if (null != userProfile.getName()) {
+                        mNameEditText.setText(userProfile.getName());
+                    }
+                    if (null != userProfile.getEmail()) {
+                        mEmailEditText.setText(userProfile.getEmail());
+                        mEmailEditText.setEnabled(false);
+                    }
+                    if (null != userProfile.getChildBirthdate()) {
+                        mBirthdateOfChildEditText.setText(userProfile.getChildBirthdate());
+                    }
                 }
-                new DatePickerDialog(getContext(), date, childBirthdate.getYear(),
-                        childBirthdate.getMonthOfYear()-1, childBirthdate.getDayOfMonth()).show();
+                updateSaveButtonStatus();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w(TAG, "User profile data is not available", databaseError.toException());
             }
         });
+    }
 
-        mNameEditText.addTextChangedListener(new MyTextWatcher(mNameEditText));
-        mBirthdateOfChildEditText.addTextChangedListener(new MyTextWatcher(mBirthdateOfChildEditText));
-
-        final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-
+    private void setupSavePopup() {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isInvalidConfig()) {
+                if (!areAllInputsValid()) {
                     return;
                 }
+                createSaveConfirmationDialog().show();
+            }
+        });
+    }
 
-
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Light_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(getContext());
-                }
-                builder.setTitle(R.string.alert_title)
-                        .setMessage(R.string.alert_message)
-                        .setPositiveButton(R.string.alert_positiv, new DialogInterface.OnClickListener() {
+    private AlertDialog.Builder createSaveConfirmationDialog() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getContext(),
+                    android.R.style.Theme_Material_Light_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
+        builder.setTitle(R.string.alert_title)
+                .setMessage(R.string.alert_message)
+                .setPositiveButton(R.string.alert_positiv,
+                        new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 final UserProfile userProfile =
                                         new UserProfile(mNameEditText.getText().toString(),
                                                 mEmailEditText.getText().toString(),
                                                 mBirthdateOfChildEditText.getText().toString());
-                                mFirebaseDatabase.getReference("profiles/" +  currentFirebaseUser.getUid())
-                                        .setValue(userProfile);
+                                FirebaseUtils.saveUserProfile(userProfile);
                             }
                         })
-                        .setNegativeButton(R.string.alert_negativ, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setIcon(0)
-                        .show();
-            }
-        });
-
-        mFirebaseDatabase.getReference("profiles/" + currentFirebaseUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final UserProfile user = dataSnapshot.getValue(UserProfile.class);
-                        if (null != user) {
-                            if (null != user.getName()) {
-                                mNameEditText.setText(user.getName());
-                            }
-                            if (null != user.getEmail()) {
-                                mEmailEditText.setText(user.getEmail());
-                                mEmailEditText.setEnabled(false);
-                            }
-                            if (null != user.getChildBirthdate()) {
-                                mBirthdateOfChildEditText.setText(user.getChildBirthdate());
-                            }
-                        }
+                .setNegativeButton(R.string.alert_negativ, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.w(TAG, "User profile data is not available", databaseError.toException());
-                    }
-                });
-
-        return rootView;
+                })
+                .setIcon(0);
+        return builder;
     }
 
-    private boolean validateName() {
-        if (mNameEditText.getText().toString().trim().isEmpty()) {
+    private void setupNameField() {
+        mNameEditText.addTextChangedListener(new MyTextWatcher(mNameEditText));
+    }
+
+    private void setupBirthdateCalendarPopup() {
+        mBirthdateOfChildEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String currentBirthdate = mBirthdateOfChildEditText.getText().toString();
+                final LocalDate calendarStartDate
+                        = DateTimeUtils.parseLocalDateOrDefault(currentBirthdate, new LocalDate());
+                final int monthFirstIndexCorrection = -1;
+                new DatePickerDialog(getActivity(), getDateChangeListener(),
+                        calendarStartDate.getYear(),
+                        calendarStartDate.getMonthOfYear() + monthFirstIndexCorrection,
+                        calendarStartDate.getDayOfMonth()).show();
+            }
+        });
+        mBirthdateOfChildEditText.addTextChangedListener(new MyTextWatcher(mBirthdateOfChildEditText));
+    }
+
+    @NonNull
+    private DatePickerDialog.OnDateSetListener getDateChangeListener() {
+        return new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                final int monthFirstIndexCorrection = 1;
+                final String childBirthdate = new LocalDate(year,
+                        monthOfYear + monthFirstIndexCorrection, dayOfMonth).toString();
+                mBirthdateOfChildEditText.setText(childBirthdate);
+            }
+        };
+    }
+
+    private void validateName() {
+        if (!isAcceptableName()) {
             mInputLayoutName.setError(getString(R.string.error_message_name));
-            return false;
         } else {
             mInputLayoutName.setErrorEnabled(false);
         }
-        return true;
     }
 
-    private boolean validateBirthdate() {
-        if (mBirthdateOfChildEditText.getText().toString().trim().isEmpty()) {
+    private void validateBirthdate() {
+        if (!isAcceptableBirthdateOfChild()) {
             mInputLayoutBirthdateOfChild.setError(getString(R.string.error_message_birthdate));
             registerForContextMenu(mBirthdateOfChildEditText);
-            return false;
         } else {
             mInputLayoutBirthdateOfChild.setErrorEnabled(false);
         }
-        return true;
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -174,9 +190,11 @@ public class ProfileFragment extends Fragment {
             this.view = view;
         }
 
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
         public void afterTextChanged(Editable editable) {
             switch (view.getId()) {
@@ -187,24 +205,23 @@ public class ProfileFragment extends Fragment {
                     validateBirthdate();
                     break;
             }
+            updateSaveButtonStatus();
         }
     }
 
-    public boolean isInvalidConfig() {
-        final boolean isNameCorrect = !mNameEditText.getText().toString().isEmpty();
-        final boolean isBirthdateOfChildCorrect = !mBirthdateOfChildEditText.getText().toString().isEmpty();
+    public boolean areAllInputsValid() {
+        return isAcceptableName() && isAcceptableBirthdateOfChild();
+    }
 
-        if (!isNameCorrect && !isBirthdateOfChildCorrect) {
-            Toast.makeText(getContext(), getString(R.string.error_message_missing_name_birthdate),
-                    Toast.LENGTH_LONG).show();
-            return true;
-        } else if (!isNameCorrect) {
-            Toast.makeText(getContext(), getString(R.string.error_message_name), Toast.LENGTH_LONG).show();
-            return true;
-        } else if (!isBirthdateOfChildCorrect) {
-            Toast.makeText(getContext(), getString(R.string.error_message_birthdate), Toast.LENGTH_LONG).show();
-            return true;
-        }
-        return false;
+    private boolean isAcceptableBirthdateOfChild() {
+        return !mBirthdateOfChildEditText.getText().toString().trim().isEmpty();
+    }
+
+    private boolean isAcceptableName() {
+        return !mNameEditText.getText().toString().trim().isEmpty();
+    }
+
+    private void updateSaveButtonStatus() {
+        mSaveButton.setEnabled(areAllInputsValid());
     }
 }
