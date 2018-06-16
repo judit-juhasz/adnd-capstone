@@ -20,8 +20,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         final boolean hasMessageExtra = (null != intent && intent.hasExtra(MESSAGE_DATA));
-        final boolean firstStart = (null == savedInstanceState);
-        if (hasMessageExtra && firstStart) {
+        if (hasMessageExtra) {
             final Bundle arguments = new Bundle();
             final Message message = intent.getParcelableExtra(MESSAGE_DATA);
             arguments.putParcelable(MessageDetailsFragment.MESSAGE_DATA, message);
