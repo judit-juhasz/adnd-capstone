@@ -29,17 +29,20 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.joda.time.LocalDate;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = ProfileFragment.class.getSimpleName();
 
     private FirebaseDatabase mFirebaseDatabase;
-    private EditText mNameEditText;
-    private EditText mEmailEditText;
-    private EditText mBirthdateOfChildEditText;
-    private TextInputLayout inputLayoutName;
-    private TextInputLayout inputLayoutBirthdateOfChild;
-    private Button mSaveButton;
+    @BindView(R.id.et_name) EditText mNameEditText;
+    @BindView(R.id.et_email) EditText mEmailEditText;
+    @BindView(R.id.et_birthdate_of_child) EditText mBirthdateOfChildEditText;
+    @BindView(R.id.input_layout_name) TextInputLayout mInputLayoutName;
+    @BindView(R.id.input_layout_birthdate) TextInputLayout mInputLayoutBirthdateOfChild;
+    @BindView(R.id.button_save) Button mSaveButton;
 
     public ProfileFragment() {
     }
@@ -49,12 +52,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        mSaveButton = rootView.findViewById(R.id.button_save);
-        mNameEditText = rootView.findViewById(R.id.et_name);
-        mEmailEditText = rootView.findViewById(R.id.et_email);
-        mBirthdateOfChildEditText = rootView.findViewById(R.id.et_birthdate_of_child);
-        inputLayoutName = rootView.findViewById(R.id.input_layout_name);
-        inputLayoutBirthdateOfChild = rootView.findViewById(R.id.input_layout_birthdate);
+        ButterKnife.bind(getActivity(), rootView);
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -150,21 +148,21 @@ public class ProfileFragment extends Fragment {
 
     private boolean validateName() {
         if (mNameEditText.getText().toString().trim().isEmpty()) {
-            inputLayoutName.setError(getString(R.string.error_message_name));
+            mInputLayoutName.setError(getString(R.string.error_message_name));
             return false;
         } else {
-            inputLayoutName.setErrorEnabled(false);
+            mInputLayoutName.setErrorEnabled(false);
         }
         return true;
     }
 
     private boolean validateBirthdate() {
         if (mBirthdateOfChildEditText.getText().toString().trim().isEmpty()) {
-            inputLayoutBirthdateOfChild.setError(getString(R.string.error_message_birthdate));
+            mInputLayoutBirthdateOfChild.setError(getString(R.string.error_message_birthdate));
             registerForContextMenu(mBirthdateOfChildEditText);
             return false;
         } else {
-            inputLayoutBirthdateOfChild.setErrorEnabled(false);
+            mInputLayoutBirthdateOfChild.setErrorEnabled(false);
         }
         return true;
     }
