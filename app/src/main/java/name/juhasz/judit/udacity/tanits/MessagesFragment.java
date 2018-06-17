@@ -121,35 +121,9 @@ public class MessagesFragment extends Fragment {
                 if (null != birthdate) {
                     try {
                         final LocalDate childBirthdate = new LocalDate(birthdate);
-                        int messageQueryType;
-                        switch (filter) {
-                            case FILTER_ALL:
-                            case FILTER_ACTIVE:
-                                messageQueryType = Message.STATUS_ACTIVE;
-                                break;
-                            case FILTER_DONE:
-                                messageQueryType = Message.STATUS_DONE;
-                                break;
-                            case FILTER_REJECTED:
-                                messageQueryType = Message.STATUS_REJECTED;
-                                break;
-                            default:
-                                // Handle the error
-                                return;
-                        }
-                        FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
-                            @Override
-                            public void onReceive(Map<String, Integer> messageIdToStatus) {
-                                queryMessages(childBirthdate, filter, messageIdToStatus);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                Toast.makeText(getContext(), "Cannot retrieve message status data", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        queryMessages(childBirthdate, filter);
                     } catch (Exception e) {
-                        // Instruct the user to set the birthdate on the profile
+                        Toast.makeText(getContext(), "Set your child birthday on your profile", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -161,8 +135,7 @@ public class MessagesFragment extends Fragment {
         });
     }
 
-    private void queryMessages(final LocalDate childBirthdate, final int filter,
-                               @NonNull final Map<String, Integer> messageIdToStatus) {
+    private void queryMessages(final LocalDate childBirthdate, final int filter) {
         int firebaseMessageStatusFilter = FirebaseUtils.MESSAGE_STATUS_FILTER_ALL;
         switch (filter) {
             case FILTER_ALL:
@@ -183,7 +156,7 @@ public class MessagesFragment extends Fragment {
             default:
                 Log.w(TAG, "Error: Unknown filter: " + filter);
         }
-        FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter, messageIdToStatus,
+        FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter,
                 new FirebaseUtils.MessageListListener() {
                     @Override
                     public void onReceive(List<Message> messageList) {

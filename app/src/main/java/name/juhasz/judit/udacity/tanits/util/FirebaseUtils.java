@@ -195,8 +195,41 @@ public class FirebaseUtils {
 
     public static void queryMessages(@NonNull final LocalDate childBirthdate,
                                      @NonNull final int messageStatusFilter,
-                                     @NonNull final Map<String, Integer> messageIdToStatus,
                                      @NonNull final MessageListListener messageListListener) {
+        int messageQueryType;
+        switch (messageStatusFilter) {
+            case MESSAGE_STATUS_FILTER_ALL:
+            case MESSAGE_STATUS_FILTER_ACTIVE:
+                messageQueryType = Message.STATUS_ACTIVE;
+                break;
+            case MESSAGE_STATUS_FILTER_DONE:
+                messageQueryType = Message.STATUS_DONE;
+                break;
+            case MESSAGE_STATUS_FILTER_REJECTED:
+                messageQueryType = Message.STATUS_REJECTED;
+                break;
+            default:
+                Log.e(TAG, "Internal error: unknown message status filter: " + messageStatusFilter);
+                return;
+        }
+        FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
+            @Override
+            public void onReceive(Map<String, Integer> messageIdToStatus) {
+                FirebaseUtils.queryMessages(childBirthdate, messageStatusFilter, messageIdToStatus,
+                        messageListListener);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                messageListListener.onCancelled(databaseError);
+            }
+        });
+    }
+
+    private static void queryMessages(@NonNull final LocalDate childBirthdate,
+                                      @NonNull final int messageStatusFilter,
+                                      @NonNull final Map<String, Integer> messageIdToStatus,
+                                      @NonNull final MessageListListener messageListListener) {
         final LocalDate currentDate = new LocalDate();
         final int childAgeInDays = Days.daysBetween(childBirthdate, currentDate).getDays();
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
