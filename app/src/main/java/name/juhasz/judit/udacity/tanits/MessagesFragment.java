@@ -54,7 +54,7 @@ public class MessagesFragment extends Fragment {
 
         try {
             mMessageAdapter = new MessageAdapter(context, (MessageAdapter.OnClickListener) context);
-        } catch(ClassCastException e) {
+        } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + getString(R.string.exception_text) +
                     MessageAdapter.OnClickListener.class.getSimpleName());
         }
@@ -79,7 +79,7 @@ public class MessagesFragment extends Fragment {
         questionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts("mailto","judit@juhasz.name", null));
+                        Uri.fromParts("mailto", "judit@juhasz.name", null));
                 sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question");
                 sendEmailIntent.putExtra(Intent.EXTRA_TEXT, "Write your message here.");
                 startActivity(Intent.createChooser(sendEmailIntent, "Choose an Email client: "));
@@ -89,7 +89,7 @@ public class MessagesFragment extends Fragment {
         feedbackFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts("mailto","judit@juhasz.name", null));
+                        Uri.fromParts("mailto", "judit@juhasz.name", null));
                 sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
                 sendEmailIntent.putExtra(Intent.EXTRA_TEXT, "Write your message here.");
                 startActivity(Intent.createChooser(sendEmailIntent, "Choose an Email client: "));
@@ -109,65 +109,59 @@ public class MessagesFragment extends Fragment {
     }
 
     private void queryMessages(final int filter) {
-        final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-
-        if (currentFirebaseUser != null) {
-            FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
-                @Override
-                public void onReceive(UserProfile userProfile) {
-                    if (null == userProfile)
-                    {
-                        Log.w(TAG, "User profile is not available");
-                        return;
-                    }
-                    final String birthdate = userProfile.getChildBirthdate();
-                    if (null != birthdate) {
-                        try {
-                            final LocalDate childBirthdate = new LocalDate(birthdate);
-                            int messageQueryType;
-                            switch (filter) {
-                                case FILTER_ALL:
-                                case FILTER_ACTIVE:
-                                    messageQueryType = Message.STATUS_ACTIVE;
-                                    break;
-                                case FILTER_DONE:
-                                    messageQueryType = Message.STATUS_DONE;
-                                    break;
-                                case FILTER_REJECTED:
-                                    messageQueryType = Message.STATUS_REJECTED;
-                                    break;
-                                default:
-                                    // Handle the error
-                                    return;
-                            }
-                            FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
-                                @Override
-                                public void onReceive(Map<String, Integer> messageIdToStatus) {
-                                    queryMessages(childBirthdate, filter, messageIdToStatus);
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    Toast.makeText(getContext(), "Cannot retrieve message status data", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        } catch (Exception e) {
-                            // Instruct the user to set the birthdate on the profile
+        FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+            @Override
+            public void onReceive(UserProfile userProfile) {
+                if (null == userProfile) {
+                    Log.w(TAG, "User profile is not available");
+                    return;
+                }
+                final String birthdate = userProfile.getChildBirthdate();
+                if (null != birthdate) {
+                    try {
+                        final LocalDate childBirthdate = new LocalDate(birthdate);
+                        int messageQueryType;
+                        switch (filter) {
+                            case FILTER_ALL:
+                            case FILTER_ACTIVE:
+                                messageQueryType = Message.STATUS_ACTIVE;
+                                break;
+                            case FILTER_DONE:
+                                messageQueryType = Message.STATUS_DONE;
+                                break;
+                            case FILTER_REJECTED:
+                                messageQueryType = Message.STATUS_REJECTED;
+                                break;
+                            default:
+                                // Handle the error
+                                return;
                         }
+                        FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
+                            @Override
+                            public void onReceive(Map<String, Integer> messageIdToStatus) {
+                                queryMessages(childBirthdate, filter, messageIdToStatus);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(getContext(), "Cannot retrieve message status data", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } catch (Exception e) {
+                        // Instruct the user to set the birthdate on the profile
                     }
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.w(TAG, "User birthdate is not available", databaseError.toException());
-                }
-            });
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w(TAG, "User birthdate is not available", databaseError.toException());
+            }
+        });
     }
 
     private void queryMessages(final LocalDate childBirthdate, final int filter,
-                               @NonNull  final Map<String, Integer> messageIdToStatus) {
+                               @NonNull final Map<String, Integer> messageIdToStatus) {
         final LocalDate currentDate = new LocalDate();
         final int days = Days.daysBetween(childBirthdate, currentDate).getDays();
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
