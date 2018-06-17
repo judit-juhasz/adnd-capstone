@@ -217,16 +217,4 @@ public class MessagesFragment extends Fragment {
                     }
                 });
     }
-
-    private int firebaseMessageStatusToClientMessageStatus(final String status) {
-        if (status.equals("active")) {
-            return Message.STATUS_ACTIVE;
-        } else if (status.equals("done")) {
-            return Message.STATUS_DONE;
-        } else if (status.equals("rejected")) {
-            return Message.STATUS_REJECTED;
-        } else {
-            return Message.STATUS_ACTIVE;
-        }
-    }
 }
