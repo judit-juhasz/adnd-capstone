@@ -28,6 +28,7 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
@@ -162,47 +163,31 @@ public class MessagesFragment extends Fragment {
 
     private void queryMessages(final LocalDate childBirthdate, final int filter,
                                @NonNull final Map<String, Integer> messageIdToStatus) {
-        final LocalDate currentDate = new LocalDate();
-        final int days = Days.daysBetween(childBirthdate, currentDate).getDays();
-        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(days)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        int firebaseMessageStatusFilter = FirebaseUtils.MESSAGE_STATUS_FILTER_ALL;
+        switch (filter) {
+            case FILTER_ALL:
+                firebaseMessageStatusFilter = FirebaseUtils.MESSAGE_STATUS_FILTER_ALL;
+                break;
+            case FILTER_ACTIVE: {
+                firebaseMessageStatusFilter = FirebaseUtils.MESSAGE_STATUS_FILTER_ACTIVE;
+                break;
+            }
+            case FILTER_DONE: {
+                firebaseMessageStatusFilter = FirebaseUtils.MESSAGE_STATUS_FILTER_DONE;
+                break;
+            }
+            case FILTER_REJECTED: {
+                firebaseMessageStatusFilter = FirebaseUtils.MESSAGE_STATUS_FILTER_REJECTED;
+                break;
+            }
+            default:
+                Log.w(TAG, "Error: Unknown filter: " + filter);
+        }
+        FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter, messageIdToStatus,
+                new FirebaseUtils.MessageListListener() {
                     @Override
-                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                        final ArrayList<Message> messages = new ArrayList<>();
-                        for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                            final String messageId = messageSnapshot.getKey();
-                            final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
-                            final String subject = messageSnapshot.child("subject").getValue(String.class);
-                            switch (filter) {
-                                case FILTER_ALL: {
-                                    final int messageStatus = messageIdToStatus.containsKey(messageId) ? messageIdToStatus.get(messageId) : Message.STATUS_ACTIVE;
-                                    messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString(), messageStatus));
-                                    break;
-                                }
-                                case FILTER_ACTIVE: {
-                                    if (!messageIdToStatus.containsKey(messageId)) {
-                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString(), Message.STATUS_ACTIVE));
-                                    }
-                                    break;
-                                }
-                                case FILTER_DONE: {
-                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals(Message.STATUS_DONE)) {
-                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString(), Message.STATUS_DONE));
-                                    }
-                                    break;
-                                }
-                                case FILTER_REJECTED: {
-                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals(Message.STATUS_REJECTED)) {
-                                        messages.add(new Message(messageId, subject, childBirthdate.plusDays(dayOffset).toString(), Message.STATUS_REJECTED));
-                                    }
-                                    break;
-                                }
-                                default:
-                                    // Handle error
-                            }
-                        }
-                        mMessageAdapter.setMessages(messages.toArray(new Message[messages.size()]));
+                    public void onReceive(List<Message> messageList) {
+                        mMessageAdapter.setMessages(messageList.toArray(new Message[messageList.size()]));
                     }
 
                     @Override

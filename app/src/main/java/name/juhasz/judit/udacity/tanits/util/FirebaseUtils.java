@@ -11,7 +11,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import name.juhasz.judit.udacity.tanits.Message;
@@ -20,18 +25,32 @@ import name.juhasz.judit.udacity.tanits.UserProfile;
 public class FirebaseUtils {
     private static String TAG = FirebaseUtils.class.getSimpleName();
 
+    public static final int MESSAGE_STATUS_FILTER_ALL = 0;
+    public static final int MESSAGE_STATUS_FILTER_ACTIVE = 1;
+    public static final int MESSAGE_STATUS_FILTER_DONE = 2;
+    public static final int MESSAGE_STATUS_FILTER_REJECTED = 3;
+
     public interface StringListener {
         void onReceive(final String string);
+
         void onCancelled(@NonNull DatabaseError databaseError);
     }
 
     public interface UserProfileListener {
         void onReceive(final UserProfile userProfile);
+
         void onCancelled(@NonNull DatabaseError databaseError);
     }
 
     public interface MessageStatusListener {
         void onReceive(final Map<String, Integer> messageIdToStatus);
+
+        void onCancelled(@NonNull DatabaseError databaseError);
+    }
+
+    public interface MessageListListener {
+        void onReceive(final List<Message> messageList);
+
         void onCancelled(@NonNull DatabaseError databaseError);
     }
 
@@ -59,7 +78,7 @@ public class FirebaseUtils {
                 Log.e(TAG, "Internal error: unknown message status: " + messageStatus);
                 return;
         }
-        database.getReference("messageStatus/" +  currentFirebaseUser.getUid() +
+        database.getReference("messageStatus/" + currentFirebaseUser.getUid() +
                 "/" + messageId + "/status").setValue(status);
     }
 
@@ -172,5 +191,61 @@ public class FirebaseUtils {
             Log.e(TAG, "Internal error: unknown message status: " + status);
             return Message.STATUS_ACTIVE; // Fallback
         }
+    }
+
+    public static void queryMessages(@NonNull final LocalDate childBirthdate,
+                                     @NonNull final int messageStatusFilter,
+                                     @NonNull final Map<String, Integer> messageIdToStatus,
+                                     @NonNull final MessageListListener messageListListener) {
+        final LocalDate currentDate = new LocalDate();
+        final int childAgeInDays = Days.daysBetween(childBirthdate, currentDate).getDays();
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(childAgeInDays)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        final ArrayList<Message> messages = new ArrayList<>();
+                        for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                            final String messageId = messageSnapshot.getKey();
+                            final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
+                            final String messageDate = childBirthdate.plusDays(dayOffset).toString();
+                            final String subject = messageSnapshot.child("subject").getValue(String.class);
+                            switch (messageStatusFilter) {
+                                case MESSAGE_STATUS_FILTER_ALL: {
+                                    final int messageStatus = messageIdToStatus.containsKey(messageId) ? messageIdToStatus.get(messageId) : Message.STATUS_ACTIVE;
+                                    messages.add(new Message(messageId, subject, messageDate, messageStatus));
+                                    break;
+                                }
+                                case MESSAGE_STATUS_FILTER_ACTIVE: {
+                                    if (!messageIdToStatus.containsKey(messageId)) {
+                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_ACTIVE));
+                                    }
+                                    break;
+                                }
+                                case MESSAGE_STATUS_FILTER_DONE: {
+                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals(Message.STATUS_DONE)) {
+                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_DONE));
+                                    }
+                                    break;
+                                }
+                                case MESSAGE_STATUS_FILTER_REJECTED: {
+                                    if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals(Message.STATUS_REJECTED)) {
+                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_REJECTED));
+                                    }
+                                    break;
+                                }
+                                default:
+                                    Log.w(TAG, "Error: Unknown message status filter: " + messageStatusFilter);
+                                    continue;
+                            }
+                        }
+                        messageListListener.onReceive(messages);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        messageListListener.onCancelled(databaseError);
+                    }
+                });
     }
 }
