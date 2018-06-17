@@ -16,21 +16,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class MessagesFragment extends Fragment {
@@ -43,8 +36,10 @@ public class MessagesFragment extends Fragment {
     public static final int FILTER_REJECTED = 3;
 
     private MessageAdapter mMessageAdapter;
-    FloatingActionButton questionFloatingActionButton;
-    FloatingActionButton feedbackFloatingActionButton;
+    @BindView(R.id.fab_question)
+    FloatingActionButton mQuestionFloatingActionButton;
+    @BindView(R.id.fab_feedback)
+    FloatingActionButton mFeedbackFloatingActionButton;
 
     public MessagesFragment() {
     }
@@ -74,10 +69,9 @@ public class MessagesFragment extends Fragment {
         final View rootView =
                 inflater.inflate(R.layout.fragment_messages, container, false);
 
-        questionFloatingActionButton = rootView.findViewById(R.id.fab_question);
-        feedbackFloatingActionButton = rootView.findViewById(R.id.fab_feedback);
+        ButterKnife.bind(this, rootView);
 
-        questionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+        mQuestionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
                         Uri.fromParts("mailto", "judit@juhasz.name", null));
@@ -87,7 +81,7 @@ public class MessagesFragment extends Fragment {
             }
         });
 
-        feedbackFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+        mFeedbackFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
                         Uri.fromParts("mailto", "judit@juhasz.name", null));

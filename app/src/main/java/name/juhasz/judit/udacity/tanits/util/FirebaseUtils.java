@@ -85,6 +85,9 @@ public class FirebaseUtils {
     public static void queryUserProfile(@NonNull final UserProfileListener userProfileListener) {
         final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        if (null == currentFirebaseUser) {
+            return;
+        }
         database.getReference("profiles/" + currentFirebaseUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
