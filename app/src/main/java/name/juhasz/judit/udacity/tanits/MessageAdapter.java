@@ -80,7 +80,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             final String dateOfMessage = message.getDate();
             mDateTextView.setText(dateOfMessage);
             final String summaryOfMessage = message.getSummary();
-            mSummaryTextView.setText(R.string.lorem_ipsum_short);
+            mSummaryTextView.setText(summaryOfMessage);
             switch (message.getStatus()) {
                 case Message.STATUS_ACTIVE:
                     this.itemView.setBackgroundColor(Color.WHITE);

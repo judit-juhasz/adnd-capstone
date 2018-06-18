@@ -246,7 +246,7 @@ public class FirebaseUtils {
                             final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
                             final String messageDate = childBirthdate.plusDays(dayOffset).toString();
                             final String subject = messageSnapshot.child("subject").getValue(String.class);
-                            final String summary = "";
+                            final String summary = messageSnapshot.child("summary").getValue(String.class);;
                             switch (messageStatusFilter) {
                                 case MESSAGE_STATUS_FILTER_ALL: {
                                     final int messageStatus = messageIdToStatus.containsKey(messageId) ? messageIdToStatus.get(messageId) : Message.STATUS_ACTIVE;
