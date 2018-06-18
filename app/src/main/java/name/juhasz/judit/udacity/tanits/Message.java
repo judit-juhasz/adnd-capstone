@@ -12,12 +12,14 @@ public class Message implements Parcelable {
     private String mSubject;
     private String mDate;
     private int mStatus;
+    private String mSummary;
 
-    public Message(final String id, final String subject, final String date, final int status) {
+    public Message(final String id, final String subject, final String date, final int status, final String summary) {
         this.mId = id;
         this.mSubject = subject;
         this.mDate = date;
         this.mStatus = status;
+        this.mSummary = summary;
     }
 
     public String getId() {
@@ -36,6 +38,10 @@ public class Message implements Parcelable {
         return mStatus;
     }
 
+    public String getSummary() {
+        return mSummary;
+    }
+
     public void setId(String id) {
         this.mId = id;
     }
@@ -52,6 +58,10 @@ public class Message implements Parcelable {
         this.mStatus = status;
     }
 
+    public void setSummary(final String summary) {
+        this.mSummary = summary;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -63,6 +73,7 @@ public class Message implements Parcelable {
         parcel.writeString(mSubject);
         parcel.writeString(mDate);
         parcel.writeInt(mStatus);
+        parcel.writeString(mSummary);
     }
 
     public Message(final Parcel in) {
@@ -70,6 +81,7 @@ public class Message implements Parcelable {
         mSubject = in.readString();
         mDate = in.readString();
         mStatus = in.readInt();
+        mSummary = in.readString();
     }
 
     public static final Creator<Message> CREATOR = new Creator<Message>() {

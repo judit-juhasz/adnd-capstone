@@ -246,27 +246,28 @@ public class FirebaseUtils {
                             final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
                             final String messageDate = childBirthdate.plusDays(dayOffset).toString();
                             final String subject = messageSnapshot.child("subject").getValue(String.class);
+                            final String summary = "";
                             switch (messageStatusFilter) {
                                 case MESSAGE_STATUS_FILTER_ALL: {
                                     final int messageStatus = messageIdToStatus.containsKey(messageId) ? messageIdToStatus.get(messageId) : Message.STATUS_ACTIVE;
-                                    messages.add(new Message(messageId, subject, messageDate, messageStatus));
+                                    messages.add(new Message(messageId, subject, messageDate, messageStatus, summary));
                                     break;
                                 }
                                 case MESSAGE_STATUS_FILTER_ACTIVE: {
                                     if (!messageIdToStatus.containsKey(messageId)) {
-                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_ACTIVE));
+                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_ACTIVE, summary));
                                     }
                                     break;
                                 }
                                 case MESSAGE_STATUS_FILTER_DONE: {
                                     if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals(Message.STATUS_DONE)) {
-                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_DONE));
+                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_DONE, summary));
                                     }
                                     break;
                                 }
                                 case MESSAGE_STATUS_FILTER_REJECTED: {
                                     if (messageIdToStatus.containsKey(messageId) && messageIdToStatus.get(messageId).equals(Message.STATUS_REJECTED)) {
-                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_REJECTED));
+                                        messages.add(new Message(messageId, subject, messageDate, Message.STATUS_REJECTED, summary));
                                     }
                                     break;
                                 }

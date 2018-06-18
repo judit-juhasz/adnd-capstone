@@ -62,12 +62,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         public TextView mSubjectTextView;
         public TextView mDateTextView;
+        public TextView mSummaryTextView;
 
         public MessageViewHolder(View itemView) {
             super(itemView);
 
             mSubjectTextView = (TextView) itemView.findViewById(R.id.tv_subject);
             mDateTextView = (TextView) itemView.findViewById(R.id.tv_date);
+            mSummaryTextView = (TextView) itemView.findViewById(R.id.tv_summary);
             itemView.setOnClickListener(this);
         }
 
@@ -77,6 +79,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             mSubjectTextView.setText(subjectOfMessage);
             final String dateOfMessage = message.getDate();
             mDateTextView.setText(dateOfMessage);
+            final String summaryOfMessage = message.getSummary();
+            mSummaryTextView.setText(R.string.lorem_ipsum_short);
             switch (message.getStatus()) {
                 case Message.STATUS_ACTIVE:
                     this.itemView.setBackgroundColor(Color.WHITE);
