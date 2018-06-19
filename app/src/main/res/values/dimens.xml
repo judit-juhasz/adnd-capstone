@@ -7,4 +7,8 @@
     <dimen name="corner_radius_save_button">4dp</dimen>
     <dimen name="button_save_height">36dp</dimen>
     <dimen name="appbar_layout_height">296dp</dimen>
+    <dimen name="margin_between_items">8dp</dimen>
+    <dimen name="diameter_circle">48dp</dimen>
+    <dimen name="message_item_size_image">40dp</dimen>
+
 </resources>
