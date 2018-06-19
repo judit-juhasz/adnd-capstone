@@ -2,10 +2,13 @@ package name.juhasz.judit.udacity.tanits;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
@@ -81,19 +84,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             mDateTextView.setText(dateOfMessage);
             final String summaryOfMessage = message.getSummary();
             mSummaryTextView.setText(summaryOfMessage);
+            ImageView statusImageView = itemView.findViewById(R.id.iv_status_image);
+            ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
             switch (message.getStatus()) {
                 case Message.STATUS_ACTIVE:
-                    this.itemView.setBackgroundColor(Color.WHITE);
+                    drawable.getPaint().setColor(Color.BLUE);
+                    statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_DONE:
-                    this.itemView.setBackgroundColor(Color.GREEN);
+                    drawable.getPaint().setColor(Color.GREEN);
+                    statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_REJECTED:
-                    this.itemView.setBackgroundColor(Color.RED);
+                    drawable.getPaint().setColor(Color.RED);
+                    statusImageView.setBackground(drawable);
                     break;
                 default:
                     // log the message & fallback to STATUS_ACTIVE
-                    this.itemView.setBackgroundColor(Color.WHITE);
+                    drawable.getPaint().setColor(Color.BLUE);
+                    statusImageView.setBackground(drawable);
             }
         }
 
