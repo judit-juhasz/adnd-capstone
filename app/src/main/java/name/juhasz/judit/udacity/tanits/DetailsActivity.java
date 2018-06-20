@@ -28,6 +28,7 @@ public class DetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Intent intent = getIntent();
         final boolean hasMessageExtra = (null != intent && intent.hasExtra(MESSAGE_DATA));
