@@ -128,8 +128,7 @@ public class ProfileFragment extends Fragment {
                                 FirebaseUtils.saveUserProfile(userProfile);
 
                                 Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
-                                        getString(R.string.message_save_successfull),
-                                        Snackbar.LENGTH_LONG);
+                                        R.string.message_save_successfull, Snackbar.LENGTH_LONG);
                                 snackbar.show();
                             }
                         })
