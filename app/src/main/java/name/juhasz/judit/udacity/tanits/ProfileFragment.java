@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -44,6 +46,8 @@ public class ProfileFragment extends Fragment {
     TextInputLayout mInputLayoutBirthdateOfChild;
     @BindView(R.id.button_save)
     Button mSaveButton;
+    @BindView(R.id.cl_fragment_profile)
+    CoordinatorLayout mCoordinatorLayout;
 
     public ProfileFragment() {
     }
@@ -122,6 +126,11 @@ public class ProfileFragment extends Fragment {
                                                 mEmailEditText.getText().toString(),
                                                 mBirthdateOfChildEditText.getText().toString());
                                 FirebaseUtils.saveUserProfile(userProfile);
+
+                                Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
+                                        getString(R.string.message_save_successfull),
+                                        Snackbar.LENGTH_LONG);
+                                snackbar.show();
                             }
                         })
                 .setNegativeButton(R.string.alert_negativ, new DialogInterface.OnClickListener() {

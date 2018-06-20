@@ -41,6 +41,8 @@
     <string name="alert_positiv">Save</string>
     <string name="alert_negativ">Cancel</string>
 
+    <string name="message_save_successfull">Your profile has been saved successfully.</string>
+
 
     <!-- Messages categorization menuitems -->
     <string name="menuitem_categorization_all">All</string>
