@@ -4,7 +4,7 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:background="@color/colorWhiteTextIcons">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_messages"
@@ -23,9 +23,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         fab:menu_icon="@drawable/ic_write_message"
-        fab:menu_colorNormal="#d32f2f"
-        fab:menu_colorPressed="@color/colorAccent"
-        fab:menu_colorRipple="@color/colorPrimary"
+        fab:menu_colorNormal="@color/colorAccent"
         fab:menu_fab_size="normal">
 
         <com.github.clans.fab.FloatingActionButton
@@ -34,7 +32,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_question"
             fab:fab_label="Question"
-            fab:fab_colorNormal="#d32f2f"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -43,7 +40,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_feedback"
             fab:fab_label="Feedback"
-            fab:fab_colorNormal="#d32f2f"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
