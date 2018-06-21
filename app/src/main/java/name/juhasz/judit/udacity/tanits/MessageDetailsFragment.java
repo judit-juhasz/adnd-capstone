@@ -24,7 +24,6 @@ public class MessageDetailsFragment extends Fragment {
 
     public static final String MESSAGE_DATA = "MESSAGE_DATA";
 
-    @BindView(R.id.tv_subject) TextView mSubjectTextView;
     @BindView(R.id.tv_date) TextView mDateTextView;
     @BindView(R.id.tv_content) TextView mContentTextView;
     @BindView(R.id.tv_summary) TextView mSummaryTextView;
@@ -47,7 +46,6 @@ public class MessageDetailsFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        mSubjectTextView.setText(message.getSubject());
         mDateTextView.setText(message.getDate());
         mSummaryTextView.setText(message.getSummary());
         FirebaseUtils.queryMessageContent(message.getId(), new FirebaseUtils.StringListener() {
