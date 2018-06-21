@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
                 arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_REJECTED);
                 break;
             default:
-                Log.w(LOG_TAG, "Menu selection is not handled. ItemId: " + itemId);
+                Log.w(LOG_TAG, getString(R.string.log_messages_menu_selection) + itemId);
         }
         if (!arguments.isEmpty()) {
             fragment.setArguments(arguments);

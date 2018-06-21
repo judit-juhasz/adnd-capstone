@@ -58,7 +58,7 @@ public class MessageDetailsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Cannot retrieve message detail",
+                Toast.makeText(getContext(), R.string.no_message_detail,
                     Toast.LENGTH_LONG).show();
             }
         });

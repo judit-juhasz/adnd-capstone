@@ -50,4 +50,23 @@
     <string name="menuitem_categorization_done">Done</string>
     <string name="menuitem_categorization_rejected">Rejected</string>
 
+    <!-- Log and other messages -->
+    <string name="log_messages_menu_selection">Menu selection is not handled. ItemId: </string>
+    <string name="log_messages_status_settings">Status setting is not handled. ItemId: </string>
+    <string name="log_user_profile_data">User profile data is not available</string>
+    <string name="log_unknown_message_status">Internal error: unknown message status: </string>
+    <string name="log_internal_error_unknown_message_status_filter">Internal error: unknown message status filter: </string>
+    <string name="log_error_unknown_message_status_filter">Error: unknown message status filter: </string>
+    <string name="log_user_profile">User profile is not available</string>
+    <string name="log_user_birthday">User birthdate is not available</string>
+    <string name="set_birthdate">Set your child birthday on your profile</string>
+    <string name="no_messages">Cannot retrieve messages</string>
+    <string name="no_message_detail">Cannot retrieve message detail</string>
+
+    <!-- Email datas -->
+    <string name="subject_feedback">Feedback</string>
+    <string name="subject_question">Question</string>
+    <string name="email_address">judit@juhasz.name</string>
+    <string name="no_email_client_selected">Choose an Email client</string>
+
 </resources>

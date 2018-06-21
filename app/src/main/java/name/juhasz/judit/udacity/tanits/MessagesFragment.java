@@ -74,20 +74,18 @@ public class MessagesFragment extends Fragment {
         mQuestionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts("mailto", "judit@juhasz.name", null));
-                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Question");
-                sendEmailIntent.putExtra(Intent.EXTRA_TEXT, "Write your message here.");
-                startActivity(Intent.createChooser(sendEmailIntent, "Choose an Email client: "));
+                        Uri.fromParts("mailto", getString(R.string.email_address), null));
+                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.subject_question);
+                startActivity(Intent.createChooser(sendEmailIntent, getResources().getString(R.string.no_email_client_selected)));
             }
         });
 
         mFeedbackFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts("mailto", "judit@juhasz.name", null));
-                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
-                sendEmailIntent.putExtra(Intent.EXTRA_TEXT, "Write your message here.");
-                startActivity(Intent.createChooser(sendEmailIntent, "Choose an Email client: "));
+                        Uri.fromParts("mailto", getString(R.string.email_address), null));
+                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.subject_feedback);
+                startActivity(Intent.createChooser(sendEmailIntent, getResources().getString(R.string.no_email_client_selected)));
             }
         });
 
@@ -108,7 +106,7 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onReceive(UserProfile userProfile) {
                 if (null == userProfile) {
-                    Log.w(TAG, "User profile is not available");
+                    Log.w(TAG, String.valueOf(R.string.log_user_profile));
                     return;
                 }
                 final String birthdate = userProfile.getChildBirthdate();
@@ -117,14 +115,14 @@ public class MessagesFragment extends Fragment {
                         final LocalDate childBirthdate = new LocalDate(birthdate);
                         queryMessages(childBirthdate, filter);
                     } catch (Exception e) {
-                        Toast.makeText(getContext(), "Set your child birthday on your profile", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.set_birthdate, Toast.LENGTH_LONG).show();
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "User birthdate is not available", databaseError.toException());
+                Log.w(TAG, String.valueOf(R.string.log_user_birthday), databaseError.toException());
             }
         });
     }
@@ -148,7 +146,7 @@ public class MessagesFragment extends Fragment {
                 break;
             }
             default:
-                Log.w(TAG, "Error: Unknown filter: " + filter);
+                Log.w(TAG, String.valueOf(R.string.log_error_unknown_message_status_filter + filter));
         }
         FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter,
                 new FirebaseUtils.MessageListListener() {
@@ -159,7 +157,7 @@ public class MessagesFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getContext(), "Cannot retrieve messages", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.no_messages, Toast.LENGTH_LONG).show();
                     }
                 });
     }

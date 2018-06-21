@@ -66,7 +66,7 @@ public class DetailsActivity extends AppCompatActivity {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
                 break;
             default:
-                Log.w(LOG_TAG, "Status setting is not handled. ItemId: " + itemId);
+                Log.w(LOG_TAG, getString(R.string.log_messages_status_settings) + itemId);
         }
         return super.onOptionsItemSelected(item);
     }

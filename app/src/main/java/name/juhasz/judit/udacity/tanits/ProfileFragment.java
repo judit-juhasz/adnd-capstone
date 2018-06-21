@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "User profile data is not available", databaseError.toException());
+                Log.w(TAG, getString(R.string.log_user_profile_data), databaseError.toException());
             }
         });
     }

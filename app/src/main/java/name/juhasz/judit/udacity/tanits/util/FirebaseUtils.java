@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import name.juhasz.judit.udacity.tanits.Message;
+import name.juhasz.judit.udacity.tanits.R;
 import name.juhasz.judit.udacity.tanits.UserProfile;
 
 public class FirebaseUtils {
@@ -75,7 +76,7 @@ public class FirebaseUtils {
                 status = "rejected";
                 break;
             default:
-                Log.e(TAG, "Internal error: unknown message status: " + messageStatus);
+                Log.e(TAG, String.valueOf(R.string.log_unknown_message_status + messageStatus));
                 return;
         }
         database.getReference("messageStatus/" + currentFirebaseUser.getUid() +
@@ -160,7 +161,7 @@ public class FirebaseUtils {
                 break;
             }
             default:
-                Log.e(TAG, "Internal error: unknown message status: " + messageStatus);
+                Log.e(TAG, String.valueOf(R.string.log_unknown_message_status + messageStatus));
         }
         return query;
     }
@@ -178,7 +179,7 @@ public class FirebaseUtils {
             case Message.STATUS_REJECTED:
                 return "rejected";
             default:
-                Log.e(TAG, "Internal error: unknown message status: " + messageStatus);
+                Log.e(TAG, String.valueOf(R.string.log_unknown_message_status + messageStatus));
                 return null;
         }
     }
@@ -191,7 +192,7 @@ public class FirebaseUtils {
         } else if (status.equals("rejected")) {
             return Message.STATUS_REJECTED;
         } else {
-            Log.e(TAG, "Internal error: unknown message status: " + status);
+            Log.e(TAG, R.string.log_unknown_message_status + status);
             return Message.STATUS_ACTIVE; // Fallback
         }
     }
@@ -212,7 +213,7 @@ public class FirebaseUtils {
                 messageQueryType = Message.STATUS_REJECTED;
                 break;
             default:
-                Log.e(TAG, "Internal error: unknown message status filter: " + messageStatusFilter);
+                Log.e(TAG, String.valueOf(R.string.log_internal_error_unknown_message_status_filter + messageStatusFilter));
                 return;
         }
         FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
@@ -272,7 +273,7 @@ public class FirebaseUtils {
                                     break;
                                 }
                                 default:
-                                    Log.w(TAG, "Error: Unknown message status filter: " + messageStatusFilter);
+                                    Log.w(TAG, String.valueOf(R.string.log_error_unknown_message_status_filter + messageStatusFilter));
                                     continue;
                             }
                         }
