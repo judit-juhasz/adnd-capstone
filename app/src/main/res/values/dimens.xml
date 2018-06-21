@@ -11,5 +11,7 @@
     <dimen name="diameter_circle">48dp</dimen>
     <dimen name="message_item_size_image">40dp</dimen>
     <dimen name="margin_medium">24dp</dimen>
+    <dimen name="navigation_header_height">176dp</dimen>
+    <dimen name="navigation_header_padding">16dp</dimen>
 
 </resources>
