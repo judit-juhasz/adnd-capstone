@@ -63,14 +63,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public TextView mSubjectTextView;
         public TextView mDateTextView;
         public TextView mSummaryTextView;
 
         public MessageViewHolder(View itemView) {
             super(itemView);
 
-            mSubjectTextView = (TextView) itemView.findViewById(R.id.tv_subject);
             mDateTextView = (TextView) itemView.findViewById(R.id.tv_date);
             mSummaryTextView = (TextView) itemView.findViewById(R.id.tv_summary);
             itemView.setOnClickListener(this);
@@ -78,8 +76,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         void bind(int position) {
             final Message message = mMessages[position];
-            final String subjectOfMessage = message.getSubject();
-            mSubjectTextView.setText(subjectOfMessage);
             final String dateOfMessage = message.getDate();
             mDateTextView.setText(dateOfMessage);
             final String summaryOfMessage = message.getSummary();
