@@ -18,11 +18,13 @@ import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.Arrays;
+
+import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
 
@@ -52,10 +54,18 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    loadNavigationHeader(user);
-                } else {
+                FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+                    @Override
+                    public void onReceive(UserProfile userProfile) {
+                        loadNavigationHeader(userProfile);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e(LOG_TAG, "Internal error at login: " + databaseError);
+                    }
+                });
+                if (null == firebaseAuth.getCurrentUser()) {
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -133,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     public void selectDrawerItem(final MenuItem menuItem) {
 
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_messages:
                 navigationItemIndex = 0;
                 loadFragment();
@@ -186,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         getSupportActionBar().setTitle(mFragmentTitles[navigationItemIndex]);
     }
 
-    private void loadNavigationHeader(FirebaseUser user) {
-        mUsernameTextView.setText(user.getDisplayName());
+    private void loadNavigationHeader(final UserProfile user) {
+        mUsernameTextView.setText(user.getName());
         mEmailTextView.setText(user.getEmail());
     }
 

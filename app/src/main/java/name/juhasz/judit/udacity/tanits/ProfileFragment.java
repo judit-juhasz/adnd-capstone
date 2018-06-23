@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 
 import org.joda.time.LocalDate;
@@ -49,6 +50,9 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.cl_fragment_profile)
     CoordinatorLayout mCoordinatorLayout;
 
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
     public ProfileFragment() {
     }
 
@@ -67,7 +71,35 @@ public class ProfileFragment extends Fragment {
         queryUserProfileData();
         updateSaveButtonStatus();
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (null != firebaseAuth.getCurrentUser()) {
+                    setupNameField();
+                    setupBirthdateCalendarPopup();
+                    setupSavePopup();
+                    queryUserProfileData();
+                    updateSaveButtonStatus();
+                }
+            }
+        };
+
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthStateListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
     }
 
     private void queryUserProfileData() {

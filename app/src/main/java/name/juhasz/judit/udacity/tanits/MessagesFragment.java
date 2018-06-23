@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 
 import org.joda.time.LocalDate;
@@ -40,6 +41,9 @@ public class MessagesFragment extends Fragment {
     FloatingActionButton mQuestionFloatingActionButton;
     @BindView(R.id.fab_feedback)
     FloatingActionButton mFeedbackFloatingActionButton;
+
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     public MessagesFragment() {
     }
@@ -98,7 +102,36 @@ public class MessagesFragment extends Fragment {
         messagesRecycleView.setAdapter(mMessageAdapter);
         messagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (null != firebaseAuth.getCurrentUser()) {
+                    final Bundle bundle = MessagesFragment.this.getArguments();
+                    if (bundle != null) {
+                        final int filter = bundle.getInt(PARAMETER_FILTER, FILTER_ALL);
+                        queryMessages(filter);
+                    }
+                }
+            }
+        };
+
         return rootView;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthStateListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
     }
 
     private void queryMessages(final int filter) {
@@ -110,13 +143,11 @@ public class MessagesFragment extends Fragment {
                     return;
                 }
                 final String birthdate = userProfile.getChildBirthdate();
-                if (null != birthdate) {
-                    try {
-                        final LocalDate childBirthdate = new LocalDate(birthdate);
-                        queryMessages(childBirthdate, filter);
-                    } catch (Exception e) {
-                        Toast.makeText(getContext(), R.string.set_birthdate, Toast.LENGTH_LONG).show();
-                    }
+                try {
+                    final LocalDate childBirthdate = new LocalDate(birthdate);
+                    queryMessages(childBirthdate, filter);
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), R.string.set_birthdate, Toast.LENGTH_LONG).show();
                 }
             }
 
