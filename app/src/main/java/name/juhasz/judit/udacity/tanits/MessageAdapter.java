@@ -1,5 +1,6 @@
 package name.juhasz.judit.udacity.tanits;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
@@ -74,6 +75,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             itemView.setOnClickListener(this);
         }
 
+        @SuppressLint("ResourceAsColor")
         void bind(int position) {
             final Message message = mMessages[position];
             final String dateOfMessage = message.getDate();
@@ -84,20 +86,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
             switch (message.getStatus()) {
                 case Message.STATUS_ACTIVE:
-                    drawable.getPaint().setColor(Color.BLUE);
+                    drawable.getPaint().setColor(Color.parseColor("#03A9F4"));
                     statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_DONE:
-                    drawable.getPaint().setColor(Color.GREEN);
+                    drawable.getPaint().setColor(Color.parseColor("#A5D6A7"));
                     statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_REJECTED:
-                    drawable.getPaint().setColor(Color.RED);
+                    drawable.getPaint().setColor(Color.parseColor("#B0BEC5"));
                     statusImageView.setBackground(drawable);
                     break;
                 default:
                     // log the message & fallback to STATUS_ACTIVE
-                    drawable.getPaint().setColor(Color.BLUE);
+                    drawable.getPaint().setColor(Color.parseColor("##03A9F4"));
                     statusImageView.setBackground(drawable);
             }
         }
