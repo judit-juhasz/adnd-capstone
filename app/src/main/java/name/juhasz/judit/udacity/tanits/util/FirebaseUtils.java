@@ -94,6 +94,10 @@ public class FirebaseUtils {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         final UserProfile user = dataSnapshot.getValue(UserProfile.class);
+                        final String displayName = currentFirebaseUser.getDisplayName();
+                        if (null == user.getName() && null != displayName) {
+                            user.setName(displayName);
+                        }
                         userProfileListener.onReceive(user);
                     }
 
