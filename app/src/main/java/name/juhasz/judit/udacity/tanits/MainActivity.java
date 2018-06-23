@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
                                     .setIsSmartLockEnabled(false)
                                     .setAvailableProviders(Arrays.asList(
                                             new AuthUI.IdpConfig.EmailBuilder().build()))
-                                    .build(),
-                            RC_SIGN_IN);
+                                    .build(), RC_SIGN_IN);
                 }
             }
         };
