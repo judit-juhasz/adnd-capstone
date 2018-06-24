@@ -287,9 +287,10 @@ public class FirebaseUtils {
                         for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                             final String messageId = messageSnapshot.getKey();
                             final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
-                            final String messageDate = childBirthdate.plusDays(dayOffset).toString();
+                            final String messageDate =
+                                    getMessageDate(childBirthdate, currentDate, childAgeInDays, dayOffset);
                             final String subject = messageSnapshot.child("subject").getValue(String.class);
-                            final String summary = messageSnapshot.child("summary").getValue(String.class);;
+                            final String summary = messageSnapshot.child("summary").getValue(String.class);
                             switch (messageStatusFilter) {
                                 case MESSAGE_STATUS_FILTER_ALL: {
                                     final int messageStatus = messageIdToStatus.containsKey(messageId) ? messageIdToStatus.get(messageId) : Message.STATUS_ACTIVE;
@@ -327,5 +328,20 @@ public class FirebaseUtils {
                         messageListListener.onCancelled(databaseError);
                     }
                 });
+    }
+
+    private static String getMessageDate(@NonNull final LocalDate childBirthdate,
+                                         @NonNull final LocalDate currentDate,
+                                         @NonNull final int childAgeInDays,
+                                         @NonNull final int messageDayOffset) {
+        if (0 == (childAgeInDays - messageDayOffset)) {
+            return "Today";
+        } else if (1 == (childAgeInDays - messageDayOffset)) {
+            return "Yesterday";
+        } else if (currentDate.getDayOfYear() > (childAgeInDays - messageDayOffset)) {
+            return childBirthdate.plusDays(messageDayOffset).toString("d MMMM");
+        } else {
+            return childBirthdate.plusDays(messageDayOffset).toString("d MMMM, Y");
+        }
     }
 }
