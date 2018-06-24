@@ -1,8 +1,5 @@
 package name.juhasz.judit.udacity.tanits;
 
-import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,10 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.database.DatabaseError;
 
 import butterknife.BindView;
@@ -27,7 +25,6 @@ public class MessageDetailsFragment extends Fragment {
     @BindView(R.id.tv_date) TextView mDateTextView;
     @BindView(R.id.tv_content) TextView mContentTextView;
     @BindView(R.id.tv_summary) TextView mSummaryTextView;
-    @BindView(R.id.iv_message_image) ImageView mMessageImageView;
 
     public MessageDetailsFragment() {
     }
@@ -61,24 +58,23 @@ public class MessageDetailsFragment extends Fragment {
             }
         });
 
-        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
-        switch (message.getStatus()) {
-            case Message.STATUS_ACTIVE:
-                drawable.getPaint().setColor(Color.BLUE);
-                mMessageImageView.setBackground(drawable);
-                break;
-            case Message.STATUS_DONE:
-                drawable.getPaint().setColor(Color.GREEN);
-                mMessageImageView.setBackground(drawable);
-                break;
-            case Message.STATUS_REJECTED:
-                drawable.getPaint().setColor(Color.RED);
-                mMessageImageView.setBackground(drawable);
-                break;
-            default:
-                drawable.getPaint().setColor(Color.BLUE);
-                mMessageImageView.setBackground(drawable);
-        }
+        final FloatingActionMenu statusFloatingActionMenu = rootView.findViewById(R.id.fab_menu_status);
+        final FloatingActionButton doneFloatingActionButton = rootView.findViewById(R.id.fab_done);
+        final FloatingActionButton rejectFloatingActionButton = rootView.findViewById(R.id.fab_reject);
+
+        doneFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
+                statusFloatingActionMenu.close(false);
+            }
+        });
+
+        rejectFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_REJECTED);
+                statusFloatingActionMenu.close(false);
+            }
+        });
 
         return rootView;
     }

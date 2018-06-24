@@ -44,30 +44,4 @@ public class DetailsActivity extends AppCompatActivity {
                     .commit();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_message_status_feedback, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        Intent intent = getIntent();
-        Message message = intent.getParcelableExtra(MESSAGE_DATA);
-        final int itemId = item.getItemId();
-
-        switch (itemId) {
-            case R.id.status_rejected:
-                FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_REJECTED);
-                break;
-            case R.id.status_done:
-                FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
-                break;
-            default:
-                Log.w(LOG_TAG, getString(R.string.log_messages_status_settings) + itemId);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
