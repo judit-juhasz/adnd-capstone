@@ -57,10 +57,10 @@ public class FirebaseUtils {
     }
 
     public static class ValueEventListenerDetacher {
-        private DatabaseReference mDatabaseNode;
+        private Query mDatabaseNode;
         private ValueEventListener mValueEventListener;
 
-        public ValueEventListenerDetacher(@NonNull final DatabaseReference databaseNode,
+        public ValueEventListenerDetacher(@NonNull final Query databaseNode,
                                           @NonNull final ValueEventListener valueEventListener) {
             this.mDatabaseNode = databaseNode;
             this.mValueEventListener = valueEventListener;
@@ -129,10 +129,11 @@ public class FirebaseUtils {
         final DatabaseReference databaseNode = database.getReference("profiles/" + currentFirebaseUser.getUid());
         if (attachQueryToDatabase) {
             databaseNode.addValueEventListener(valueEventListener);
+            return new ValueEventListenerDetacher(databaseNode, valueEventListener);
         } else {
             databaseNode.addListenerForSingleValueEvent(valueEventListener);
+            return null;
         }
-        return new ValueEventListenerDetacher(databaseNode, valueEventListener);
     }
 
     public static void queryMessageContent(@NonNull final String messageId,
@@ -153,10 +154,11 @@ public class FirebaseUtils {
                 });
     }
 
-    public static void queryMessageStatus(@NonNull final int messageStatus,
-                                          @NonNull final MessageStatusListener messageStatusListener) {
+    public static ValueEventListenerDetacher queryMessageStatus(@NonNull final int messageStatus,
+                                                                @NonNull final MessageStatusListener messageStatusListener,
+                                                                @NonNull final boolean attachQueryToDatabase) {
         final Query query = getMessageStatusQuery(messageStatus);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        final ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 final Map<String, Integer> messageIdToStatus = new HashMap<>();
@@ -172,7 +174,14 @@ public class FirebaseUtils {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 messageStatusListener.onCancelled(databaseError);
             }
-        });
+        };
+        if (attachQueryToDatabase) {
+            query.addValueEventListener(valueEventListener);
+            return new ValueEventListenerDetacher(query, valueEventListener);
+        } else {
+            query.addListenerForSingleValueEvent(valueEventListener);
+            return null;
+        }
     }
 
     private static Query getMessageStatusQuery(@NonNull final int messageStatus) {
@@ -228,9 +237,10 @@ public class FirebaseUtils {
         }
     }
 
-    public static void queryMessages(@NonNull final LocalDate childBirthdate,
-                                     @NonNull final int messageStatusFilter,
-                                     @NonNull final MessageListListener messageListListener) {
+    public static ValueEventListenerDetacher queryMessages(@NonNull final LocalDate childBirthdate,
+                                                           @NonNull final int messageStatusFilter,
+                                                           @NonNull final MessageListListener messageListListener,
+                                                           @NonNull final boolean attachQueryToDatabase) {
         int messageQueryType;
         switch (messageStatusFilter) {
             case MESSAGE_STATUS_FILTER_ALL:
@@ -245,9 +255,9 @@ public class FirebaseUtils {
                 break;
             default:
                 Log.e(TAG, String.valueOf(R.string.log_internal_error_unknown_message_status_filter + messageStatusFilter));
-                return;
+                return null;
         }
-        FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
+        return FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
             @Override
             public void onReceive(Map<String, Integer> messageIdToStatus) {
                 FirebaseUtils.queryMessages(childBirthdate, messageStatusFilter, messageIdToStatus,
@@ -258,7 +268,7 @@ public class FirebaseUtils {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 messageListListener.onCancelled(databaseError);
             }
-        });
+        }, attachQueryToDatabase);
     }
 
     private static void queryMessages(@NonNull final LocalDate childBirthdate,

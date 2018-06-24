@@ -97,10 +97,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        if (null != mUserProfileListenerDetacher) {
+            mUserProfileListenerDetacher.detach();
+        }
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
-        mUserProfileListenerDetacher.detach();
     }
 
     private void queryUserProfileData() {

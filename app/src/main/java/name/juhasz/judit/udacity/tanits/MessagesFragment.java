@@ -45,6 +45,9 @@ public class MessagesFragment extends Fragment {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    private FirebaseUtils.ValueEventListenerDetacher mUserProfileListenerDetacher;
+    private FirebaseUtils.ValueEventListenerDetacher mMessageStatusListenerDetacher;
+
     public MessagesFragment() {
     }
 
@@ -94,11 +97,6 @@ public class MessagesFragment extends Fragment {
         });
 
         final RecyclerView messagesRecycleView = rootView.findViewById(R.id.rv_messages);
-        final Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            final int filter = bundle.getInt(PARAMETER_FILTER, FILTER_ALL);
-            queryMessages(filter);
-        }
         messagesRecycleView.setAdapter(mMessageAdapter);
         messagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -129,13 +127,19 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        if (null != mMessageStatusListenerDetacher) {
+            mMessageStatusListenerDetacher.detach();
+        }
+        if (null != mUserProfileListenerDetacher) {
+            mUserProfileListenerDetacher.detach();
+        }
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
     }
 
     private void queryMessages(final int filter) {
-        FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+        mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
             @Override
             public void onReceive(UserProfile userProfile) {
                 if (null == userProfile) {
@@ -155,7 +159,7 @@ public class MessagesFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.w(TAG, String.valueOf(R.string.log_user_birthday), databaseError.toException());
             }
-        }, false);
+        }, true);
     }
 
     private void queryMessages(final LocalDate childBirthdate, final int filter) {
@@ -179,7 +183,7 @@ public class MessagesFragment extends Fragment {
             default:
                 Log.w(TAG, String.valueOf(R.string.log_error_unknown_message_status_filter + filter));
         }
-        FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter,
+        mMessageStatusListenerDetacher = FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter,
                 new FirebaseUtils.MessageListListener() {
                     @Override
                     public void onReceive(List<Message> messageList) {
@@ -190,6 +194,6 @@ public class MessagesFragment extends Fragment {
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(getContext(), R.string.no_messages, Toast.LENGTH_LONG).show();
                     }
-                });
+                }, true);
     }
 }

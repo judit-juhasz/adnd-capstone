@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     private TextView mUsernameTextView;
     private TextView mEmailTextView;
 
+    private FirebaseUtils.ValueEventListenerDetacher mUserProfileListenerDetacher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+                mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
                     @Override
                     public void onReceive(UserProfile userProfile) {
                         loadNavigationHeader(userProfile);
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Log.e(LOG_TAG, "Internal error at login: " + databaseError);
                     }
-                }, false);
+                }, true);
                 if (null == firebaseAuth.getCurrentUser()) {
                     startActivityForResult(
                             AuthUI.getInstance()
@@ -106,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     @Override
     protected void onPause() {
         super.onPause();
+        if (null != mUserProfileListenerDetacher) {
+            mUserProfileListenerDetacher.detach();
+        }
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
