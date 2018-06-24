@@ -76,6 +76,7 @@ public class MessageDetailsFragment extends Fragment {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
                 statusFloatingActionMenu.close(false);
                 statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#A5D6A7")));
+                getActivity().onBackPressed();
             }
         });
 
@@ -84,6 +85,7 @@ public class MessageDetailsFragment extends Fragment {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_REJECTED);
                 statusFloatingActionMenu.close(false);
                 statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#B0BEC5")));
+                getActivity().onBackPressed();
             }
         });
 
