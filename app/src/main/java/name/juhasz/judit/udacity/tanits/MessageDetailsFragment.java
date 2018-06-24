@@ -1,5 +1,6 @@
 package name.juhasz.judit.udacity.tanits;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -62,10 +63,19 @@ public class MessageDetailsFragment extends Fragment {
         final FloatingActionButton doneFloatingActionButton = rootView.findViewById(R.id.fab_done);
         final FloatingActionButton rejectFloatingActionButton = rootView.findViewById(R.id.fab_reject);
 
+        if (message.getStatus() == Message.STATUS_DONE) {
+            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#A5D6A7")));
+        } else if (message.getStatus() == Message.STATUS_REJECTED) {
+            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#B0BEC5")));
+        } else {
+            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#81D4FA")));
+        }
+
         doneFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
                 statusFloatingActionMenu.close(false);
+                statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#A5D6A7")));
             }
         });
 
@@ -73,6 +83,7 @@ public class MessageDetailsFragment extends Fragment {
             public void onClick(View v) {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_REJECTED);
                 statusFloatingActionMenu.close(false);
+                statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#B0BEC5")));
             }
         });
 
