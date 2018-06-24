@@ -86,7 +86,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
             switch (message.getStatus()) {
                 case Message.STATUS_ACTIVE:
-                    drawable.getPaint().setColor(Color.parseColor("#03A9F4"));
+                    drawable.getPaint().setColor(Color.parseColor("#81D4FA"));
                     statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_DONE:
