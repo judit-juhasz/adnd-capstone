@@ -1,9 +1,6 @@
 package name.juhasz.judit.udacity.tanits;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,6 +49,7 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseUtils.ValueEventListenerDetacher mUserProfileListenerDetacher;
 
     public ProfileFragment() {
     }
@@ -81,6 +79,8 @@ public class ProfileFragment extends Fragment {
                     setupSavePopup();
                     queryUserProfileData();
                     updateSaveButtonStatus();
+                } else {
+                    mUserProfileListenerDetacher.detach();
                 }
             }
         };
@@ -100,10 +100,11 @@ public class ProfileFragment extends Fragment {
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
+        mUserProfileListenerDetacher.detach();
     }
 
     private void queryUserProfileData() {
-        FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+        mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
             @Override
             public void onReceive(UserProfile userProfile) {
                 if (null != userProfile) {
@@ -125,7 +126,7 @@ public class ProfileFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.w(TAG, getString(R.string.log_user_profile_data), databaseError.toException());
             }
-        });
+        }, true);
     }
 
     private void setupSavePopup() {
@@ -135,41 +136,18 @@ public class ProfileFragment extends Fragment {
                 if (!areAllInputsValid()) {
                     return;
                 }
-                createSaveConfirmationDialog().show();
+
+                final UserProfile userProfile =
+                        new UserProfile(mNameEditText.getText().toString(),
+                                mEmailEditText.getText().toString(),
+                                mBirthdateOfChildEditText.getText().toString());
+                FirebaseUtils.saveUserProfile(userProfile);
+
+                Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
+                        R.string.message_save_successfull, Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
         });
-    }
-
-    private AlertDialog.Builder createSaveConfirmationDialog() {
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(getContext(),
-                    android.R.style.Theme_Material_Light_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(getContext());
-        }
-        builder.setTitle(R.string.alert_title)
-                .setMessage(R.string.alert_message)
-                .setPositiveButton(R.string.alert_positiv,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                final UserProfile userProfile =
-                                        new UserProfile(mNameEditText.getText().toString(),
-                                                mEmailEditText.getText().toString(),
-                                                mBirthdateOfChildEditText.getText().toString());
-                                FirebaseUtils.saveUserProfile(userProfile);
-
-                                Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
-                                        R.string.message_save_successfull, Snackbar.LENGTH_LONG);
-                                snackbar.show();
-                            }
-                        })
-                .setNegativeButton(R.string.alert_negativ, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .setIcon(0);
-        return builder;
     }
 
     private void setupNameField() {
