@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Log.e(LOG_TAG, "Internal error at login: " + databaseError);
                     }
-                });
+                }, false);
                 if (null == firebaseAuth.getCurrentUser()) {
                     startActivityForResult(
                             AuthUI.getInstance()

@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -55,6 +56,25 @@ public class FirebaseUtils {
         void onCancelled(@NonNull DatabaseError databaseError);
     }
 
+    public static class ValueEventListenerDetacher {
+        private DatabaseReference mDatabaseNode;
+        private ValueEventListener mValueEventListener;
+
+        public ValueEventListenerDetacher(@NonNull final DatabaseReference databaseNode,
+                                          @NonNull final ValueEventListener valueEventListener) {
+            this.mDatabaseNode = databaseNode;
+            this.mValueEventListener = valueEventListener;
+        }
+
+        public void detach() {
+            if (null != mDatabaseNode && null != mValueEventListener) {
+                mDatabaseNode.removeEventListener(mValueEventListener);
+                mDatabaseNode = null;
+                mValueEventListener = null;
+            }
+        }
+    }
+
     public static void saveUserProfile(@NonNull UserProfile profile) {
         final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -83,29 +103,36 @@ public class FirebaseUtils {
                 "/" + messageId + "/status").setValue(status);
     }
 
-    public static void queryUserProfile(@NonNull final UserProfileListener userProfileListener) {
+    public static ValueEventListenerDetacher queryUserProfile(@NonNull final UserProfileListener userProfileListener,
+                                                              @NonNull final boolean attachQueryToDatabase) {
         final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         if (null == currentFirebaseUser) {
-            return;
+            return null;
         }
-        database.getReference("profiles/" + currentFirebaseUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final UserProfile user = dataSnapshot.getValue(UserProfile.class);
-                        final String displayName = currentFirebaseUser.getDisplayName();
-                        if (null != user && null == user.getName() && null != displayName) {
-                            user.setName(displayName);
-                        }
-                        userProfileListener.onReceive(user);
-                    }
+        final ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final UserProfile user = dataSnapshot.getValue(UserProfile.class);
+                final String displayName = currentFirebaseUser.getDisplayName();
+                if (null != user && null == user.getName() && null != displayName) {
+                    user.setName(displayName);
+                }
+                userProfileListener.onReceive(user);
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        userProfileListener.onCancelled(databaseError);
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                userProfileListener.onCancelled(databaseError);
+            }
+        };
+        final DatabaseReference databaseNode = database.getReference("profiles/" + currentFirebaseUser.getUid());
+        if (attachQueryToDatabase) {
+            databaseNode.addValueEventListener(valueEventListener);
+        } else {
+            databaseNode.addListenerForSingleValueEvent(valueEventListener);
+        }
+        return new ValueEventListenerDetacher(databaseNode, valueEventListener);
     }
 
     public static void queryMessageContent(@NonNull final String messageId,

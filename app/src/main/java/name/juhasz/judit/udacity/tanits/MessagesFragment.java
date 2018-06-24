@@ -155,7 +155,7 @@ public class MessagesFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.w(TAG, String.valueOf(R.string.log_user_birthday), databaseError.toException());
             }
-        });
+        }, false);
     }
 
     private void queryMessages(final LocalDate childBirthdate, final int filter) {
