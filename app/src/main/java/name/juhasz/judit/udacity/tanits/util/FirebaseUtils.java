@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
@@ -275,7 +276,7 @@ public class FirebaseUtils {
                                       @NonNull final int messageStatusFilter,
                                       @NonNull final Map<String, Integer> messageIdToStatus,
                                       @NonNull final MessageListListener messageListListener) {
-        final LocalDate currentDate = new LocalDate();
+        final LocalDate currentDate = LocalDate.now(DateTimeZone.UTC);
         final int childAgeInDays = Days.daysBetween(childBirthdate, currentDate).getDays();
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(childAgeInDays)

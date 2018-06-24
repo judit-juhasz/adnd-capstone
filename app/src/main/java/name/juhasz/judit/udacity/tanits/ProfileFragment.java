@@ -21,6 +21,7 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 
 import butterknife.BindView;
@@ -161,13 +162,23 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final String currentBirthdate = mBirthdateOfChildEditText.getText().toString();
+                final LocalDate currentLocalDate = LocalDate.now(DateTimeZone.UTC);
                 final LocalDate calendarStartDate
-                        = DateTimeUtils.parseLocalDateOrDefault(currentBirthdate, new LocalDate());
+                        = DateTimeUtils.parseLocalDateOrDefault(currentBirthdate, currentLocalDate);
                 final int monthFirstIndexCorrection = -1;
-                new DatePickerDialog(getActivity(), getDateChangeListener(),
+                final DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), getDateChangeListener(),
                         calendarStartDate.getYear(),
                         calendarStartDate.getMonthOfYear() + monthFirstIndexCorrection,
-                        calendarStartDate.getDayOfMonth()).show();
+                        calendarStartDate.getDayOfMonth());
+                final int maximumChildAgeInDays = 7;
+                final LocalDate minDate = currentLocalDate.minusDays(maximumChildAgeInDays);
+                final long minDateInMillis = minDate.toDateTimeAtStartOfDay(DateTimeZone.UTC)
+                        .toInstant().getMillis();
+                datePickerDialog.getDatePicker().setMinDate(minDateInMillis);
+                final long todayInMillis = currentLocalDate.toDateTimeAtStartOfDay(DateTimeZone.UTC)
+                                .toInstant().getMillis();
+                datePickerDialog.getDatePicker().setMaxDate(todayInMillis);
+                datePickerDialog.show();
             }
         });
         mBirthdateOfChildEditText.addTextChangedListener(new MyTextWatcher(mBirthdateOfChildEditText));
