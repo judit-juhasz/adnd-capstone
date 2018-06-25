@@ -22,6 +22,9 @@ import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 public class MessageDetailsFragment extends Fragment {
 
     public static final String MESSAGE_DATA = "MESSAGE_DATA";
+    public static final String COLOR_ACTIVE = "#81D4FA";
+    public static final String COLOR_DONE = "#A5D6A7";
+    public static final String COLOR_REJECTED = "#B0BEC5";
 
     @BindView(R.id.tv_date) TextView mDateTextView;
     @BindView(R.id.tv_content) TextView mContentTextView;
@@ -64,19 +67,19 @@ public class MessageDetailsFragment extends Fragment {
         final FloatingActionButton rejectFloatingActionButton = rootView.findViewById(R.id.fab_reject);
 
         if (message.getStatus() == Message.STATUS_DONE) {
-            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#A5D6A7")));
+            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor(COLOR_DONE)));
         } else if (message.getStatus() == Message.STATUS_REJECTED) {
             statusFloatingActionMenu.getMenuIconView().setImageResource(R.drawable.ic_reject);
-            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#B0BEC5")));
+            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor(COLOR_REJECTED)));
         } else {
-            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#81D4FA")));
+            statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor(COLOR_ACTIVE)));
         }
 
         doneFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
                 statusFloatingActionMenu.close(false);
-                statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#A5D6A7")));
+                statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor(COLOR_DONE)));
                 getActivity().onBackPressed();
             }
         });
@@ -86,7 +89,7 @@ public class MessageDetailsFragment extends Fragment {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_REJECTED);
                 statusFloatingActionMenu.close(false);
                 statusFloatingActionMenu.getMenuIconView().setImageResource(R.drawable.ic_reject);
-                statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#B0BEC5")));
+                statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor(COLOR_REJECTED)));
                 getActivity().onBackPressed();
             }
         });

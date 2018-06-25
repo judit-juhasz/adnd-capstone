@@ -14,6 +14,10 @@ import android.widget.TextView;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
+    public static final String COLOR_ACTIVE = "#81D4FA";
+    public static final String COLOR_DONE = "#A5D6A7";
+    public static final String COLOR_REJECTED = "#B0BEC5";
+
     private Message[] mMessages = null;
 
     private OnClickListener mListener;
@@ -86,20 +90,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
             switch (message.getStatus()) {
                 case Message.STATUS_ACTIVE:
-                    drawable.getPaint().setColor(Color.parseColor("#81D4FA"));
+                    drawable.getPaint().setColor(Color.parseColor(COLOR_ACTIVE));
                     statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_DONE:
-                    drawable.getPaint().setColor(Color.parseColor("#A5D6A7"));
+                    drawable.getPaint().setColor(Color.parseColor(COLOR_DONE));
                     statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_REJECTED:
-                    drawable.getPaint().setColor(Color.parseColor("#B0BEC5"));
+                    drawable.getPaint().setColor(Color.parseColor(COLOR_REJECTED));
                     statusImageView.setBackground(drawable);
                     break;
                 default:
                     // log the message & fallback to STATUS_ACTIVE
-                    drawable.getPaint().setColor(Color.parseColor("##03A9F4"));
+                    drawable.getPaint().setColor(Color.parseColor(COLOR_DONE));
                     statusImageView.setBackground(drawable);
             }
         }
