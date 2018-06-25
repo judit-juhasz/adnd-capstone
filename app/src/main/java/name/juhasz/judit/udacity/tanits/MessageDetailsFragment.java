@@ -66,6 +66,7 @@ public class MessageDetailsFragment extends Fragment {
         if (message.getStatus() == Message.STATUS_DONE) {
             statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#A5D6A7")));
         } else if (message.getStatus() == Message.STATUS_REJECTED) {
+            statusFloatingActionMenu.getMenuIconView().setImageResource(R.drawable.ic_reject);
             statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#B0BEC5")));
         } else {
             statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#81D4FA")));
@@ -84,6 +85,7 @@ public class MessageDetailsFragment extends Fragment {
             public void onClick(View v) {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_REJECTED);
                 statusFloatingActionMenu.close(false);
+                statusFloatingActionMenu.getMenuIconView().setImageResource(R.drawable.ic_reject);
                 statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor("#B0BEC5")));
                 getActivity().onBackPressed();
             }
