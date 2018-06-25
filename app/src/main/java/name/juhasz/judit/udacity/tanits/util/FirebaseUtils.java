@@ -32,6 +32,11 @@ public class FirebaseUtils {
     public static final int MESSAGE_STATUS_FILTER_ACTIVE = 1;
     public static final int MESSAGE_STATUS_FILTER_DONE = 2;
     public static final int MESSAGE_STATUS_FILTER_REJECTED = 3;
+    public static final String MESSAGE_STATUS_DONE = "done";
+    public static final String MESSAGE_STATUS_ACTIVE = "active";
+    public static final String MESSAGE_STATUS_REJECTED = "rejected";
+    public static final String DATE_TODAY = "Today";
+    public static final String DATE_YESTERDAY = "Yesterday";
 
     public interface StringListener {
         void onReceive(final String string);
@@ -91,10 +96,10 @@ public class FirebaseUtils {
                 // No status means active
                 return;
             case Message.STATUS_DONE:
-                status = "done";
+                status = MESSAGE_STATUS_DONE;
                 break;
             case Message.STATUS_REJECTED:
-                status = "rejected";
+                status = MESSAGE_STATUS_REJECTED;
                 break;
             default:
                 Log.e(TAG, String.valueOf(R.string.log_unknown_message_status + messageStatus));
@@ -216,9 +221,9 @@ public class FirebaseUtils {
                 // No status means active, there is no label attached to this state
                 return null;
             case Message.STATUS_DONE:
-                return "done";
+                return MESSAGE_STATUS_DONE;
             case Message.STATUS_REJECTED:
-                return "rejected";
+                return MESSAGE_STATUS_REJECTED;
             default:
                 Log.e(TAG, String.valueOf(R.string.log_unknown_message_status + messageStatus));
                 return null;
@@ -226,11 +231,11 @@ public class FirebaseUtils {
     }
 
     private static int firebaseMessageStatusToClientMessageStatus(final String status) {
-        if (status.equals("active")) {
+        if (status.equals(MESSAGE_STATUS_ACTIVE)) {
             return Message.STATUS_ACTIVE;
-        } else if (status.equals("done")) {
+        } else if (status.equals(MESSAGE_STATUS_DONE)) {
             return Message.STATUS_DONE;
-        } else if (status.equals("rejected")) {
+        } else if (status.equals(MESSAGE_STATUS_REJECTED)) {
             return Message.STATUS_REJECTED;
         } else {
             Log.e(TAG, R.string.log_unknown_message_status + status);
@@ -335,9 +340,9 @@ public class FirebaseUtils {
                                          @NonNull final int childAgeInDays,
                                          @NonNull final int messageDayOffset) {
         if (0 == (childAgeInDays - messageDayOffset)) {
-            return "Today";
+            return DATE_TODAY;
         } else if (1 == (childAgeInDays - messageDayOffset)) {
-            return "Yesterday";
+            return DATE_YESTERDAY;
         } else if (currentDate.getDayOfYear() > (childAgeInDays - messageDayOffset)) {
             return childBirthdate.plusDays(messageDayOffset).toString("d MMMM");
         } else {
