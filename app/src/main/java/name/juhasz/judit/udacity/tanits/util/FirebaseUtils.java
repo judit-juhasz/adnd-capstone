@@ -1,6 +1,6 @@
 package name.juhasz.judit.udacity.tanits.util;
 
-import android.content.res.Resources;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -39,6 +39,8 @@ public class FirebaseUtils {
     public static final String DATE_TODAY = "Today";
     public static final String DATE_YESTERDAY = "Yesterday";
 
+    private static Context mContext;
+
     public interface StringListener {
         void onReceive(final String string);
 
@@ -61,6 +63,17 @@ public class FirebaseUtils {
         void onReceive(final List<Message> messageList);
 
         void onCancelled(@NonNull DatabaseError databaseError);
+    }
+
+    public static void initialize(@NonNull final Context context) {
+        mContext = context;
+    }
+
+    private static String getString(@NonNull final int resourceId, final Object... formatArgs) {
+        if (null != mContext) {
+            return mContext.getResources().getString(resourceId, formatArgs);
+        }
+        return "";
     }
 
     public static class ValueEventListenerDetacher {
@@ -103,7 +116,7 @@ public class FirebaseUtils {
                 status = MESSAGE_STATUS_REJECTED;
                 break;
             default:
-                Log.e(TAG, Resources.getSystem().getString(R.string.log_unknown_message_status, messageStatus));
+                Log.e(TAG, getString(R.string.log_unknown_message_status, messageStatus));
                 return;
         }
         database.getReference("messageStatus/" + currentFirebaseUser.getUid() +
@@ -208,7 +221,7 @@ public class FirebaseUtils {
                 break;
             }
             default:
-                Log.e(TAG, Resources.getSystem().getString(R.string.log_unknown_message_status, messageStatus));
+                Log.e(TAG, getString(R.string.log_unknown_message_status, messageStatus));
         }
         return query;
     }
@@ -226,7 +239,7 @@ public class FirebaseUtils {
             case Message.STATUS_REJECTED:
                 return MESSAGE_STATUS_REJECTED;
             default:
-                Log.e(TAG, Resources.getSystem().getString(R.string.log_unknown_message_status, messageStatus));
+                Log.e(TAG, getString(R.string.log_unknown_message_status, messageStatus));
                 return null;
         }
     }
@@ -239,7 +252,7 @@ public class FirebaseUtils {
         } else if (status.equals(MESSAGE_STATUS_REJECTED)) {
             return Message.STATUS_REJECTED;
         } else {
-            Log.e(TAG, Resources.getSystem().getString(R.string.log_unknown_message_status_string, status));
+            Log.e(TAG, getString(R.string.log_unknown_message_status_string, status));
             return Message.STATUS_ACTIVE; // Fallback
         }
     }
@@ -261,7 +274,7 @@ public class FirebaseUtils {
                 messageQueryType = Message.STATUS_REJECTED;
                 break;
             default:
-                Log.e(TAG, Resources.getSystem().getString(R.string.log_internal_error_unknown_message_status_filter, messageStatusFilter));
+                Log.e(TAG, getString(R.string.log_internal_error_unknown_message_status_filter, messageStatusFilter));
                 return null;
         }
         return FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
@@ -296,7 +309,7 @@ public class FirebaseUtils {
                             final String messageDate =
                                     getMessageDate(childBirthdate, currentDate, childAgeInDays, dayOffset);
                             final String subject = messageSnapshot.child("subject").getValue(String.class);
-                            final String summary = messageSnapshot.child("summary").getValue(String.class);
+                            final String summary = messageSnapshot.child(getString(R.string.message_summary)).getValue(String.class);
                             switch (messageStatusFilter) {
                                 case MESSAGE_STATUS_FILTER_ALL: {
                                     final int messageStatus = messageIdToStatus.containsKey(messageId) ? messageIdToStatus.get(messageId) : Message.STATUS_ACTIVE;
@@ -322,7 +335,7 @@ public class FirebaseUtils {
                                     break;
                                 }
                                 default:
-                                    Log.w(TAG, Resources.getSystem().getString(R.string.log_error_unknown_message_status_filter, messageStatusFilter));
+                                    Log.w(TAG, getString(R.string.log_error_unknown_message_status_filter, messageStatusFilter));
                                     continue;
                             }
                         }

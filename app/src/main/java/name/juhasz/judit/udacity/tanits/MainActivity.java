@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         }
 
         JodaTimeAndroid.init(this);
+        FirebaseUtils.initialize(this);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
