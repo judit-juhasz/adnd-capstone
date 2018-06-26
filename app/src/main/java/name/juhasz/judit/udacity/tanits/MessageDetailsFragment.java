@@ -57,8 +57,8 @@ public class MessageDetailsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), R.string.no_message_detail,
-                    Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.no_message_detail),
+                        Toast.LENGTH_LONG).show();
             }
         });
 

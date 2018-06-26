@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.e(LOG_TAG, "Internal error at login: " + databaseError);
+                        Log.e(LOG_TAG, getString(R.string.log_error_login) + databaseError);
                     }
                 }, true);
                 if (null == firebaseAuth.getCurrentUser()) {
@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         super.onPause();
         if (null != mUserProfileListenerDetacher) {
             mUserProfileListenerDetacher.detach();
+            mUserProfileListenerDetacher = null;
         }
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
@@ -168,6 +169,10 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
                 break;
             case R.id.nav_logout:
                 mDrawerLayout.closeDrawers();
+                if (null != mUserProfileListenerDetacher) {
+                    mUserProfileListenerDetacher.detach();
+                    mUserProfileListenerDetacher = null;
+                }
                 AuthUI.getInstance().signOut(this);
                 break;
             default:
@@ -207,8 +212,21 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     }
 
     private void loadNavigationHeader(final UserProfile user) {
-        mUsernameTextView.setText(user.getName());
-        mEmailTextView.setText(user.getEmail());
+        if (null != user) {
+            if (null != user.getName()) {
+                mUsernameTextView.setText(user.getName());
+            } else {
+                mUsernameTextView.setText("");
+            }
+            if (null != user.getEmail()) {
+                mEmailTextView.setText(user.getEmail());
+            } else {
+                mEmailTextView.setText("");
+            }
+        } else {
+            mUsernameTextView.setText("");
+            mEmailTextView.setText("");
+        }
     }
 
     private void loadFragment() {
@@ -256,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
                 arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_REJECTED);
                 break;
             default:
-                Log.w(LOG_TAG, getString(R.string.log_messages_menu_selection) + itemId);
+                Log.w(LOG_TAG, getString(R.string.log_messages_menu_selection, itemId));
         }
         if (!arguments.isEmpty()) {
             fragment.setArguments(arguments);

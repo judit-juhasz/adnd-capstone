@@ -1,5 +1,6 @@
 package name.juhasz.judit.udacity.tanits.util;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -102,7 +103,7 @@ public class FirebaseUtils {
                 status = MESSAGE_STATUS_REJECTED;
                 break;
             default:
-                Log.e(TAG, String.valueOf(R.string.log_unknown_message_status + messageStatus));
+                Log.e(TAG, Resources.getSystem().getString(R.string.log_unknown_message_status, messageStatus));
                 return;
         }
         database.getReference("messageStatus/" + currentFirebaseUser.getUid() +
@@ -207,7 +208,7 @@ public class FirebaseUtils {
                 break;
             }
             default:
-                Log.e(TAG, String.valueOf(R.string.log_unknown_message_status + messageStatus));
+                Log.e(TAG, Resources.getSystem().getString(R.string.log_unknown_message_status, messageStatus));
         }
         return query;
     }
@@ -225,7 +226,7 @@ public class FirebaseUtils {
             case Message.STATUS_REJECTED:
                 return MESSAGE_STATUS_REJECTED;
             default:
-                Log.e(TAG, String.valueOf(R.string.log_unknown_message_status + messageStatus));
+                Log.e(TAG, Resources.getSystem().getString(R.string.log_unknown_message_status, messageStatus));
                 return null;
         }
     }
@@ -238,7 +239,7 @@ public class FirebaseUtils {
         } else if (status.equals(MESSAGE_STATUS_REJECTED)) {
             return Message.STATUS_REJECTED;
         } else {
-            Log.e(TAG, R.string.log_unknown_message_status + status);
+            Log.e(TAG, Resources.getSystem().getString(R.string.log_unknown_message_status_string, status));
             return Message.STATUS_ACTIVE; // Fallback
         }
     }
@@ -260,7 +261,7 @@ public class FirebaseUtils {
                 messageQueryType = Message.STATUS_REJECTED;
                 break;
             default:
-                Log.e(TAG, String.valueOf(R.string.log_internal_error_unknown_message_status_filter + messageStatusFilter));
+                Log.e(TAG, Resources.getSystem().getString(R.string.log_internal_error_unknown_message_status_filter, messageStatusFilter));
                 return null;
         }
         return FirebaseUtils.queryMessageStatus(messageQueryType, new FirebaseUtils.MessageStatusListener() {
@@ -321,7 +322,7 @@ public class FirebaseUtils {
                                     break;
                                 }
                                 default:
-                                    Log.w(TAG, String.valueOf(R.string.log_error_unknown_message_status_filter + messageStatusFilter));
+                                    Log.w(TAG, Resources.getSystem().getString(R.string.log_error_unknown_message_status_filter, messageStatusFilter));
                                     continue;
                             }
                         }

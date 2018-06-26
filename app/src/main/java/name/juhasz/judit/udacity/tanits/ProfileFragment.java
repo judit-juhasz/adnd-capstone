@@ -81,7 +81,10 @@ public class ProfileFragment extends Fragment {
                     queryUserProfileData();
                     updateSaveButtonStatus();
                 } else {
-                    mUserProfileListenerDetacher.detach();
+                    if (null != mUserProfileListenerDetacher) {
+                        mUserProfileListenerDetacher.detach();
+                        mUserProfileListenerDetacher = null;
+                    }
                 }
             }
         };
@@ -100,6 +103,7 @@ public class ProfileFragment extends Fragment {
         super.onStop();
         if (null != mUserProfileListenerDetacher) {
             mUserProfileListenerDetacher.detach();
+            mUserProfileListenerDetacher = null;
         }
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);

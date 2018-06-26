@@ -1,6 +1,5 @@
 package name.juhasz.judit.udacity.tanits;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
@@ -79,7 +78,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             itemView.setOnClickListener(this);
         }
 
-        @SuppressLint("ResourceAsColor")
         void bind(int position) {
             final Message message = mMessages[position];
             final String dateOfMessage = message.getDate();
