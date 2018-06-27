@@ -47,6 +47,9 @@ public class DetailsActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .add(R.id.content_frame_detail, fragment)
                     .commit();
+        } else {
+            Log.w(LOG_TAG, "Internal error, missing message data in message details fragment");
+            onBackPressed();
         }
     }
 }
