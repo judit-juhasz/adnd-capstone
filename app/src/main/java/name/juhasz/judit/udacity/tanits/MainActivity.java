@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -25,6 +26,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.Arrays;
 
+import name.juhasz.judit.udacity.tanits.util.ConfigurationUtils;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
@@ -43,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     private View mNavigationHeaderView;
     private TextView mUsernameTextView;
     private TextView mEmailTextView;
+    private FrameLayout mFrameLayout;
+
+    private boolean mTwoPaneMode;
 
     private FirebaseUtils.ValueEventListenerDetacher mUserProfileListenerDetacher;
 
@@ -50,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mTwoPaneMode = ConfigurationUtils.isTwoPaneMode(this);
 
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -93,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         mNavigationHeaderView = mNavigationView.getHeaderView(0);
         mUsernameTextView = mNavigationHeaderView.findViewById(R.id.tv_username);
         mEmailTextView = mNavigationHeaderView.findViewById(R.id.tv_email);
+        mFrameLayout = findViewById(R.id.content_message_details);
 
         setupDrawerContent(mNavigationView);
         loadActionBarDrawerToggle(mDrawerLayout);
@@ -103,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             navigationItemIndex = 0;
             loadFragment();
         }
+        setMessageDetailFragmentVisibility();
     }
 
     @Override
@@ -158,14 +167,17 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         switch (menuItem.getItemId()) {
             case R.id.nav_messages:
                 navigationItemIndex = 0;
+                setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
             case R.id.nav_profile:
                 navigationItemIndex = 1;
+                setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
             case R.id.nav_about:
                 navigationItemIndex = 2;
+                setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
             case R.id.nav_logout:
@@ -242,9 +254,26 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     @Override
     public void onItemClick(final Message message) {
-        final Intent intentToStartDetailsActivity = new Intent(this, DetailsActivity.class);
-        intentToStartDetailsActivity.putExtra(DetailsActivity.MESSAGE_DATA, message);
-        startActivity(intentToStartDetailsActivity);
+        if (mTwoPaneMode) {
+            setMessageDetailFragment(message);
+        } else {
+            final Intent intentToStartDetailsActivity = new Intent(this, DetailsActivity.class);
+            intentToStartDetailsActivity.putExtra(DetailsActivity.MESSAGE_DATA, message);
+            startActivity(intentToStartDetailsActivity);
+        }
+    }
+
+    private void setMessageDetailFragment(final Message message) {
+        final MessageDetailsFragment fragment = new MessageDetailsFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putParcelable(MessageDetailsFragment.MESSAGE_DATA, message);
+        fragment.setArguments(arguments);
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_message_details, fragment)
+                .commit();
     }
 
     @Override
@@ -283,5 +312,13 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setMessageDetailFragmentVisibility() {
+        if (mTwoPaneMode && 0 == navigationItemIndex) {
+            mFrameLayout.setVisibility(View.VISIBLE);
+        } else {
+            mFrameLayout.setVisibility(View.GONE);
+        }
     }
 }

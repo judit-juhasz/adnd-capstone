@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import name.juhasz.judit.udacity.tanits.util.ConfigurationUtils;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class MessageDetailsFragment extends Fragment {
@@ -80,7 +81,9 @@ public class MessageDetailsFragment extends Fragment {
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
                 statusFloatingActionMenu.close(false);
                 statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor(COLOR_DONE)));
-                getActivity().onBackPressed();
+                if (!ConfigurationUtils.isTwoPaneMode(getActivity())) {
+                    getActivity().onBackPressed();
+                }
             }
         });
 
@@ -90,7 +93,9 @@ public class MessageDetailsFragment extends Fragment {
                 statusFloatingActionMenu.close(false);
                 statusFloatingActionMenu.getMenuIconView().setImageResource(R.drawable.ic_reject);
                 statusFloatingActionMenu.setMenuButtonColorNormal((Color.parseColor(COLOR_REJECTED)));
-                getActivity().onBackPressed();
+                if (!ConfigurationUtils.isTwoPaneMode(getActivity())) {
+                    getActivity().onBackPressed();
+                }
             }
         });
 
