@@ -37,10 +37,6 @@ public class MessagesFragment extends Fragment {
     public static final int FILTER_REJECTED = 3;
 
     private MessageAdapter mMessageAdapter;
-    @BindView(R.id.fab_question)
-    FloatingActionButton mQuestionFloatingActionButton;
-    @BindView(R.id.fab_feedback)
-    FloatingActionButton mFeedbackFloatingActionButton;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -77,24 +73,6 @@ public class MessagesFragment extends Fragment {
                 inflater.inflate(R.layout.fragment_messages, container, false);
 
         ButterKnife.bind(this, rootView);
-
-        mQuestionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts(getString(R.string.email_scheme), getString(R.string.email_address), null));
-                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.subject_question);
-                startActivity(Intent.createChooser(sendEmailIntent, getResources().getString(R.string.no_email_client_selected)));
-            }
-        });
-
-        mFeedbackFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts(getString(R.string.email_scheme), getString(R.string.email_address), null));
-                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.subject_feedback);
-                startActivity(Intent.createChooser(sendEmailIntent, getResources().getString(R.string.no_email_client_selected)));
-            }
-        });
 
         final RecyclerView messagesRecycleView = rootView.findViewById(R.id.rv_messages);
         messagesRecycleView.setAdapter(mMessageAdapter);

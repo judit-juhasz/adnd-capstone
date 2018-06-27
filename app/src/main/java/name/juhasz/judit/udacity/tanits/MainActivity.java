@@ -2,6 +2,7 @@ package name.juhasz.judit.udacity.tanits;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 
@@ -26,6 +29,8 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.Arrays;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import name.juhasz.judit.udacity.tanits.util.ConfigurationUtils;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
@@ -38,14 +43,23 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
     private Toolbar mToolbar;
     private String[] mFragmentTitles;
     private View mNavigationHeaderView;
     private TextView mUsernameTextView;
     private TextView mEmailTextView;
-    private FrameLayout mFrameLayout;
+    @BindView(R.id.content_message_details)
+    FrameLayout mMessageDetailsFrameLayout;
+    @BindView(R.id.fab_menu)
+    FloatingActionMenu mGroupFloatingActionButton;
+    @BindView(R.id.fab_question)
+    FloatingActionButton mQuestionFloatingActionButton;
+    @BindView(R.id.fab_feedback)
+    FloatingActionButton mFeedbackFloatingActionButton;
 
     private boolean mTwoPaneMode;
     private Message mLoadedMessage;
@@ -57,9 +71,11 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
+
         mTwoPaneMode = ConfigurationUtils.isTwoPaneMode(this);
 
-        if(getResources().getBoolean(R.bool.portrait_only)){
+        if (getResources().getBoolean(R.bool.portrait_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
@@ -96,15 +112,30 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        mNavigationView = findViewById(R.id.nav_view);
+        setupDrawerContent(mNavigationView);
+        loadActionBarDrawerToggle(mDrawerLayout);
+
         mNavigationHeaderView = mNavigationView.getHeaderView(0);
         mUsernameTextView = mNavigationHeaderView.findViewById(R.id.tv_username);
         mEmailTextView = mNavigationHeaderView.findViewById(R.id.tv_email);
-        mFrameLayout = findViewById(R.id.content_message_details);
 
-        setupDrawerContent(mNavigationView);
-        loadActionBarDrawerToggle(mDrawerLayout);
+        mQuestionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
+                        Uri.fromParts(getString(R.string.email_scheme), getString(R.string.email_address), null));
+                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.subject_question);
+                startActivity(Intent.createChooser(sendEmailIntent, getResources().getString(R.string.no_email_client_selected)));
+            }
+        });
+
+        mFeedbackFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO,
+                        Uri.fromParts(getString(R.string.email_scheme), getString(R.string.email_address), null));
+                sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.subject_feedback);
+                startActivity(Intent.createChooser(sendEmailIntent, getResources().getString(R.string.no_email_client_selected)));
+            }
+        });
 
         mFragmentTitles = getResources().getStringArray(R.array.nav_item_fragment_titles);
 
@@ -247,6 +278,11 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         selectNavigationMenu();
         setToolbarTitles();
         Fragment fragment = getFragment();
+        if (0 == navigationItemIndex) {
+            mGroupFloatingActionButton.setVisibility(View.VISIBLE);
+        } else {
+            mGroupFloatingActionButton.setVisibility(View.GONE);
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         mDrawerLayout.closeDrawers();
@@ -331,9 +367,9 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     private void setMessageDetailFragmentVisibility() {
         if (mTwoPaneMode && 0 == navigationItemIndex) {
-            mFrameLayout.setVisibility(View.VISIBLE);
+            mMessageDetailsFrameLayout.setVisibility(View.VISIBLE);
         } else {
-            mFrameLayout.setVisibility(View.GONE);
+            mMessageDetailsFrameLayout.setVisibility(View.GONE);
         }
     }
 }
