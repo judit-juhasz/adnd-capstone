@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     private FrameLayout mFrameLayout;
 
     private boolean mTwoPaneMode;
+    private Message mLoadedMessage;
 
     private FirebaseUtils.ValueEventListenerDetacher mUserProfileListenerDetacher;
 
@@ -255,7 +256,9 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     @Override
     public void onItemClick(final Message message) {
         if (mTwoPaneMode) {
+            mLoadedMessage = message;
             setMessageDetailFragment(message);
+            invalidateOptionsMenu();
         } else {
             final Intent intentToStartDetailsActivity = new Intent(this, DetailsActivity.class);
             intentToStartDetailsActivity.putExtra(DetailsActivity.MESSAGE_DATA, message);
@@ -278,8 +281,10 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (navigationItemIndex == 0) {
-            getMenuInflater().inflate(R.menu.menu_message_categorization, menu);
+        if (mTwoPaneMode && 0 == navigationItemIndex && null != mLoadedMessage) {
+            getMenuInflater().inflate(R.menu.menu_activity_main_two_panel, menu);
+        } else if (0 == navigationItemIndex) {
+            getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         }
         return true;
     }
@@ -302,6 +307,16 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
                 break;
             case R.id.messages_rejected:
                 arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_REJECTED);
+                break;
+            case R.id.status_rejected:
+                if (null != mLoadedMessage) {
+                    FirebaseUtils.saveMessageStatus(mLoadedMessage.getId(), Message.STATUS_REJECTED);
+                }
+                break;
+            case R.id.status_done:
+                if (null != mLoadedMessage) {
+                    FirebaseUtils.saveMessageStatus(mLoadedMessage.getId(), Message.STATUS_DONE);
+                }
                 break;
             default:
                 Log.w(LOG_TAG, getString(R.string.log_messages_menu_selection, itemId));

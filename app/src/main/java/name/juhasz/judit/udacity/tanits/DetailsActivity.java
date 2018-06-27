@@ -16,10 +16,11 @@ import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG =DetailsActivity.class.getSimpleName();
+    private static final String LOG_TAG = DetailsActivity.class.getSimpleName();
     public static final String MESSAGE_DATA = "MESSAGE_DATA";
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        if(getResources().getBoolean(R.bool.portrait_only)){
+        if (getResources().getBoolean(R.bool.portrait_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
@@ -51,5 +52,33 @@ public class DetailsActivity extends AppCompatActivity {
             Log.w(LOG_TAG, "Internal error, missing message data in message details fragment");
             onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Intent intent = getIntent();
+        Message message = intent.getParcelableExtra(MESSAGE_DATA);
+        final int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.status_rejected:
+                FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_REJECTED);
+                onBackPressed();
+                break;
+            case R.id.status_done:
+                FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
+                onBackPressed();
+                break;
+            default:
+                Log.w(LOG_TAG, getString(R.string.log_messages_status_settings) + itemId);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

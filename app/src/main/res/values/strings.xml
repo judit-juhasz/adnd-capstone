@@ -45,10 +45,10 @@
 
 
     <!-- Messages categorization menuitems -->
-    <string name="menuitem_categorization_all">All</string>
-    <string name="menuitem_categorization_active">Active</string>
-    <string name="menuitem_categorization_done">Done</string>
-    <string name="menuitem_categorization_rejected">Rejected</string>
+    <string name="menu_item_categorization_all">All</string>
+    <string name="menu_item_categorization_active">Active</string>
+    <string name="menu_item_categorization_done">Done</string>
+    <string name="menu_item_categorization_rejected">Rejected</string>
 
     <!-- Log and other messages -->
     <string name="log_messages_menu_selection">Menu selection is not handled. ItemId: <xliff:g example="100" id="itemid">%d</xliff:g></string>
