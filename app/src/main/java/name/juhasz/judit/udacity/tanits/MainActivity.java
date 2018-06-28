@@ -36,6 +36,8 @@ import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
 
+    private static final String SAVE_NAVIGATION_ITEM_INDEX = "SAVE_NAVIGATION_ITEM_INDEX";
+    private static final String SAVE_FRAGMENT_TITLES = "SAVE_FRAGMENT_TITLES";
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final int RC_SIGN_IN = 1;
     public static int navigationItemIndex = 0;
@@ -138,11 +140,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         });
 
         mFragmentTitles = getResources().getStringArray(R.array.nav_item_fragment_titles);
-
-        if (savedInstanceState == null) {
-            navigationItemIndex = 0;
-            loadFragment();
-        }
+        loadFragment();
         setMessageDetailFragmentVisibility();
     }
 
@@ -162,6 +160,20 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SAVE_NAVIGATION_ITEM_INDEX, navigationItemIndex);
+        outState.putStringArray(SAVE_FRAGMENT_TITLES, mFragmentTitles);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        navigationItemIndex = savedInstanceState.getInt(SAVE_NAVIGATION_ITEM_INDEX);
+        mFragmentTitles = savedInstanceState.getStringArray(SAVE_FRAGMENT_TITLES);
     }
 
     private void loadActionBarDrawerToggle(DrawerLayout layout) {
