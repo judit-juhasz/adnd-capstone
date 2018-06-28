@@ -13,5 +13,8 @@
     <dimen name="margin_medium">24dp</dimen>
     <dimen name="navigation_header_height">176dp</dimen>
     <dimen name="navigation_header_padding">16dp</dimen>
+    <dimen name="zero_width">0dp</dimen>
+    <item name="weight_one" format="integer" type="integer">1</item>
+    <item name="weight_two" format="integer" type="integer">2</item>
 
 </resources>

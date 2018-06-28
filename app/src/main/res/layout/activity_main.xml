@@ -33,15 +33,15 @@
 
                 <FrameLayout
                     android:id="@+id/content_frame"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/zero_width"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="@integer/weight_one" />
 
                 <FrameLayout
                     android:id="@+id/content_message_details"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/zero_width"
                     android:layout_height="match_parent"
-                    android:layout_weight="2" />
+                    android:layout_weight="@integer/weight_two" />
 
             </LinearLayout>
 
@@ -51,9 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginRight="@dimen/fab_margin"
                 fab:menu_colorNormal="@color/colorAccent"
                 fab:menu_fab_size="normal"
                 fab:menu_icon="@drawable/ic_write_message">
