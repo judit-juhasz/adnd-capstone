@@ -82,5 +82,6 @@
     <string name="message_summary">summary</string>
     <string name="message_dayOffset">dayOffset</string>
     <string name="get_message_status">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
+    <string name="inform_the_user">Inform the user</string>
 
 </resources>
