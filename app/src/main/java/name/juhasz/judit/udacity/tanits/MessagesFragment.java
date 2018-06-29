@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +35,8 @@ public class MessagesFragment extends Fragment {
     public static final int FILTER_REJECTED = 3;
 
     private MessageAdapter mMessageAdapter;
+    private RecyclerView messagesRecycleView;
+    private TextView emptyTextView;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -71,7 +74,8 @@ public class MessagesFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        final RecyclerView messagesRecycleView = rootView.findViewById(R.id.rv_messages);
+        emptyTextView= rootView.findViewById(R.id.tv_empty);
+        messagesRecycleView= rootView.findViewById(R.id.rv_messages);
         messagesRecycleView.setAdapter(mMessageAdapter);
         messagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -166,13 +170,14 @@ public class MessagesFragment extends Fragment {
                 break;
             }
             default:
-                Log.w(TAG, getString(R.string.log_error_unknown_message_status_filter, filter));
+                Log.w(TAG, FirebaseUtils.getString(R.string.log_error_unknown_message_status_filter, filter));
         }
         mMessageStatusListenerDetacher = FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter,
                 new FirebaseUtils.MessageListListener() {
                     @Override
                     public void onReceive(List<Message> messageList) {
                         mMessageAdapter.setMessages(messageList.toArray(new Message[messageList.size()]));
+                        setEmptyView();
                     }
 
                     @Override
@@ -180,5 +185,16 @@ public class MessagesFragment extends Fragment {
                         Toast.makeText(getContext(), getString(R.string.no_messages), Toast.LENGTH_LONG).show();
                     }
                 }, true);
+    }
+
+    private void setEmptyView() {
+        if (mMessageAdapter.getItemCount() == 0) {
+            messagesRecycleView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            messagesRecycleView.setVisibility(View.VISIBLE);
+            emptyTextView.setVisibility(View.GONE);
+        }
     }
 }
