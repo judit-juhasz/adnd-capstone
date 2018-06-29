@@ -124,6 +124,10 @@ public class ProfileFragment extends Fragment {
                     }
                     if (null != userProfile.getChildBirthdate()) {
                         mBirthdateOfChildEditText.setText(userProfile.getChildBirthdate());
+                        mBirthdateOfChildEditText.setEnabled(false);
+                    } else {
+                        mBirthdateOfChildEditText.setText("");
+                        mBirthdateOfChildEditText.setEnabled(true);
                     }
                 }
                 updateSaveButtonStatus();

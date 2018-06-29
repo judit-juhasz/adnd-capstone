@@ -148,7 +148,7 @@ public class MessagesFragment extends Fragment {
                         queryMessages(childBirthdate, filter);
                     }
                 } catch (Exception e) {
-                    showNotification("Internal error");
+                    showNotification("We are sorry, internal error");
                 }
             }
 
@@ -215,6 +215,7 @@ public class MessagesFragment extends Fragment {
     private void showMessages(@NonNull final List<Message> messageList) {
         // Hide progress bar
         mNotificationTextView.setVisibility(View.GONE);
+        mMessagesRecycleView.setVisibility(View.VISIBLE);
         mMessageAdapter.setMessages(messageList.toArray(new Message[messageList.size()]));
     }
 

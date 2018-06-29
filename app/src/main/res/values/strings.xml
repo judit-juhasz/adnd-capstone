@@ -60,8 +60,7 @@
     <string name="log_error_unknown_message_status_filter">Error: unknown message status filter: <xliff:g example="1" id="filter">%d</xliff:g></string>
     <string name="log_user_profile">User profile is not available</string>
     <string name="log_user_birthday">User birthdate is not available</string>
-    <string name="set_birthdate">Set your child birthday on your profile</string>
-    <string name="no_messages">Cannot retrieve messages</string>
+    <string name="no_messages">No messages</string>
     <string name="no_message_detail">Cannot retrieve message detail</string>
     <string name="log_error_login">Internal error at login:</string>
     <string name="log_error_missing_message_data">Internal error, missing message data in message details fragment</string>
@@ -84,9 +83,9 @@
     <string name="message_dayOffset">dayOffset</string>
     <string name="save_message_status">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
     <string name="empty_text">No more messages</string>
-    <string name="set_profile">Please set your profile. You can get messages only if you give the birthdate of your child.</string>
+    <string name="set_birthdate">You are almost ready to start.\nPlease set your child\'s birthdate on your profile\nin order to get messages.</string>
 
-    <string name="date_format_with_year">d MMMM, Y</string>
-    <string name="date_format_without_year">d MMMM</string>
+    <string name="date_format_with_year">MMMM d, Y</string>
+    <string name="date_format_without_year">MMMM d</string>
 
 </resources>
