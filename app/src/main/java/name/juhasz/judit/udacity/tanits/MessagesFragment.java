@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +39,8 @@ public class MessagesFragment extends Fragment {
     RecyclerView mMessagesRecycleView;
     @BindView(R.id.tv_notification)
     TextView mNotificationTextView;
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar mLoadProgressBar;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -206,21 +208,22 @@ public class MessagesFragment extends Fragment {
     }
 
     private void showNotification(@NonNull final String notificationText) {
-        // Hide progress bar
+        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mMessagesRecycleView.setVisibility(View.GONE);
         mNotificationTextView.setVisibility(View.VISIBLE);
         mNotificationTextView.setText(notificationText);
     }
 
     private void showMessages(@NonNull final List<Message> messageList) {
-        // Hide progress bar
+        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mNotificationTextView.setVisibility(View.GONE);
         mMessagesRecycleView.setVisibility(View.VISIBLE);
         mMessageAdapter.setMessages(messageList.toArray(new Message[messageList.size()]));
     }
 
     private void showProgressBar() {
-        // Hide messages and notification
-        showNotification("Loading...");
+        mMessagesRecycleView.setVisibility(View.INVISIBLE);
+        mNotificationTextView.setVisibility(View.INVISIBLE);
+        mLoadProgressBar.setVisibility(View.VISIBLE);
     }
 }
