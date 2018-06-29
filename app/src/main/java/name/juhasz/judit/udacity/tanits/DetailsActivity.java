@@ -49,7 +49,7 @@ public class DetailsActivity extends AppCompatActivity {
                     .add(R.id.content_frame_detail, fragment)
                     .commit();
         } else {
-            Log.w(LOG_TAG, "Internal error, missing message data in message details fragment");
+            Log.w(LOG_TAG, getString(R.string.log_error_missing_message_data));
             onBackPressed();
         }
     }
@@ -77,7 +77,7 @@ public class DetailsActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             default:
-                Log.w(LOG_TAG, getString(R.string.log_messages_status_settings) + itemId);
+                Log.w(LOG_TAG, FirebaseUtils.getString(R.string.log_messages_status_settings, itemId));
         }
         return super.onOptionsItemSelected(item);
     }

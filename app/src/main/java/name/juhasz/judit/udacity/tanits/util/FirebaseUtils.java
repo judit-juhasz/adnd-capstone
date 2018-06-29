@@ -98,7 +98,7 @@ public class FirebaseUtils {
     public static void saveUserProfile(@NonNull UserProfile profile) {
         final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.getReference("profiles/" + currentFirebaseUser.getUid()).setValue(profile);
+        database.getReference(getString(R.string.path_profile) + currentFirebaseUser.getUid()).setValue(profile);
     }
 
     public static void saveMessageStatus(@NonNull String messageId, final int messageStatus) {
@@ -119,8 +119,7 @@ public class FirebaseUtils {
                 Log.e(TAG, getString(R.string.log_unknown_message_status, messageStatus));
                 return;
         }
-        database.getReference("messageStatus/" + currentFirebaseUser.getUid() +
-                "/" + messageId + "/status").setValue(status);
+        database.getReference(getString(R.string.save_message_status, currentFirebaseUser.getUid(), messageId)).setValue(status);
     }
 
     public static ValueEventListenerDetacher queryUserProfile(@NonNull final UserProfileListener userProfileListener,
@@ -146,7 +145,7 @@ public class FirebaseUtils {
                 userProfileListener.onCancelled(databaseError);
             }
         };
-        final DatabaseReference databaseNode = database.getReference("profiles/" + currentFirebaseUser.getUid());
+        final DatabaseReference databaseNode = database.getReference(getString(R.string.path_profile) + currentFirebaseUser.getUid());
         if (attachQueryToDatabase) {
             databaseNode.addValueEventListener(valueEventListener);
             return new ValueEventListenerDetacher(databaseNode, valueEventListener);
@@ -159,11 +158,11 @@ public class FirebaseUtils {
     public static void queryMessageContent(@NonNull final String messageId,
                                            @NonNull final StringListener stringListener) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.getReference("messageDetail/" + messageId)
+        database.getReference(getString(R.string.path_messageDetail) + messageId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final String content = dataSnapshot.child("content").getValue(String.class);
+                        final String content = dataSnapshot.child(getString(R.string.message_content)).getValue(String.class);
                         stringListener.onReceive(content);
                     }
 
@@ -184,7 +183,7 @@ public class FirebaseUtils {
                 final Map<String, Integer> messageIdToStatus = new HashMap<>();
                 for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     final String messageId = messageSnapshot.getKey();
-                    final String status = messageSnapshot.child("status").getValue(String.class);
+                    final String status = messageSnapshot.child(getString(R.string.message_status)).getValue(String.class);
                     messageIdToStatus.put(messageId, firebaseMessageStatusToClientMessageStatus(status));
                 }
                 messageStatusListener.onReceive(messageIdToStatus);
@@ -207,7 +206,7 @@ public class FirebaseUtils {
     private static Query getMessageStatusQuery(@NonNull final int messageStatus) {
         final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        Query query = database.getReference("messageStatus/" + currentFirebaseUser.getUid());
+        Query query = database.getReference(getString(R.string.path_messageStatus) + currentFirebaseUser.getUid());
         switch (messageStatus) {
             case Message.STATUS_ACTIVE:
                 // Active messages are the not-done, not-rejected messages, e.g. the user
@@ -217,7 +216,7 @@ public class FirebaseUtils {
             case Message.STATUS_DONE:
             case Message.STATUS_REJECTED: {
                 final String status = clientMessageStatusToFirebaseMessageStatus(messageStatus);
-                query = query.orderByChild("status").startAt(status).endAt(status);
+                query = query.orderByChild(getString(R.string.message_status)).startAt(status).endAt(status);
                 break;
             }
             default:
@@ -298,17 +297,17 @@ public class FirebaseUtils {
         final LocalDate currentDate = LocalDate.now(DateTimeZone.UTC);
         final int childAgeInDays = Days.daysBetween(childBirthdate, currentDate).getDays();
         final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference("messageExtract").orderByChild("dayOffset").startAt(0).endAt(childAgeInDays)
+        firebaseDatabase.getReference(getString(R.string.path_messageExtract)).orderByChild(getString(R.string.message_dayOffset)).startAt(0).endAt(childAgeInDays)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         final ArrayList<Message> messages = new ArrayList<>();
                         for (final DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                             final String messageId = messageSnapshot.getKey();
-                            final int dayOffset = messageSnapshot.child("dayOffset").getValue(Integer.class);
+                            final int dayOffset = messageSnapshot.child(getString(R.string.message_dayOffset)).getValue(Integer.class);
                             final String messageDate =
                                     getMessageDate(childBirthdate, currentDate, childAgeInDays, dayOffset);
-                            final String subject = messageSnapshot.child("subject").getValue(String.class);
+                            final String subject = messageSnapshot.child(getString(R.string.message_subject)).getValue(String.class);
                             final String summary = messageSnapshot.child(getString(R.string.message_summary)).getValue(String.class);
                             switch (messageStatusFilter) {
                                 case MESSAGE_STATUS_FILTER_ALL: {
@@ -358,9 +357,9 @@ public class FirebaseUtils {
         } else if (1 == (childAgeInDays - messageDayOffset)) {
             return DATE_YESTERDAY;
         } else if (currentDate.getDayOfYear() > (childAgeInDays - messageDayOffset)) {
-            return childBirthdate.plusDays(messageDayOffset).toString("d MMMM");
+            return childBirthdate.plusDays(messageDayOffset).toString(getString(R.string.date_format_without_year));
         } else {
-            return childBirthdate.plusDays(messageDayOffset).toString("d MMMM, Y");
+            return childBirthdate.plusDays(messageDayOffset).toString(getString(R.string.date_format_with_year));
         }
     }
 }

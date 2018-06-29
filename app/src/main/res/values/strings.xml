@@ -52,7 +52,7 @@
 
     <!-- Log and other messages -->
     <string name="log_messages_menu_selection">Menu selection is not handled. ItemId: <xliff:g example="100" id="itemid">%d</xliff:g></string>
-    <string name="log_messages_status_settings">Status setting is not handled. ItemId: </string>
+    <string name="log_messages_status_settings">Status setting is not handled. ItemId: <xliff:g example="100" id="itemid">%d</xliff:g></string>
     <string name="log_user_profile_data">User profile data is not available</string>
     <string name="log_unknown_message_status">Internal error: unknown message status: <xliff:g example="100" id="statusid">%d</xliff:g></string>
     <string name="log_unknown_message_status_string">Internal error: unknown message status: <xliff:g example="100" id="statusid">%s</xliff:g></string>
@@ -64,6 +64,7 @@
     <string name="no_messages">Cannot retrieve messages</string>
     <string name="no_message_detail">Cannot retrieve message detail</string>
     <string name="log_error_login">Internal error at login:</string>
+    <string name="log_error_missing_message_data">Internal error, missing message data in message details fragment</string>
 
     <!-- Email datas -->
     <string name="subject_feedback">Feedback</string>
@@ -72,7 +73,7 @@
     <string name="no_email_client_selected">Choose an Email client</string>
     <string name="email_scheme">mailto</string>
 
-    <string name="path_profil">profiles/</string>
+    <string name="path_profile">profiles/</string>
     <string name="path_messageExtract">messageExtract</string>
     <string name="path_messageStatus">messageStatus/</string>
     <string name="path_messageDetail">messageDetail/</string>
@@ -81,7 +82,10 @@
     <string name="message_subject">subject</string>
     <string name="message_summary">summary</string>
     <string name="message_dayOffset">dayOffset</string>
-    <string name="get_message_status">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
+    <string name="save_message_status">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
     <string name="empty_text">No more messages</string>
+
+    <string name="date_format_with_year">d MMMM, Y</string>
+    <string name="date_format_without_year">d MMMM</string>
 
 </resources>
