@@ -89,7 +89,7 @@ public class MessagesFragment extends Fragment {
                 if (null != firebaseAuth.getCurrentUser()) {
                     final Bundle bundle = MessagesFragment.this.getArguments();
                     if (bundle != null) {
-                        final int filter = bundle.getInt(PARAMETER_FILTER, FILTER_ALL);
+                        final int filter = bundle.getInt(PARAMETER_FILTER, FILTER_ACTIVE);
                         queryMessages(filter);
                     }
                 } else {
@@ -190,7 +190,7 @@ public class MessagesFragment extends Fragment {
                             return;
                         }
                         if (FILTER_ACTIVE == filter) {
-                            showNotification("Nothing to do today, you are free");
+                            showNotification("Well done! Everything is done.");
                         } else {
                             showNotification(getString(R.string.no_messages));
                         }

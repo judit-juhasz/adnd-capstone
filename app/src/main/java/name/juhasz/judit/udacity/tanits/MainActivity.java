@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             case 0: {
                 final MessagesFragment fragment = new MessagesFragment();
                 final Bundle arguments = new Bundle();
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ALL);
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
                 fragment.setArguments(arguments);
                 return fragment;
             }
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
             default: {
                 final MessagesFragment fragment = new MessagesFragment();
                 final Bundle arguments = new Bundle();
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ALL);
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
                 fragment.setArguments(arguments);
                 return fragment;
             }
