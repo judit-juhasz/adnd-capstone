@@ -35,8 +35,10 @@ public class MessagesFragment extends Fragment {
     public static final int FILTER_REJECTED = 3;
 
     private MessageAdapter mMessageAdapter;
-    private RecyclerView messagesRecycleView;
-    private TextView emptyTextView;
+    @BindView(R.id.rv_messages)
+    RecyclerView mMessagesRecycleView;
+    @BindView(R.id.tv_notification)
+    TextView mNotificationTextView;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -74,15 +76,16 @@ public class MessagesFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        emptyTextView= rootView.findViewById(R.id.tv_empty);
-        messagesRecycleView= rootView.findViewById(R.id.rv_messages);
-        messagesRecycleView.setAdapter(mMessageAdapter);
-        messagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        showProgressBar();
+
+        mMessagesRecycleView.setAdapter(mMessageAdapter);
+        mMessagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                showProgressBar();
                 if (null != firebaseAuth.getCurrentUser()) {
                     final Bundle bundle = MessagesFragment.this.getArguments();
                     if (bundle != null) {
@@ -132,20 +135,26 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onReceive(UserProfile userProfile) {
                 if (null == userProfile) {
+                    showProgressBar();
                     Log.w(TAG, getString(R.string.log_user_profile));
                     return;
                 }
-                final String birthdate = userProfile.getChildBirthdate();
                 try {
-                    final LocalDate childBirthdate = new LocalDate(birthdate);
-                    queryMessages(childBirthdate, filter);
+                    final String birthdate = userProfile.getChildBirthdate();
+                    if (null == birthdate) {
+                        showNotification(getString(R.string.set_birthdate));
+                    } else {
+                        final LocalDate childBirthdate = new LocalDate(birthdate);
+                        queryMessages(childBirthdate, filter);
+                    }
                 } catch (Exception e) {
-                    Toast.makeText(getContext(), getString(R.string.set_birthdate), Toast.LENGTH_LONG).show();
+                    showNotification("Internal error");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                showProgressBar();
                 Log.w(TAG, getString(R.string.log_user_birthday), databaseError.toException());
             }
         }, true);
@@ -176,25 +185,41 @@ public class MessagesFragment extends Fragment {
                 new FirebaseUtils.MessageListListener() {
                     @Override
                     public void onReceive(List<Message> messageList) {
-                        mMessageAdapter.setMessages(messageList.toArray(new Message[messageList.size()]));
-                        setEmptyView();
+                        if (!messageList.isEmpty()) {
+                            showMessages(messageList);
+                            return;
+                        }
+                        if (FILTER_ACTIVE == filter) {
+                            showNotification("Nothing to do today, you are free");
+                        } else {
+                            showNotification(getString(R.string.no_messages));
+                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getContext(), getString(R.string.no_messages), Toast.LENGTH_LONG).show();
+                        showProgressBar();
+                        Log.w(TAG, "Message query is canceled with database error: ",
+                                databaseError.toException());
                     }
                 }, true);
     }
 
-    private void setEmptyView() {
-        if (mMessageAdapter.getItemCount() == 0) {
-            messagesRecycleView.setVisibility(View.GONE);
-            emptyTextView.setVisibility(View.VISIBLE);
-        }
-        else {
-            messagesRecycleView.setVisibility(View.VISIBLE);
-            emptyTextView.setVisibility(View.GONE);
-        }
+    private void showNotification(@NonNull final String notificationText) {
+        // Hide progress bar
+        mMessagesRecycleView.setVisibility(View.GONE);
+        mNotificationTextView.setVisibility(View.VISIBLE);
+        mNotificationTextView.setText(notificationText);
+    }
+
+    private void showMessages(@NonNull final List<Message> messageList) {
+        // Hide progress bar
+        mNotificationTextView.setVisibility(View.GONE);
+        mMessageAdapter.setMessages(messageList.toArray(new Message[messageList.size()]));
+    }
+
+    private void showProgressBar() {
+        // Hide messages and notification
+        showNotification("Loading...");
     }
 }

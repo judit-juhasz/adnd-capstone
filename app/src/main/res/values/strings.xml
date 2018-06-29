@@ -84,6 +84,7 @@
     <string name="message_dayOffset">dayOffset</string>
     <string name="save_message_status">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
     <string name="empty_text">No more messages</string>
+    <string name="set_profile">Please set your profile. You can get messages only if you give the birthdate of your child.</string>
 
     <string name="date_format_with_year">d MMMM, Y</string>
     <string name="date_format_without_year">d MMMM</string>
