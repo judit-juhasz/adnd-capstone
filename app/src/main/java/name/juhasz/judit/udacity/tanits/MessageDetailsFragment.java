@@ -41,20 +41,22 @@ public class MessageDetailsFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        mDateTextView.setText(message.getDate());
-        mSummaryTextView.setText(message.getSummary());
-        FirebaseUtils.queryMessageContent(message.getId(), new FirebaseUtils.StringListener() {
-            @Override
-            public void onReceive(String string) {
-                mContentTextView.setText(string);
-            }
+        if (null != message) {
+            mDateTextView.setText(message.getDate());
+            mSummaryTextView.setText(message.getSummary());
+            FirebaseUtils.queryMessageContent(message.getId(), new FirebaseUtils.StringListener() {
+                @Override
+                public void onReceive(String string) {
+                    mContentTextView.setText(string);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), getString(R.string.no_message_detail),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getContext(), getString(R.string.no_message_detail),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
 
         return rootView;
     }

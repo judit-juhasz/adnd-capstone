@@ -19,13 +19,14 @@ import com.google.firebase.database.DatabaseError;
 
 import org.joda.time.LocalDate;
 
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
-public class MessagesFragment extends Fragment {
+public class MessagesFragment extends Fragment implements MessageAdapter.OnClickListener {
     private static final String TAG = MessagesFragment.class.getSimpleName();
 
     public static final String PARAMETER_FILTER = "PARAMETER_FILTER";
@@ -33,6 +34,10 @@ public class MessagesFragment extends Fragment {
     public static final int FILTER_ACTIVE = 1;
     public static final int FILTER_DONE = 2;
     public static final int FILTER_REJECTED = 3;
+
+    public interface OnSelectMessageListener {
+        void onSelectMessage(final Message message, final boolean userSelected);
+    }
 
     private MessageAdapter mMessageAdapter;
     @BindView(R.id.rv_messages)
@@ -48,6 +53,9 @@ public class MessagesFragment extends Fragment {
     private FirebaseUtils.ValueEventListenerDetacher mUserProfileListenerDetacher;
     private FirebaseUtils.ValueEventListenerDetacher mMessageStatusListenerDetacher;
 
+    private OnSelectMessageListener mOnSelectMessageListener = null;
+    private Message mLastSelectedMessage = null;
+
     public MessagesFragment() {
     }
 
@@ -56,7 +64,8 @@ public class MessagesFragment extends Fragment {
         super.onAttach(context);
 
         try {
-            mMessageAdapter = new MessageAdapter(context, (MessageAdapter.OnClickListener) context);
+            mOnSelectMessageListener = (OnSelectMessageListener) context;
+            mMessageAdapter = new MessageAdapter(context, this);
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + getString(R.string.exception_text) +
                     MessageAdapter.OnClickListener.class.getSimpleName());
@@ -79,6 +88,7 @@ public class MessagesFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         showProgressBar();
+        mOnSelectMessageListener.onSelectMessage(null, false);
 
         mMessagesRecycleView.setAdapter(mMessageAdapter);
         mMessagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -103,6 +113,8 @@ public class MessagesFragment extends Fragment {
                         mUserProfileListenerDetacher.detach();
                         mUserProfileListenerDetacher = null;
                     }
+                    mOnSelectMessageListener.onSelectMessage(null, false);
+                    mLastSelectedMessage = null;
                 }
             }
         };
@@ -157,6 +169,8 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 showProgressBar();
+                mOnSelectMessageListener.onSelectMessage(null, false);
+                mLastSelectedMessage = null;
                 Log.w(TAG, getString(R.string.log_user_birthday), databaseError.toException());
             }
         }, true);
@@ -188,6 +202,26 @@ public class MessagesFragment extends Fragment {
                     @Override
                     public void onReceive(List<Message> messageList) {
                         if (!messageList.isEmpty()) {
+                            if (null == mLastSelectedMessage) {
+                                final Message firstAvailableMessage = messageList.get(0);
+                                mOnSelectMessageListener.onSelectMessage(firstAvailableMessage, false);
+                                mLastSelectedMessage = firstAvailableMessage;
+                            } else {
+                                // TODO: It is a bit of hack. In the current implementation the ID
+                                // is number only, and the IDs of the messages are sorted by date.
+                                // The better solution would be to store LocalDate in the messages
+                                // and make the comparision based on that.
+                                final int lastCalledMessageId =
+                                        Integer.parseInt(mLastSelectedMessage.getId());
+                                for (Iterator<Message> i = messageList.iterator(); i.hasNext();) {
+                                    final Message message = i.next();
+                                    if (!i.hasNext() || lastCalledMessageId < Integer.parseInt(message.getId())) {
+                                        mOnSelectMessageListener.onSelectMessage(message, false);
+                                        mLastSelectedMessage = message;
+                                        break;
+                                    }
+                                }
+                            }
                             showMessages(messageList);
                             return;
                         }
@@ -196,11 +230,15 @@ public class MessagesFragment extends Fragment {
                         } else {
                             showNotification(getString(R.string.no_messages));
                         }
+                        mOnSelectMessageListener.onSelectMessage(null, false);
+                        mLastSelectedMessage = null;
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         showProgressBar();
+                        mOnSelectMessageListener.onSelectMessage(null, false);
+                        mLastSelectedMessage = null;
                         Log.w(TAG, "Message query is canceled with database error: ",
                                 databaseError.toException());
                     }
@@ -225,5 +263,13 @@ public class MessagesFragment extends Fragment {
         mMessagesRecycleView.setVisibility(View.INVISIBLE);
         mNotificationTextView.setVisibility(View.INVISIBLE);
         mLoadProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onItemClick(final Message message) {
+        if (null != mOnSelectMessageListener) {
+            mOnSelectMessageListener.onSelectMessage(message, true);
+        }
+        mLastSelectedMessage = message;
     }
 }

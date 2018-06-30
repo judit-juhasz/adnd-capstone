@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 import name.juhasz.judit.udacity.tanits.util.ConfigurationUtils;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
-public class MainActivity extends AppCompatActivity implements MessageAdapter.OnClickListener {
+public class MainActivity extends AppCompatActivity implements MessagesFragment.OnSelectMessageListener {
 
     private static final String SAVE_NAVIGATION_ITEM_INDEX = "SAVE_NAVIGATION_ITEM_INDEX";
     private static final String SAVE_FRAGMENT_TITLES = "SAVE_FRAGMENT_TITLES";
@@ -302,12 +302,12 @@ public class MainActivity extends AppCompatActivity implements MessageAdapter.On
     }
 
     @Override
-    public void onItemClick(final Message message) {
+    public void onSelectMessage(final Message message, final boolean userSelected) {
         if (mTwoPaneMode) {
             mLoadedMessage = message;
             setMessageDetailFragment(message);
             invalidateOptionsMenu();
-        } else {
+        } else if (userSelected) {
             final Intent intentToStartDetailsActivity = new Intent(this, DetailsActivity.class);
             intentToStartDetailsActivity.putExtra(DetailsActivity.MESSAGE_DATA, message);
             startActivity(intentToStartDetailsActivity);

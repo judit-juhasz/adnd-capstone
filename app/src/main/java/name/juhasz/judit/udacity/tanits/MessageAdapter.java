@@ -23,7 +23,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     private Context mContext = null;
 
     public interface OnClickListener {
-        void onItemClick(Message message);
+        void onItemClick(final Message message);
     }
 
     public MessageAdapter(final Context context, final OnClickListener listener) {
