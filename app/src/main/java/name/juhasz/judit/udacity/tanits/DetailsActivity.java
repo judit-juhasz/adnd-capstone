@@ -3,12 +3,15 @@ package name.juhasz.judit.udacity.tanits;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +24,10 @@ public class DetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private String mLastUserId = null;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -52,6 +59,20 @@ public class DetailsActivity extends AppCompatActivity {
             Log.w(LOG_TAG, getString(R.string.log_error_missing_message_data));
             onBackPressed();
         }
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (null != firebaseAuth.getCurrentUser()) {
+                    final String currentUserId = firebaseAuth.getCurrentUser().getUid();
+                    if (!currentUserId.equals(mLastUserId)) {
+                        onBackPressed();
+                    }
+                    mLastUserId = firebaseAuth.getCurrentUser().getUid();
+                }
+            }
+        };
     }
 
     @Override

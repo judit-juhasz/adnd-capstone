@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private String mLastUserId = null;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -88,18 +89,13 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
-                    @Override
-                    public void onReceive(UserProfile userProfile) {
-                        loadNavigationHeader(userProfile);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.e(LOG_TAG, getString(R.string.log_error_login) + databaseError);
-                    }
-                }, true);
                 if (null == firebaseAuth.getCurrentUser()) {
+                    mUsernameTextView.setText("");
+                    mEmailTextView.setText("");
+                    if (null != mUserProfileListenerDetacher) {
+                        mUserProfileListenerDetacher.detach();
+                        mUserProfileListenerDetacher = null;
+                    }
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -107,6 +103,24 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                                     .setAvailableProviders(Arrays.asList(
                                             new AuthUI.IdpConfig.EmailBuilder().build()))
                                     .build(), RC_SIGN_IN);
+                } else {
+                    mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+                        @Override
+                        public void onReceive(UserProfile userProfile) {
+                            loadNavigationHeader(userProfile);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.e(LOG_TAG, getString(R.string.log_error_login) + databaseError);
+                        }
+                    }, true);
+                    final String currentUserId = firebaseAuth.getCurrentUser().getUid();
+                    if (!currentUserId.equals(mLastUserId)) {
+                        navigationItemIndex = 0;
+                        loadFragment();
+                    }
+                    mLastUserId = firebaseAuth.getCurrentUser().getUid();
                 }
             }
         };
