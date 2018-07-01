@@ -1,0 +1,136 @@
+package name.juhasz.judit.udacity.tanits;
+
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.RemoteViews;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+
+import org.joda.time.LocalDate;
+
+import java.util.List;
+
+import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
+import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
+
+public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
+
+    public static void updateAllWidgets(@NonNull final Context context) {
+        final Class<LastActiveMessageWidgetProvider> widgetProviderClass =
+                LastActiveMessageWidgetProvider.class;
+        final Intent updateWidgetsIntent = new Intent(context, widgetProviderClass);
+        updateWidgetsIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        final int[] appWidgetIds = AppWidgetManager.getInstance(context)
+                .getAppWidgetIds(new ComponentName(context, widgetProviderClass));
+        updateWidgetsIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        context.sendBroadcast(updateWidgetsIntent);
+    }
+
+    private static final String LOG_TAG = LastActiveMessageWidgetProvider.class.getSimpleName();
+
+    static void showAppWidgetMessage(Context context, AppWidgetManager appWidgetManager,
+                                     int appWidgetId, @NonNull final Message message) {
+        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_last_active_message);
+        views.setTextViewText(R.id.widget_last_active_message_summary, message.getDate() + " " + message.getSummary());
+
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    static void showAppWidgetNotification(Context context, AppWidgetManager appWidgetManager,
+                                          int appWidgetId, final String notificationText) {
+        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_last_active_message);
+        views.setTextViewText(R.id.widget_last_active_message_summary, notificationText);
+
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    @Override
+    public void onUpdate(final Context context, final AppWidgetManager appWidgetManager,
+                         final int[] appWidgetIds) {
+        if (!NetworkUtils.isNetworkAvailable(context)) {
+            for (int appWidgetId : appWidgetIds) {
+                showAppWidgetNotification(context, appWidgetManager, appWidgetId,
+                        "Network connection is required");
+            }
+            return;
+        }
+        final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (null == currentFirebaseUser) {
+            for (int appWidgetId : appWidgetIds) {
+                showAppWidgetNotification(context, appWidgetManager, appWidgetId,
+                        "Login to show the last active message");
+            }
+            return;
+        }
+        FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+            @Override
+            public void onReceive(UserProfile userProfile) {
+                if (null == userProfile || null == userProfile.getChildBirthdate()) {
+                    for (int appWidgetId : appWidgetIds) {
+                        showAppWidgetNotification(context, appWidgetManager, appWidgetId,
+                                "Login to show the last active message");
+                    }
+                    return;
+                }
+                final LocalDate childBirthdate = new LocalDate(userProfile.getChildBirthdate());
+                FirebaseUtils.queryMessages(childBirthdate, FirebaseUtils.MESSAGE_STATUS_FILTER_ACTIVE,
+                        new FirebaseUtils.MessageListListener() {
+                            @Override
+                            public void onReceive(List<Message> messageList) {
+                                if (messageList.isEmpty()) {
+                                    for (int appWidgetId : appWidgetIds) {
+                                        showAppWidgetNotification(context, appWidgetManager, appWidgetId,
+                                                "Good work! Everything is done.");
+                                    }
+                                    return;
+                                }
+                                final int lastMessageIndex = messageList.size()-1;
+                                final Message lastMessage = messageList.get(lastMessageIndex);
+                                for (int appWidgetId : appWidgetIds) {
+                                    showAppWidgetMessage(context, appWidgetManager, appWidgetId,
+                                            lastMessage);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                for (int appWidgetId : appWidgetIds) {
+                                    showAppWidgetNotification(context, appWidgetManager, appWidgetId,
+                                            "Unknown error");
+                                }
+                                Log.w(LOG_TAG, "Messages query is canceled with database error: ",
+                                        databaseError.toException());
+                            }
+                        }, false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                for (int appWidgetId : appWidgetIds) {
+                    showAppWidgetNotification(context, appWidgetManager, appWidgetId,
+                            "Unknown error");
+                }
+                Log.w(LOG_TAG, "User profile query is canceled with database error: ",
+                        databaseError.toException());
+            }
+        }, false);
+    }
+
+    @Override
+    public void onEnabled(Context context) {
+        // Enter relevant functionality for when the first widget is created
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        // Enter relevant functionality for when the last widget is disabled
+    }
+}
+
