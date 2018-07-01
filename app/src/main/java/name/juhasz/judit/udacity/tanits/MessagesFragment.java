@@ -25,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
+import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
 public class MessagesFragment extends Fragment implements MessageAdapter.OnClickListener {
     private static final String TAG = MessagesFragment.class.getSimpleName();
@@ -145,6 +146,9 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
     }
 
     private void queryMessages(final int filter) {
+        if (!NetworkUtils.isNetworkAvailable(getContext())) {
+            showNotification("Internet connection is required");
+        }
         mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
             @Override
             public void onReceive(UserProfile userProfile) {

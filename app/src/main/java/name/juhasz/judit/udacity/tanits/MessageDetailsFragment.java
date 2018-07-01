@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
+import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
 public class MessageDetailsFragment extends Fragment {
 
@@ -23,6 +24,8 @@ public class MessageDetailsFragment extends Fragment {
     @BindView(R.id.tv_date) TextView mDateTextView;
     @BindView(R.id.tv_content) TextView mContentTextView;
     @BindView(R.id.tv_summary) TextView mSummaryTextView;
+
+    private Message mMessage = null;
 
     public MessageDetailsFragment() {
     }
@@ -37,16 +40,20 @@ public class MessageDetailsFragment extends Fragment {
                 inflater.inflate(R.layout.fragment_message_details, container, false);
 
         final Bundle arguments = getArguments();
-        final Message message = arguments.getParcelable(MESSAGE_DATA);
+        mMessage = arguments.getParcelable(MESSAGE_DATA);
 
         ButterKnife.bind(this, rootView);
 
-        if (null != message) {
-            mDateTextView.setText(message.getDate());
-            mSummaryTextView.setText(message.getSummary());
-            FirebaseUtils.queryMessageContent(message.getId(), new FirebaseUtils.StringListener() {
+        if (null != mMessage) {
+            if (!NetworkUtils.isNetworkAvailable(getContext())) {
+                Toast.makeText(getContext(), "Internet connection is required",
+                        Toast.LENGTH_LONG).show();
+            }
+            FirebaseUtils.queryMessageContent(mMessage.getId(), new FirebaseUtils.StringListener() {
                 @Override
                 public void onReceive(String string) {
+                    mDateTextView.setText(mMessage.getDate());
+                    mSummaryTextView.setText(mMessage.getSummary());
                     mContentTextView.setText(string);
                 }
 

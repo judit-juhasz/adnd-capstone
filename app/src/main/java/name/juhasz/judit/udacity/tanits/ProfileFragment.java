@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import name.juhasz.judit.udacity.tanits.util.DateTimeUtils;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
+import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
 public class ProfileFragment extends Fragment {
 
@@ -64,11 +66,12 @@ public class ProfileFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        setupNameField();
-        setupBirthdateCalendarPopup();
-        setupSavePopup();
-        queryUserProfileData();
-        updateSaveButtonStatus();
+        if (!NetworkUtils.isNetworkAvailable(getContext())) {
+            Toast.makeText(getContext(), "Internet connection is required",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            // Progress bar?
+        }
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
