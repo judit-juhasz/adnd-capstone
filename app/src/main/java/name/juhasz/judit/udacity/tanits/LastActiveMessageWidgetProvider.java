@@ -62,6 +62,7 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager,
                          final int[] appWidgetIds) {
+        FirebaseUtils.initialize(context);
         if (!NetworkUtils.isNetworkAvailable(context)) {
             for (int appWidgetId : appWidgetIds) {
                 showAppWidgetNotification(context, appWidgetManager, appWidgetId,
