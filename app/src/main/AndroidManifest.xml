@@ -39,6 +39,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_last_active_message" />
         </receiver>
+
+        <service
+            android:exported="false"
+            android:name=".WidgetUpdateJobService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

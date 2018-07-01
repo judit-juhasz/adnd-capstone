@@ -43,6 +43,7 @@ dependencies {
     }
 
     implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
     implementation 'com.google.firebase:firebase-database:16.0.1', {
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
@@ -50,6 +51,7 @@ dependencies {
 
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

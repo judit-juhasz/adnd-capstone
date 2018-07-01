@@ -9,6 +9,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +27,8 @@ import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
 public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
+
+    private static String JOB_SCHEDULER_ID = "LastActiveMessageWidgetProviderJobScheduler";
 
     public static void updateAllWidgets(@NonNull final Context context) {
         final Class<LastActiveMessageWidgetProvider> widgetProviderClass =
@@ -125,12 +133,29 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        final FirebaseJobDispatcher dispatcher =
+                new FirebaseJobDispatcher(new GooglePlayDriver(context));
+        final int hourInSeconds =  60 * 60;
+        final int halfHourInSeconds = hourInSeconds / 2;
+        final Job widgetUpdateJob = dispatcher.newJobBuilder()
+                .setService(WidgetUpdateJobService.class)
+                .setTag(JOB_SCHEDULER_ID)
+                .setLifetime(Lifetime.FOREVER)
+                .setReplaceCurrent(true)
+                .setRecurring(true)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .setTrigger(Trigger.executionWindow(hourInSeconds
+                        , hourInSeconds + halfHourInSeconds))
+                .build();
+
+        dispatcher.mustSchedule(widgetUpdateJob);
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+        final FirebaseJobDispatcher dispatcher =
+                new FirebaseJobDispatcher(new GooglePlayDriver(context));
+        dispatcher.cancel(JOB_SCHEDULER_ID);
     }
 }
 
