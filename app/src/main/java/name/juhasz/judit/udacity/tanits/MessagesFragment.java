@@ -230,7 +230,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
                             return;
                         }
                         if (FILTER_ACTIVE == filter) {
-                            showNotification("Well done! Everything is done.");
+                            showNotification("Good work! Everything is done.");
                         } else {
                             showNotification(getString(R.string.no_messages));
                         }
