@@ -147,7 +147,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
 
     private void queryMessages(final int filter) {
         if (!NetworkUtils.isNetworkAvailable(getContext())) {
-            showNotification("Internet connection is required");
+            showNotification(getString(R.string.internet_required));
         }
         mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
             @Override
@@ -166,7 +166,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
                         queryMessages(childBirthdate, filter);
                     }
                 } catch (Exception e) {
-                    showNotification("We are sorry, internal error");
+                    showNotification(getString(R.string.error_internal));
                 }
             }
 
@@ -230,7 +230,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
                             return;
                         }
                         if (FILTER_ACTIVE == filter) {
-                            showNotification("Good work! Everything is done.");
+                            showNotification(getString(R.string.all_message_done));
                         } else {
                             showNotification(getString(R.string.no_messages));
                         }
@@ -243,7 +243,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
                         showProgressBar();
                         mOnSelectMessageListener.onSelectMessage(null, false);
                         mLastSelectedMessage = null;
-                        Log.w(TAG, "Message query is canceled with database error: ",
+                        Log.w(TAG, getString(R.string.log_message_query_canceled),
                                 databaseError.toException());
                     }
                 }, true);

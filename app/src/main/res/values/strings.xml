@@ -36,7 +36,7 @@
     <string name="error_message_name">Enter your name</string>
     <string name="error_message_birthdate">Enter the birthdate of your child</string>
     <string name="message_save_successfull">Your profile has been saved successfully.</string>
-
+    <string name="internet_required">Internet connection is required</string>
 
     <!-- Messages categorization menuitems -->
     <string name="menu_item_categorization_all">All</string>
@@ -58,6 +58,10 @@
     <string name="no_message_detail">Cannot retrieve message detail</string>
     <string name="log_error_login">Internal error at login:</string>
     <string name="log_error_missing_message_data">Internal error, missing message data in message details fragment</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="log_message_query_canceled">Messages query is canceled with database error: </string>
+    <string name="log_user_profile_query_canceled">User profile query is canceled with database error: </string>
+    <string name="error_internal">We are sorry, internal error</string>
 
     <!-- Email datas -->
     <string name="subject_feedback">Feedback</string>
@@ -85,5 +89,8 @@
     <string name="add_widget">Add widget</string>
     <string name="appwidget_text_date">EXAMPLE</string>
     <string name="appwidget_text_author">Tanits</string>
+    <string name="widget_login_notification">Login to show the last active message</string>
+
+    <string name="all_message_done">Good work! Everything is done.</string>
 
 </resources>

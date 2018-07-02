@@ -69,7 +69,7 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
         if (!NetworkUtils.isNetworkAvailable(context)) {
             for (int appWidgetId : appWidgetIds) {
                 showAppWidgetNotification(context, appWidgetManager, appWidgetId,
-                        "Network connection is required");
+                        context.getString(R.string.internet_required));
             }
             return;
         }
@@ -77,7 +77,7 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
         if (null == currentFirebaseUser) {
             for (int appWidgetId : appWidgetIds) {
                 showAppWidgetNotification(context, appWidgetManager, appWidgetId,
-                        "Login to show the last active message");
+                        context.getString(R.string.widget_login_notification));
             }
             return;
         }
@@ -87,7 +87,7 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
                 if (null == userProfile || null == userProfile.getChildBirthdate()) {
                     for (int appWidgetId : appWidgetIds) {
                         showAppWidgetNotification(context, appWidgetManager, appWidgetId,
-                                "Login to show the last active message");
+                                context.getString(R.string.widget_login_notification));
                     }
                     return;
                 }
@@ -99,7 +99,7 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
                                 if (messageList.isEmpty()) {
                                     for (int appWidgetId : appWidgetIds) {
                                         showAppWidgetNotification(context, appWidgetManager, appWidgetId,
-                                                "Good work! Everything is done.");
+                                                context.getString(R.string.all_message_done));
                                     }
                                     return;
                                 }
@@ -115,9 +115,9 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                                 for (int appWidgetId : appWidgetIds) {
                                     showAppWidgetNotification(context, appWidgetManager, appWidgetId,
-                                            "Unknown error");
+                                            context.getString(R.string.error_unknown));
                                 }
-                                Log.w(LOG_TAG, "Messages query is canceled with database error: ",
+                                Log.w(LOG_TAG, context.getString(R.string.log_message_query_canceled),
                                         databaseError.toException());
                             }
                         }, false);
@@ -127,9 +127,9 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 for (int appWidgetId : appWidgetIds) {
                     showAppWidgetNotification(context, appWidgetManager, appWidgetId,
-                            "Unknown error");
+                            context.getString(R.string.error_unknown));
                 }
-                Log.w(LOG_TAG, "User profile query is canceled with database error: ",
+                Log.w(LOG_TAG, context.getString(R.string.log_user_profile_query_canceled),
                         databaseError.toException());
             }
         }, false);
