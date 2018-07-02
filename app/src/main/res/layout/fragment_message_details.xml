@@ -63,4 +63,12 @@
         android:layout_marginLeft="@dimen/keyline"
         android:layout_marginRight="@dimen/keyline"/>
 
+    <ProgressBar
+        android:id="@+id/pb_message_details_loading_indicator"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
 </RelativeLayout>

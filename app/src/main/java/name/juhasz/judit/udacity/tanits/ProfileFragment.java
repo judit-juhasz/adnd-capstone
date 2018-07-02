@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,6 +56,8 @@ public class ProfileFragment extends Fragment {
     LinearLayout mProfileDataLinearLayout;
     @BindView(R.id.tv_notification_profile)
     TextView mNotificationTextView;
+    @BindView(R.id.pb_profile_loading_indicator)
+    ProgressBar mLoadProgressBar;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -76,6 +79,7 @@ public class ProfileFragment extends Fragment {
             showNotification(getString(R.string.internet_required));
         } else {
             // Progress bar?
+            showProgressBar();
         }
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -94,6 +98,7 @@ public class ProfileFragment extends Fragment {
                         mUserProfileListenerDetacher = null;
                     }
                     // Progress bar?
+                    showProgressBar();
                 }
             }
         };
@@ -277,13 +282,21 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showNotification(@NonNull final String notificationText) {
+        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mProfileDataLinearLayout.setVisibility(View.GONE);
         mNotificationTextView.setVisibility(View.VISIBLE);
         mNotificationTextView.setText(notificationText);
     }
 
     private void showProfile() {
+        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mNotificationTextView.setVisibility(View.GONE);
         mProfileDataLinearLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showProgressBar() {
+        mProfileDataLinearLayout.setVisibility(View.INVISIBLE);
+        mNotificationTextView.setVisibility(View.INVISIBLE);
+        mLoadProgressBar.setVisibility(View.VISIBLE);
     }
 }

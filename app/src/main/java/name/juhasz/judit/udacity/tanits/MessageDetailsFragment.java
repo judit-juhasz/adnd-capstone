@@ -7,10 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseError;
 
@@ -33,6 +32,8 @@ public class MessageDetailsFragment extends Fragment {
     ScrollView mMessageDetailsScrollView;
     @BindView(R.id.tv_notification_message_details)
     TextView mNotificationTextView;
+    @BindView(R.id.pb_message_details_loading_indicator)
+    ProgressBar mLoadProgressBar;
 
     private Message mMessage = null;
 
@@ -57,6 +58,7 @@ public class MessageDetailsFragment extends Fragment {
             if (NetworkUtils.isNetworkAvailable(getContext())) {
                 // We know that there is a message and that we have internet connection. Progress bar
                 // until we wait for the result?
+                showProgressBar();
             } else {
                 showNotification(getString(R.string.internet_required));
             }
@@ -80,13 +82,21 @@ public class MessageDetailsFragment extends Fragment {
     }
 
     private void showNotification(@NonNull final String notificationText) {
+        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mMessageDetailsScrollView.setVisibility(View.GONE);
         mNotificationTextView.setVisibility(View.VISIBLE);
         mNotificationTextView.setText(notificationText);
     }
 
     private void showMessageDetails() {
+        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mNotificationTextView.setVisibility(View.GONE);
         mMessageDetailsScrollView.setVisibility(View.VISIBLE);
+    }
+
+    private void showProgressBar() {
+        mMessageDetailsScrollView.setVisibility(View.INVISIBLE);
+        mNotificationTextView.setVisibility(View.INVISIBLE);
+        mLoadProgressBar.setVisibility(View.VISIBLE);
     }
 }
