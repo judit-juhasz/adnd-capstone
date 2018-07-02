@@ -16,6 +16,7 @@
     <dimen name="zero_width">0dp</dimen>
     <item name="weight_one" format="integer" type="integer">1</item>
     <item name="weight_two" format="integer" type="integer">2</item>
+    <dimen name="keyline">16dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

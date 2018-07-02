@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/keyline"
+    android:layout_marginRight="@dimen/keyline">
 
     <ImageView
         android:id="@+id/iv_status_image"
         android:layout_width="@dimen/message_item_size_image"
         android:layout_height="@dimen/message_item_size_image"
-        android:layout_marginLeft="@dimen/margin_normal_left_right"
         android:layout_marginTop="@dimen/margin_normal"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:id="@+id/tv_date"
@@ -21,8 +22,7 @@
         android:layout_toRightOf="@id/iv_status_image"
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/margin_normal"
-        android:layout_marginLeft="@dimen/margin_normal_left_right"
-        android:layout_marginRight="@dimen/margin_normal_left_right"
+        android:layout_marginLeft="@dimen/margin_normal"
         android:textStyle="bold"/>
 
     <TextView
@@ -31,9 +31,8 @@
         android:layout_height="wrap_content"
         android:text="@string/lorem_ipsum_short"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:layout_marginLeft="@dimen/margin_normal"
         android:layout_toRightOf="@id/iv_status_image"
-        android:layout_below="@id/tv_date"
-        android:layout_marginLeft="@dimen/margin_normal_left_right"
-        android:layout_marginRight="@dimen/margin_normal_left_right"/>
+        android:layout_below="@id/tv_date"/>
 
 </RelativeLayout>
