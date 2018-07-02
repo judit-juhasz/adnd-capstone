@@ -1,4 +1,5 @@
 <resources>
     <dimen name="fab_margin">24dp</dimen>
     <dimen name="keyline">24dp</dimen>
+    <dimen name="navigation_header_padding">24dp</dimen>
 </resources>
