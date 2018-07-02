@@ -11,6 +11,10 @@
     <string name="navigation_menu_item_title_about">About Us</string>
     <string name="navigation_menu_item_title_logout">Logout</string>
 
+    <!-- Navigation header -->
+    <string name="username">Username</string>
+    <string name="email">username@user.com</string>
+
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_fragment_titles">
         <item>Messages</item>

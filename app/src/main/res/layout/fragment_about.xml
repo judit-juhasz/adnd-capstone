@@ -58,6 +58,7 @@
                 android:id="@+id/tv_display"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/lorem_ipsum_long"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:layout_marginBottom="@dimen/margin_normal"/>
 
