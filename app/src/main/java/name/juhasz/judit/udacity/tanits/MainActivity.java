@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 }
                 break;
             default:
-                Log.w(LOG_TAG, FirebaseUtils.getString(R.string.log_messages_menu_selection, itemId));
+                Log.w(LOG_TAG, getString(R.string.log_messages_menu_selection, itemId));
         }
         if (!arguments.isEmpty()) {
             fragment.setArguments(arguments);

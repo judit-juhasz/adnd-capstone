@@ -69,7 +69,7 @@ public class FirebaseUtils {
         mContext = context;
     }
 
-    public static String getString(@NonNull final int resourceId, final Object... formatArgs) {
+    private static String getString(@NonNull final int resourceId, final Object... formatArgs) {
         if (null != mContext) {
             return mContext.getResources().getString(resourceId, formatArgs);
         }

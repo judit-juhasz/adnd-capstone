@@ -199,7 +199,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
                 break;
             }
             default:
-                Log.w(TAG, FirebaseUtils.getString(R.string.log_error_unknown_message_status_filter, filter));
+                Log.w(TAG, getActivity().getString(R.string.log_error_unknown_message_status_filter, filter));
         }
         mMessageStatusListenerDetacher = FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter,
                 new FirebaseUtils.MessageListListener() {

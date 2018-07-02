@@ -101,7 +101,7 @@ public class DetailsActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             default:
-                Log.w(LOG_TAG, FirebaseUtils.getString(R.string.log_messages_status_settings, itemId));
+                Log.w(LOG_TAG, getString(R.string.log_messages_status_settings, itemId));
         }
         return super.onOptionsItemSelected(item);
     }
