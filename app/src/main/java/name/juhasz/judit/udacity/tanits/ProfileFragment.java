@@ -17,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +51,10 @@ public class ProfileFragment extends Fragment {
     Button mSaveButton;
     @BindView(R.id.cl_fragment_profile)
     CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.ll_profile_data)
+    LinearLayout mProfileDataLinearLayout;
+    @BindView(R.id.tv_notification_profile)
+    TextView mNotificationTextView;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -67,8 +73,7 @@ public class ProfileFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         if (!NetworkUtils.isNetworkAvailable(getContext())) {
-            Toast.makeText(getContext(), "Internet connection is required",
-                    Toast.LENGTH_LONG).show();
+            showNotification(getString(R.string.internet_required));
         } else {
             // Progress bar?
         }
@@ -88,6 +93,7 @@ public class ProfileFragment extends Fragment {
                         mUserProfileListenerDetacher.detach();
                         mUserProfileListenerDetacher = null;
                     }
+                    // Progress bar?
                 }
             }
         };
@@ -132,12 +138,14 @@ public class ProfileFragment extends Fragment {
                         mBirthdateOfChildEditText.setText("");
                         mBirthdateOfChildEditText.setEnabled(true);
                     }
+                    showProfile();
                 }
                 updateSaveButtonStatus();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                showNotification(getString(R.string.error_internal));
                 Log.w(TAG, getString(R.string.log_user_profile_data), databaseError.toException());
             }
         }, true);
@@ -188,7 +196,7 @@ public class ProfileFragment extends Fragment {
                         .toInstant().getMillis();
                 datePickerDialog.getDatePicker().setMinDate(minDateInMillis);
                 final long todayInMillis = currentLocalDate.toDateTimeAtStartOfDay(DateTimeZone.UTC)
-                                .toInstant().getMillis();
+                        .toInstant().getMillis();
                 datePickerDialog.getDatePicker().setMaxDate(todayInMillis);
                 datePickerDialog.show();
             }
@@ -266,5 +274,16 @@ public class ProfileFragment extends Fragment {
 
     private void updateSaveButtonStatus() {
         mSaveButton.setEnabled(areAllInputsValid());
+    }
+
+    private void showNotification(@NonNull final String notificationText) {
+        mProfileDataLinearLayout.setVisibility(View.GONE);
+        mNotificationTextView.setVisibility(View.VISIBLE);
+        mNotificationTextView.setText(notificationText);
+    }
+
+    private void showProfile() {
+        mNotificationTextView.setVisibility(View.GONE);
+        mProfileDataLinearLayout.setVisibility(View.VISIBLE);
     }
 }
