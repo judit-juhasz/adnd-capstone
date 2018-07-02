@@ -89,5 +89,7 @@
     <string name="date_format_without_year">MMMM d</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="appwidget_text_date">EXAMPLE</string>
+    <string name="appwidget_text_author">Tanits</string>
 
 </resources>

@@ -1,21 +1,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09C"
-    android:padding="@dimen/widget_margin">
+    android:background="@color/colorWidgetBackground"
+    android:padding="@dimen/widget_padding"
+    android:layout_margin="@dimen/widget_margin">
+
+    <TextView
+        android:id="@+id/widget_last_active_message_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/appwidget_text_date"
+        android:text="@string/appwidget_text_date"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textStyle="bold|italic"
+        android:visibility="gone"
+        android:textColor="@color/colorPrimaryText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/widget_last_active_message_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/appwidget_text_author"
+        android:text="@string/appwidget_text_author"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold|italic"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/widget_last_active_message_summary"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#09C"
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
+        android:textColor="@color/colorSecondaryText"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/widget_last_active_message_date"
+        android:layout_marginTop="@dimen/widget_padding"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/widget_notification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/appwidget_text"
+        android:text="@string/appwidget_text"
+        android:textColor="@color/colorSecondaryText"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center" />
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.firebase.jobdispatcher.Constraint;
@@ -46,15 +47,17 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
     static void showAppWidgetMessage(Context context, AppWidgetManager appWidgetManager,
                                      int appWidgetId, @NonNull final Message message) {
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_last_active_message);
-        views.setTextViewText(R.id.widget_last_active_message_summary, message.getDate() + " " + message.getSummary());
-
+        showMessageView(views);
+        views.setTextViewText(R.id.widget_last_active_message_date, message.getDate());
+        views.setTextViewText(R.id.widget_last_active_message_summary, message.getSummary());
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     static void showAppWidgetNotification(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, final String notificationText) {
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_last_active_message);
-        views.setTextViewText(R.id.widget_last_active_message_summary, notificationText);
+        showNotificationView(views);
+        views.setTextViewText(R.id.widget_notification, notificationText);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -157,6 +160,20 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
         final FirebaseJobDispatcher dispatcher =
                 new FirebaseJobDispatcher(new GooglePlayDriver(context));
         dispatcher.cancel(JOB_SCHEDULER_ID);
+    }
+
+    private static void showNotificationView(final RemoteViews views) {
+        views.setViewVisibility(R.id.widget_last_active_message_author, View.GONE);
+        views.setViewVisibility(R.id.widget_last_active_message_author, View.GONE);
+        views.setViewVisibility(R.id.widget_last_active_message_summary, View.GONE);
+        views.setViewVisibility(R.id.widget_notification, View.VISIBLE);
+    }
+
+    private static void showMessageView(final RemoteViews views) {
+        views.setViewVisibility(R.id.widget_notification, View.GONE);
+        views.setViewVisibility(R.id.widget_last_active_message_author, View.VISIBLE);
+        views.setViewVisibility(R.id.widget_last_active_message_date, View.VISIBLE);
+        views.setViewVisibility(R.id.widget_last_active_message_summary, View.VISIBLE);
     }
 }
 

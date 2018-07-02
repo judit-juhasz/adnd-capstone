@@ -10,4 +10,5 @@
         <color name="colorWhiteTextIcons">#FFFFFF</color>
         <color name="colorDone">#A5D6A7</color>
         <color name="colorRejected">#B0BEC5</color>
+        <color name="colorWidgetBackground">#FFFFFF</color>
 </resources>
