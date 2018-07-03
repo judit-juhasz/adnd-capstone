@@ -56,8 +56,6 @@ public class MessageDetailsFragment extends Fragment {
 
         if (null != mMessage) {
             if (NetworkUtils.isNetworkAvailable(getContext())) {
-                // We know that there is a message and that we have internet connection. Progress bar
-                // until we wait for the result?
                 showProgressBar();
             } else {
                 showNotification(getString(R.string.internet_required));

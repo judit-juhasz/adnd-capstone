@@ -19,7 +19,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +77,6 @@ public class ProfileFragment extends Fragment {
         if (!NetworkUtils.isNetworkAvailable(getContext())) {
             showNotification(getString(R.string.internet_required));
         } else {
-            // Progress bar?
             showProgressBar();
         }
 
@@ -97,7 +95,6 @@ public class ProfileFragment extends Fragment {
                         mUserProfileListenerDetacher.detach();
                         mUserProfileListenerDetacher = null;
                     }
-                    // Progress bar?
                     showProgressBar();
                 }
             }
