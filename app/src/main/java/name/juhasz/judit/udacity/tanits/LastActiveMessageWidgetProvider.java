@@ -56,7 +56,6 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
         final int lastMessageIndex = messages.size()-1;
         final Message lastMessage = messages.get(lastMessageIndex);
 
-        views.setTextViewText(R.id.widget_last_active_message_date, lastMessage.getDate());
         final Intent remoteViewServiceIntent =
                 new Intent(context, ActiveMessagesRemoveViewsService.class);
         remoteViewServiceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
