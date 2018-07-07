@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
     private Toolbar mToolbar;
-    private View mNavigationHeaderView;
     private TextView mUsernameTextView;
     private TextView mEmailTextView;
     @BindView(R.id.content_message_details)
@@ -131,9 +130,9 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         setupDrawerContent(mNavigationView);
         loadActionBarDrawerToggle(mDrawerLayout);
 
-        mNavigationHeaderView = mNavigationView.getHeaderView(0);
-        mUsernameTextView = mNavigationHeaderView.findViewById(R.id.tv_username);
-        mEmailTextView = mNavigationHeaderView.findViewById(R.id.tv_email);
+        final View navigationHeaderView = mNavigationView.getHeaderView(0);
+        mUsernameTextView = navigationHeaderView.findViewById(R.id.tv_username);
+        mEmailTextView = navigationHeaderView.findViewById(R.id.tv_email);
 
         mQuestionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
