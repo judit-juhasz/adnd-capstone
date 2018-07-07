@@ -77,8 +77,6 @@
 
     <string name="date_format_with_year">MMMM d, Y</string>
     <string name="date_format_without_year">MMMM d</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="appwidget_text_date">EXAMPLE</string>
     <string name="appwidget_text_author">Tanits</string>
     <string name="widget_login_notification">Login to show the last active message</string>
 
