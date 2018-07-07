@@ -98,7 +98,6 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                showProgressBar();
                 if (null != firebaseAuth.getCurrentUser()) {
                     final Bundle bundle = MessagesFragment.this.getArguments();
                     if (bundle != null) {
@@ -106,6 +105,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
                         queryMessages(filter);
                     }
                 } else {
+                    showProgressBar();
                     if (null != mMessageStatusListenerDetacher) {
                         mMessageStatusListenerDetacher.detach();
                         mMessageStatusListenerDetacher = null;
