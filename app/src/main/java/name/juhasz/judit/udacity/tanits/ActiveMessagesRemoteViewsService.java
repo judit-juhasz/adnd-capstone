@@ -49,6 +49,10 @@ public class ActiveMessagesRemoteViewsService extends RemoteViewsService {
             views.setTextViewText(R.id.widget_list_elem_message_date, mMessages[position].getDate());
             views.setTextViewText(R.id.widget_list_elem_message_summary, mMessages[position].getSummary());
 
+            // https://stackoverflow.com/a/14811595
+            final Intent fillInIntent = new Intent();
+            views.setOnClickFillInIntent(R.id.widget_list_elem_message, fillInIntent);
+
             return views;
         }
 

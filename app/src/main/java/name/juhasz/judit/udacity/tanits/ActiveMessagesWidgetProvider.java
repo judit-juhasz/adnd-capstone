@@ -69,6 +69,12 @@ public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
                 PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
         views.setOnClickPendingIntent(R.id.widget_active_messages, pendingIntent);
 
+        // https://stackoverflow.com/a/14811595
+        final PendingIntent startActivityPendingIntent =
+                PendingIntent.getActivity(context, 0, mainActivityIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_active_messages_list, startActivityPendingIntent);
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
