@@ -38,6 +38,7 @@ import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 public class MainActivity extends AppCompatActivity implements MessagesFragment.OnSelectMessageListener {
 
     private static final String SAVE_SELECTED_NAVIGATION_ITEM = "SAVE_SELECTED_NAVIGATION_ITEM";
+    private static final String SAVE_SELECTED_MESSAGE_FILTER = "SAVE_SELECTED_MESSAGE_FILTER";
     private static final String SAVE_LAST_USER_ID = "SAVE_LAST_USER_ID";
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private String mLastUserId = null;
+    private int mSelectedMessageFilter = MessagesFragment.FILTER_ACTIVE;
     private int mSelectedNavigationItem = R.id.nav_messages;
 
     @BindView(R.id.drawer_layout)
@@ -97,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         if (null != savedInstanceState) {
             if (savedInstanceState.containsKey(SAVE_LAST_USER_ID)) {
                 mLastUserId = savedInstanceState.getString(SAVE_LAST_USER_ID);
+            }
+            if (savedInstanceState.containsKey(SAVE_SELECTED_MESSAGE_FILTER)) {
+                mSelectedMessageFilter = savedInstanceState.getInt(SAVE_SELECTED_MESSAGE_FILTER);
             }
             if (savedInstanceState.containsKey(SAVE_SELECTED_NAVIGATION_ITEM)) {
                 final int previouslySelectedNavigationItem =
@@ -186,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(SAVE_SELECTED_NAVIGATION_ITEM, mSelectedNavigationItem);
+        outState.putInt(SAVE_SELECTED_MESSAGE_FILTER, mSelectedMessageFilter);
         outState.putString(SAVE_LAST_USER_ID, mLastUserId);
         super.onSaveInstanceState(outState);
     }
@@ -247,21 +253,15 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
 
     private Fragment getFragmentForNavigationItemId(@NonNull final int navigationItemId) {
         switch (navigationItemId) {
-            case R.id.nav_messages: {
-                final MessagesFragment fragment = new MessagesFragment();
-                final Bundle arguments = new Bundle();
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
-                fragment.setArguments(arguments);
-                return fragment;
-            }
             case R.id.nav_profile:
                 return new ProfileFragment();
             case R.id.nav_about:
                 return new AboutFragment();
+            case R.id.nav_messages:
             default: {
                 final MessagesFragment fragment = new MessagesFragment();
                 final Bundle arguments = new Bundle();
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
+                arguments.putInt(MessagesFragment.PARAMETER_FILTER, mSelectedMessageFilter);
                 fragment.setArguments(arguments);
                 return fragment;
             }
@@ -358,20 +358,22 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
-        final MessagesFragment fragment = new MessagesFragment();
-        final Bundle arguments = new Bundle();
         switch (itemId) {
             case R.id.messages_all:
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ALL);
+                mSelectedMessageFilter = MessagesFragment.FILTER_ALL;
+                loadActivityContentForNavigationItemId(R.id.nav_messages);
                 break;
             case R.id.messages_active:
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
+                mSelectedMessageFilter = MessagesFragment.FILTER_ACTIVE;
+                loadActivityContentForNavigationItemId(R.id.nav_messages);
                 break;
             case R.id.messages_done:
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_DONE);
+                mSelectedMessageFilter = MessagesFragment.FILTER_DONE;
+                loadActivityContentForNavigationItemId(R.id.nav_messages);
                 break;
             case R.id.messages_rejected:
-                arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_REJECTED);
+                mSelectedMessageFilter = MessagesFragment.FILTER_REJECTED;
+                loadActivityContentForNavigationItemId(R.id.nav_messages);
                 break;
             case R.id.status_rejected:
                 if (null != mLoadedMessage) {
@@ -387,11 +389,6 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 break;
             default:
                 Log.w(LOG_TAG, getString(R.string.log_messages_menu_selection, itemId));
-        }
-        if (!arguments.isEmpty()) {
-            fragment.setArguments(arguments);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
         return super.onOptionsItemSelected(item);
     }
