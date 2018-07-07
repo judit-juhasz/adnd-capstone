@@ -15,13 +15,6 @@
     <string name="username">Username</string>
     <string name="email">username</string>
 
-    <!-- Toolbar titles when navigation menu item is selected -->
-    <string-array name="nav_item_fragment_titles">
-        <item>Messages</item>
-        <item>Profile</item>
-        <item>About Us</item>
-    </string-array>
-
     <string name="lorem_ipsum_tiny">Lorem Ipsum</string>
     <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porttitor pulvinar orci, sit amet luctus dolor cursus at. Nam non augue dolor. Praesent aliquet dictum rutrum. Fusce in rhoncus lacus, non convallis velit. Aenean metus ex, tempus eget augue nec, finibus laoreet libero. Sed eget iaculis nisi. Maecenas ut diam dictum, rutrum tellus at, blandit mauris. Duis congue massa eu turpis scelerisque, et convallis felis tempus. In non iaculis tellus. Duis justo diam, sollicitudin id lectus ac, consectetur aliquam dolor. Etiam ullamcorper finibus massa, ut elementum lectus tincidunt sed. Aliquam iaculis eu tellus sit amet laoreet. Quisque vehicula, neque sit amet tincidunt ullamcorper, tortor est ullamcorper arcu, at finibus neque elit id diam.\nFusce efficitur luctus turpis at mollis. Etiam sagittis, est sed mattis bibendum, est sapien lobortis nunc, suscipit condimentum ante risus eget lorem. In sit amet convallis nunc, eget porttitor tortor. Proin ornare lorem quam, ac maximus tortor tempus eget. Nam suscipit sed ex ut aliquam. Phasellus mattis efficitur elementum. Nam in dui erat. Fusce et felis at ligula accumsan accumsan at a massa. Cras vel enim tempor, tincidunt lacus nec, aliquet augue. Curabitur semper risus in odio tristique, eu ornare risus blandit.\nQuisque massa nunc, fringilla a tristique ac, tempus in diam. Morbi in velit eros. Donec hendrerit nibh aliquet, accumsan lectus vitae, dictum ante. Ut dictum vehicula nisl id suscipit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam sit amet erat ornare, ultrices arcu et, interdum lectus. Integer rhoncus sed ex quis vehicula.\nFusce tristique justo at tellus laoreet dictum. Aenean id ligula sollicitudin, pulvinar turpis in, semper libero. Nam non tristique felis. Aliquam auctor sem nec lorem laoreet lobortis. Donec eu consectetur mi. Nulla rhoncus sodales nulla, sed maximus arcu aliquet non. Suspendisse quis libero sit amet magna tempor volutpat. Nam posuere, ex non congue cursus, nisl metus aliquam risus, et condimentum leo turpis sed lacus. Praesent lobortis nunc ac metus posuere, placerat pretium diam scelerisque. Donec rhoncus ut orci eu auctor. Etiam laoreet erat purus.</string>
 

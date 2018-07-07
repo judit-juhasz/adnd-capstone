@@ -36,22 +36,20 @@ import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class MainActivity extends AppCompatActivity implements MessagesFragment.OnSelectMessageListener {
 
-    private static final String SAVE_NAVIGATION_ITEM_INDEX = "SAVE_NAVIGATION_ITEM_INDEX";
-    private static final String SAVE_FRAGMENT_TITLES = "SAVE_FRAGMENT_TITLES";
+    private static final String SAVE_SELECTED_NAVIGATION_ITEM = "SAVE_SELECTED_NAVIGATION_ITEM";
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    public static final int RC_SIGN_IN = 1;
-    public static int navigationItemIndex = 0;
+    private static final int RC_SIGN_IN = 1;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private String mLastUserId = null;
+    private int mSelectedNavigationItem = R.id.nav_messages;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
     private Toolbar mToolbar;
-    private String[] mFragmentTitles;
     private View mNavigationHeaderView;
     private TextView mUsernameTextView;
     private TextView mEmailTextView;
@@ -104,7 +102,8 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                                             new AuthUI.IdpConfig.EmailBuilder().build()))
                                     .build(), RC_SIGN_IN);
                 } else {
-                    mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+                    mUserProfileListenerDetacher =
+                            FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
                         @Override
                         public void onReceive(UserProfile userProfile) {
                             loadNavigationHeader(userProfile);
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                     }, true);
                     final String currentUserId = firebaseAuth.getCurrentUser().getUid();
                     if (!currentUserId.equals(mLastUserId)) {
-                        navigationItemIndex = 0;
+                        mSelectedNavigationItem = R.id.nav_messages;
                         loadFragment();
                     }
                     mLastUserId = firebaseAuth.getCurrentUser().getUid();
@@ -154,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
             }
         });
 
-        mFragmentTitles = getResources().getStringArray(R.array.nav_item_fragment_titles);
         loadFragment();
         setMessageDetailFragmentVisibility();
     }
@@ -179,16 +177,14 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SAVE_NAVIGATION_ITEM_INDEX, navigationItemIndex);
-        outState.putStringArray(SAVE_FRAGMENT_TITLES, mFragmentTitles);
+        outState.putInt(SAVE_SELECTED_NAVIGATION_ITEM, mSelectedNavigationItem);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        navigationItemIndex = savedInstanceState.getInt(SAVE_NAVIGATION_ITEM_INDEX);
-        mFragmentTitles = savedInstanceState.getStringArray(SAVE_FRAGMENT_TITLES);
+        mSelectedNavigationItem = savedInstanceState.getInt(SAVE_SELECTED_NAVIGATION_ITEM);
     }
 
     private void loadActionBarDrawerToggle(DrawerLayout layout) {
@@ -225,17 +221,17 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
 
         switch (menuItem.getItemId()) {
             case R.id.nav_messages:
-                navigationItemIndex = 0;
+                mSelectedNavigationItem = R.id.nav_messages;
                 setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
             case R.id.nav_profile:
-                navigationItemIndex = 1;
+                mSelectedNavigationItem = R.id.nav_profile;
                 setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
             case R.id.nav_about:
-                navigationItemIndex = 2;
+                mSelectedNavigationItem = R.id.nav_about;
                 setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
@@ -248,22 +244,22 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 AuthUI.getInstance().signOut(this);
                 break;
             default:
-                navigationItemIndex = 0;
+                mSelectedNavigationItem = R.id.nav_messages;
         }
     }
 
     private Fragment getFragment() {
-        switch (navigationItemIndex) {
-            case 0: {
+        switch (mSelectedNavigationItem) {
+            case R.id.nav_messages: {
                 final MessagesFragment fragment = new MessagesFragment();
                 final Bundle arguments = new Bundle();
                 arguments.putInt(MessagesFragment.PARAMETER_FILTER, MessagesFragment.FILTER_ACTIVE);
                 fragment.setArguments(arguments);
                 return fragment;
             }
-            case 1:
+            case R.id.nav_profile:
                 return new ProfileFragment();
-            case 2:
+            case R.id.nav_about:
                 return new AboutFragment();
             default: {
                 final MessagesFragment fragment = new MessagesFragment();
@@ -276,11 +272,11 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     }
 
     private void selectNavigationMenu() {
-        mNavigationView.getMenu().getItem(navigationItemIndex).setChecked(true);
+        mNavigationView.getMenu().findItem(mSelectedNavigationItem).setChecked(true);
     }
 
     private void setToolbarTitles() {
-        getSupportActionBar().setTitle(mFragmentTitles[navigationItemIndex]);
+        getSupportActionBar().setTitle(mNavigationView.getMenu().findItem(mSelectedNavigationItem).getTitle());
     }
 
     private void loadNavigationHeader(final UserProfile user) {
@@ -305,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         selectNavigationMenu();
         setToolbarTitles();
         Fragment fragment = getFragment();
-        if (0 == navigationItemIndex) {
+        if (R.id.nav_messages == mSelectedNavigationItem) {
             mGroupFloatingActionButton.setVisibility(View.VISIBLE);
         } else {
             mGroupFloatingActionButton.setVisibility(View.GONE);
@@ -344,9 +340,9 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mTwoPaneMode && 0 == navigationItemIndex && null != mLoadedMessage) {
+        if (mTwoPaneMode && R.id.nav_messages == mSelectedNavigationItem && null != mLoadedMessage) {
             getMenuInflater().inflate(R.menu.menu_activity_main_two_panel, menu);
-        } else if (0 == navigationItemIndex) {
+        } else if (R.id.nav_messages == mSelectedNavigationItem) {
             getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         }
         return true;
@@ -395,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     }
 
     private void setMessageDetailFragmentVisibility() {
-        if (mTwoPaneMode && 0 == navigationItemIndex) {
+        if (mTwoPaneMode && R.id.nav_messages == mSelectedNavigationItem) {
             mMessageDetailsFrameLayout.setVisibility(View.VISIBLE);
         } else {
             mMessageDetailsFrameLayout.setVisibility(View.GONE);
