@@ -38,6 +38,8 @@ import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 public class MainActivity extends AppCompatActivity implements MessagesFragment.OnSelectMessageListener {
 
     private static final String SAVE_SELECTED_NAVIGATION_ITEM = "SAVE_SELECTED_NAVIGATION_ITEM";
+    private static final String SAVE_LAST_USER_ID = "SAVE_LAST_USER_ID";
+
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1;
 
@@ -50,9 +52,8 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
-    private Toolbar mToolbar;
-    private TextView mUsernameTextView;
-    private TextView mEmailTextView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     @BindView(R.id.content_message_details)
     FrameLayout mMessageDetailsFrameLayout;
     @BindView(R.id.fab_menu)
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     FloatingActionButton mQuestionFloatingActionButton;
     @BindView(R.id.fab_feedback)
     FloatingActionButton mFeedbackFloatingActionButton;
+    private TextView mUsernameTextView;
+    private TextView mEmailTextView;
 
     private boolean mTwoPaneMode;
     private Message mLoadedMessage;
@@ -83,6 +86,25 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         JodaTimeAndroid.init(this);
         FirebaseUtils.initialize(this);
 
+        final View navigationHeaderView = mNavigationView.getHeaderView(0);
+        mUsernameTextView = navigationHeaderView.findViewById(R.id.tv_username);
+        mEmailTextView = navigationHeaderView.findViewById(R.id.tv_email);
+
+        setSupportActionBar(mToolbar);
+        setupDrawerContent(mNavigationView);
+        loadActionBarDrawerToggle(mDrawerLayout);
+
+        if (null != savedInstanceState) {
+            if (savedInstanceState.containsKey(SAVE_LAST_USER_ID)) {
+                mLastUserId = savedInstanceState.getString(SAVE_LAST_USER_ID);
+            }
+            if (savedInstanceState.containsKey(SAVE_SELECTED_NAVIGATION_ITEM)) {
+                final int previouslySelectedNavigationItem =
+                        savedInstanceState.getInt(SAVE_SELECTED_NAVIGATION_ITEM);
+                loadActivityContentForNavigationItemId(previouslySelectedNavigationItem);
+            }
+        }
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -104,16 +126,16 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 } else {
                     mUserProfileListenerDetacher =
                             FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
-                        @Override
-                        public void onReceive(UserProfile userProfile) {
-                            loadNavigationHeader(userProfile);
-                        }
+                                @Override
+                                public void onReceive(UserProfile userProfile) {
+                                    loadNavigationHeader(userProfile);
+                                }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.e(LOG_TAG, getString(R.string.log_error_login) + databaseError);
-                        }
-                    }, true);
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.e(LOG_TAG, getString(R.string.log_error_login) + databaseError);
+                                }
+                            }, true);
                     final String currentUserId = firebaseAuth.getCurrentUser().getUid();
                     if (!currentUserId.equals(mLastUserId)) {
                         loadActivityContentForNavigationItemId(R.id.nav_messages);
@@ -123,16 +145,6 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 LastActiveMessageWidgetProvider.updateAllWidgets(MainActivity.this);
             }
         };
-
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-
-        setupDrawerContent(mNavigationView);
-        loadActionBarDrawerToggle(mDrawerLayout);
-
-        final View navigationHeaderView = mNavigationView.getHeaderView(0);
-        mUsernameTextView = navigationHeaderView.findViewById(R.id.tv_username);
-        mEmailTextView = navigationHeaderView.findViewById(R.id.tv_email);
 
         mQuestionFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -151,8 +163,6 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 startActivity(Intent.createChooser(sendEmailIntent, getResources().getString(R.string.no_email_client_selected)));
             }
         });
-
-        loadActivityContentForNavigationItemId(R.id.nav_messages);
     }
 
     @Override
@@ -176,13 +186,8 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(SAVE_SELECTED_NAVIGATION_ITEM, mSelectedNavigationItem);
+        outState.putString(SAVE_LAST_USER_ID, mLastUserId);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mSelectedNavigationItem = savedInstanceState.getInt(SAVE_SELECTED_NAVIGATION_ITEM);
     }
 
     private void loadActionBarDrawerToggle(DrawerLayout layout) {
