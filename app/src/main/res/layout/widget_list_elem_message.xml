@@ -20,5 +20,5 @@
         android:layout_height="match_parent"
         android:ellipsize="end"
         android:layout_toEndOf="@id/widget_list_elem_message_date"
-        android:maxLines="1"/>
+        android:maxLines="2"/>
 </RelativeLayout>

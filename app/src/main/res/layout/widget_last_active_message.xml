@@ -39,6 +39,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorSecondaryText"
         android:layout_alignParentStart="true"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:layout_below="@id/widget_last_active_message_date"
         android:layout_marginTop="@dimen/widget_padding"
         tools:listitem="@layout/widget_list_elem_message"/>
