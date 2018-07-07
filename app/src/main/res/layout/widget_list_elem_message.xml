@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:showDividers="none">
+
+    <TextView
+        android:id="@+id/widget_list_elem_message_date"
+        android:layout_width="@dimen/zero_width"
+        android:layout_height="match_parent"
+        android:layout_weight="@integer/weight_one" />
+
+    <TextView
+        android:id="@+id/widget_list_elem_message_summary"
+        android:layout_width="@dimen/zero_width"
+        android:layout_height="match_parent"
+        android:layout_weight="@integer/weight_two"
+        android:ellipsize="end"
+        android:maxLines="1" />
+</LinearLayout>

@@ -6,6 +6,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -45,14 +47,27 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
 
     private static final String LOG_TAG = LastActiveMessageWidgetProvider.class.getSimpleName();
 
-    static void showAppWidgetMessage(Context context, AppWidgetManager appWidgetManager,
-                                     int appWidgetId, @NonNull final Message message) {
+    static void showMessageList(Context context, AppWidgetManager appWidgetManager,
+                                int appWidgetId, @NonNull final List<Message> messages) {
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_last_active_message);
 
         showMessageView(views);
 
-        views.setTextViewText(R.id.widget_last_active_message_date, message.getDate());
-        views.setTextViewText(R.id.widget_last_active_message_summary, message.getSummary());
+        final int lastMessageIndex = messages.size()-1;
+        final Message lastMessage = messages.get(lastMessageIndex);
+
+        views.setTextViewText(R.id.widget_last_active_message_date, lastMessage.getDate());
+        views.setTextViewText(R.id.widget_last_active_message_summary, lastMessage.getSummary());
+        final Intent remoteViewServiceIntent =
+                new Intent(context, ActiveMessagesRemoveViewsService.class);
+        remoteViewServiceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        final Message[] messagesArray = messages.toArray(new Message[messages.size()]);
+        // https://stackoverflow.com/q/13363046
+        final Bundle bundle = new Bundle();
+        bundle.putParcelableArray(ActiveMessagesRemoveViewsService.EXTRA_MESSAGES, messagesArray);
+        remoteViewServiceIntent.putExtra(ActiveMessagesRemoveViewsService.EXTRA_MESSAGES, bundle);
+        remoteViewServiceIntent.setData(Uri.parse(remoteViewServiceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        views.setRemoteAdapter(R.id.widget_active_messages_list, remoteViewServiceIntent);
 
         final Intent mainActivityIntent = new Intent(context, MainActivity.class);
         final PendingIntent pendingIntent =
@@ -112,11 +127,8 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
                                     }
                                     return;
                                 }
-                                final int lastMessageIndex = messageList.size()-1;
-                                final Message lastMessage = messageList.get(lastMessageIndex);
                                 for (int appWidgetId : appWidgetIds) {
-                                    showAppWidgetMessage(context, appWidgetManager, appWidgetId,
-                                            lastMessage);
+                                    showMessageList(context, appWidgetManager, appWidgetId, messageList);
                                 }
                             }
 
@@ -142,6 +154,8 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
                         databaseError.toException());
             }
         }, false);
+
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
