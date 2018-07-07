@@ -1,5 +1,6 @@
 package name.juhasz.judit.udacity.tanits;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -47,9 +48,17 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
     static void showAppWidgetMessage(Context context, AppWidgetManager appWidgetManager,
                                      int appWidgetId, @NonNull final Message message) {
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_last_active_message);
+
         showMessageView(views);
+
         views.setTextViewText(R.id.widget_last_active_message_date, message.getDate());
         views.setTextViewText(R.id.widget_last_active_message_summary, message.getSummary());
+
+        final Intent mainActivityIntent = new Intent(context, MainActivity.class);
+        final PendingIntent pendingIntent =
+                PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
+        views.setOnClickPendingIntent(R.id.widget_last_active_message_summary, pendingIntent);
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
