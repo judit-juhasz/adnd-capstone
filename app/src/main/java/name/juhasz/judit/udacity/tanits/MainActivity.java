@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -115,8 +116,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                     }, true);
                     final String currentUserId = firebaseAuth.getCurrentUser().getUid();
                     if (!currentUserId.equals(mLastUserId)) {
-                        mSelectedNavigationItem = R.id.nav_messages;
-                        loadFragment();
+                        loadActivityContentForNavigationItemId(R.id.nav_messages);
                     }
                     mLastUserId = firebaseAuth.getCurrentUser().getUid();
                 }
@@ -152,8 +152,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
             }
         });
 
-        loadFragment();
-        setMessageDetailFragmentVisibility();
+        loadActivityContentForNavigationItemId(R.id.nav_messages);
     }
 
     @Override
@@ -220,19 +219,13 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         final int itemId = menuItem.getItemId();
         switch (itemId) {
             case R.id.nav_messages:
-                mSelectedNavigationItem = itemId;
-                setMessageDetailFragmentVisibility();
-                loadFragment();
+                loadActivityContentForNavigationItemId(itemId);
                 break;
             case R.id.nav_profile:
-                mSelectedNavigationItem = itemId;
-                setMessageDetailFragmentVisibility();
-                loadFragment();
+                loadActivityContentForNavigationItemId(itemId);
                 break;
             case R.id.nav_about:
-                mSelectedNavigationItem = itemId;
-                setMessageDetailFragmentVisibility();
-                loadFragment();
+                loadActivityContentForNavigationItemId(itemId);
                 break;
             case R.id.nav_logout:
                 mDrawerLayout.closeDrawers();
@@ -243,12 +236,12 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 AuthUI.getInstance().signOut(this);
                 break;
             default:
-                mSelectedNavigationItem = R.id.nav_messages;
+                loadActivityContentForNavigationItemId(R.id.nav_messages);
         }
     }
 
-    private Fragment getFragment() {
-        switch (mSelectedNavigationItem) {
+    private Fragment getFragmentForNavigationItemId(@NonNull final int navigationItemId) {
+        switch (navigationItemId) {
             case R.id.nav_messages: {
                 final MessagesFragment fragment = new MessagesFragment();
                 final Bundle arguments = new Bundle();
@@ -270,12 +263,12 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         }
     }
 
-    private void selectNavigationMenu() {
-        mNavigationView.getMenu().findItem(mSelectedNavigationItem).setChecked(true);
+    private void selectNavigationMenu(@NonNull final int navigationItemId) {
+        mNavigationView.getMenu().findItem(navigationItemId).setChecked(true);
     }
 
-    private void setToolbarTitles() {
-        getSupportActionBar().setTitle(mNavigationView.getMenu().findItem(mSelectedNavigationItem).getTitle());
+    private void setToolbarTitles(@NonNull final int navigationItemId) {
+        getSupportActionBar().setTitle(mNavigationView.getMenu().findItem(navigationItemId).getTitle());
     }
 
     private void loadNavigationHeader(final UserProfile user) {
@@ -296,19 +289,29 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         }
     }
 
-    private void loadFragment() {
-        selectNavigationMenu();
-        setToolbarTitles();
-        Fragment fragment = getFragment();
-        if (R.id.nav_messages == mSelectedNavigationItem) {
+    private void loadActivityContentForNavigationItemId(@NonNull final int navigationItemId) {
+        setMessageDetailFragmentVisibility(navigationItemId);
+        selectNavigationMenu(navigationItemId);
+        setToolbarTitles(navigationItemId);
+        setFabVisibilityForNavigationItemId(navigationItemId);
+        setFragmentForNavigationItemId(navigationItemId);
+        mSelectedNavigationItem = navigationItemId;
+        mDrawerLayout.closeDrawers();
+        invalidateOptionsMenu();
+    }
+
+    private void setFragmentForNavigationItemId(@Nullable final int navigationItemId) {
+        final Fragment fragment = getFragmentForNavigationItemId(navigationItemId);
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+    }
+
+    private void setFabVisibilityForNavigationItemId(@Nullable final int navigationItemId) {
+        if (R.id.nav_messages == navigationItemId) {
             mGroupFloatingActionButton.setVisibility(View.VISIBLE);
         } else {
             mGroupFloatingActionButton.setVisibility(View.GONE);
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        mDrawerLayout.closeDrawers();
-        invalidateOptionsMenu();
     }
 
     @Override
@@ -388,8 +391,8 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         return super.onOptionsItemSelected(item);
     }
 
-    private void setMessageDetailFragmentVisibility() {
-        if (mTwoPaneMode && R.id.nav_messages == mSelectedNavigationItem) {
+    private void setMessageDetailFragmentVisibility(@NonNull final int navigationItemId) {
+        if (mTwoPaneMode && R.id.nav_messages == navigationItemId) {
             mMessageDetailsFrameLayout.setVisibility(View.VISIBLE);
         } else {
             mMessageDetailsFrameLayout.setVisibility(View.GONE);
