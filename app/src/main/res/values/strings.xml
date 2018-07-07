@@ -30,7 +30,7 @@
     <string name="message_save_successful">Your profile has been saved successfully.</string>
     <string name="internet_required">Internet connection is required</string>
 
-    <!-- Messages categorization menuitems -->
+    <!-- Messages categorization menu_items -->
     <string name="menu_item_categorization_all">All</string>
     <string name="menu_item_categorization_active">Active</string>
     <string name="menu_item_categorization_done">Done</string>
@@ -55,7 +55,7 @@
     <string name="log_user_profile_query_canceled">User profile query is canceled with database error: </string>
     <string name="error_internal">We are sorry, internal error</string>
 
-    <!-- Email datas -->
+    <!-- Email data -->
     <string name="subject_feedback">Feedback</string>
     <string name="subject_question">Question</string>
     <string name="email_address">judit@juhasz.name</string>
