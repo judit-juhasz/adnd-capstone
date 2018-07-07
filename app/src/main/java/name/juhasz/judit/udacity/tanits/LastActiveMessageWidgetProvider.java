@@ -57,7 +57,6 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
         final Message lastMessage = messages.get(lastMessageIndex);
 
         views.setTextViewText(R.id.widget_last_active_message_date, lastMessage.getDate());
-        views.setTextViewText(R.id.widget_last_active_message_summary, lastMessage.getSummary());
         final Intent remoteViewServiceIntent =
                 new Intent(context, ActiveMessagesRemoveViewsService.class);
         remoteViewServiceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -72,7 +71,7 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
         final Intent mainActivityIntent = new Intent(context, MainActivity.class);
         final PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
-        views.setOnClickPendingIntent(R.id.widget_last_active_message_summary, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_last_active_message, pendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -186,17 +185,17 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
     }
 
     private static void showNotificationView(final RemoteViews views) {
+        views.setViewVisibility(R.id.widget_last_active_message_date, View.GONE);
         views.setViewVisibility(R.id.widget_last_active_message_author, View.GONE);
-        views.setViewVisibility(R.id.widget_last_active_message_author, View.GONE);
-        views.setViewVisibility(R.id.widget_last_active_message_summary, View.GONE);
+        views.setViewVisibility(R.id.widget_active_messages_list, View.GONE);
         views.setViewVisibility(R.id.widget_notification, View.VISIBLE);
     }
 
     private static void showMessageView(final RemoteViews views) {
-        views.setViewVisibility(R.id.widget_notification, View.GONE);
-        views.setViewVisibility(R.id.widget_last_active_message_author, View.VISIBLE);
         views.setViewVisibility(R.id.widget_last_active_message_date, View.VISIBLE);
-        views.setViewVisibility(R.id.widget_last_active_message_summary, View.VISIBLE);
+        views.setViewVisibility(R.id.widget_last_active_message_author, View.VISIBLE);
+        views.setViewVisibility(R.id.widget_active_messages_list, View.VISIBLE);
+        views.setViewVisibility(R.id.widget_notification, View.GONE);
     }
 }
 
