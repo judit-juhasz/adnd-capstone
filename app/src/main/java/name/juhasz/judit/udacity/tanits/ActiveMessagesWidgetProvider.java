@@ -32,7 +32,7 @@ import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
 public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
 
-    private static String JOB_SCHEDULER_ID = "LastActiveMessageWidgetProviderJobScheduler";
+    private static String JOB_SCHEDULER_ID = "ActiveMessagesWidgetProviderJobScheduler";
 
     public static void updateAllWidgets(@NonNull final Context context) {
         final Class<ActiveMessagesWidgetProvider> widgetProviderClass =
@@ -53,9 +53,6 @@ public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
 
         showMessageView(views);
 
-        final int lastMessageIndex = messages.size()-1;
-        final Message lastMessage = messages.get(lastMessageIndex);
-
         final Intent remoteViewServiceIntent =
                 new Intent(context, ActiveMessagesRemoteViewsService.class);
         remoteViewServiceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -70,7 +67,7 @@ public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
         final Intent mainActivityIntent = new Intent(context, MainActivity.class);
         final PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
-        views.setOnClickPendingIntent(R.id.widget_last_active_message, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_active_messages, pendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
