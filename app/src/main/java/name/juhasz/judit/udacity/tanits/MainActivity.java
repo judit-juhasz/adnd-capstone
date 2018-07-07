@@ -78,15 +78,14 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
-        mTwoPaneMode = ConfigurationUtils.isTwoPaneMode(this);
+        JodaTimeAndroid.init(this);
+        FirebaseUtils.initialize(this);
 
         if (getResources().getBoolean(R.bool.portrait_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        JodaTimeAndroid.init(this);
-        FirebaseUtils.initialize(this);
+        mTwoPaneMode = ConfigurationUtils.isTwoPaneMode(this);
 
         final View navigationHeaderView = mNavigationView.getHeaderView(0);
         mUsernameTextView = navigationHeaderView.findViewById(R.id.tv_username);
