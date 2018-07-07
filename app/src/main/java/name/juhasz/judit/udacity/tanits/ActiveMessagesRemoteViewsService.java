@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-public class ActiveMessagesRemoveViewsService extends RemoteViewsService {
+public class ActiveMessagesRemoteViewsService extends RemoteViewsService {
     public static String EXTRA_MESSAGES = "EXTRA_MESSAGES";
 
     private class ActiveMessagesRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {

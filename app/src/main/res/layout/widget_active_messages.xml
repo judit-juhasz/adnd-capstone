@@ -9,7 +9,7 @@
     android:layout_margin="@dimen/widget_margin">
 
     <TextView
-        android:id="@+id/widget_last_active_message_date"
+        android:id="@+id/widget_active_messages_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -21,7 +21,7 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:id="@+id/widget_last_active_message_author"
+        android:id="@+id/widget_active_messages_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/appwidget_text_author"
@@ -41,12 +41,12 @@
         android:layout_alignParentStart="true"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:layout_below="@id/widget_last_active_message_date"
+        android:layout_below="@id/widget_active_messages_title"
         android:layout_marginTop="@dimen/widget_padding"
         tools:listitem="@layout/widget_list_elem_message"/>
 
     <TextView
-        android:id="@+id/widget_notification"
+        android:id="@+id/widget_active_messages_notification"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="@color/colorSecondaryText"

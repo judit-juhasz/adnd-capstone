@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                     }
                     mLastUserId = firebaseAuth.getCurrentUser().getUid();
                 }
-                LastActiveMessageWidgetProvider.updateAllWidgets(MainActivity.this);
+                ActiveMessagesWidgetProvider.updateAllWidgets(MainActivity.this);
             }
         };
 
@@ -391,13 +391,13 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
             case R.id.status_rejected:
                 if (null != mLoadedMessage) {
                     FirebaseUtils.saveMessageStatus(mLoadedMessage.getId(), Message.STATUS_REJECTED);
-                    LastActiveMessageWidgetProvider.updateAllWidgets(this);
+                    ActiveMessagesWidgetProvider.updateAllWidgets(this);
                 }
                 break;
             case R.id.status_done:
                 if (null != mLoadedMessage) {
                     FirebaseUtils.saveMessageStatus(mLoadedMessage.getId(), Message.STATUS_DONE);
-                    LastActiveMessageWidgetProvider.updateAllWidgets(this);
+                    ActiveMessagesWidgetProvider.updateAllWidgets(this);
                 }
                 break;
             default:

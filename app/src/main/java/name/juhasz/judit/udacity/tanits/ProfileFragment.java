@@ -166,7 +166,7 @@ public class ProfileFragment extends Fragment {
                                 mEmailEditText.getText().toString(),
                                 mBirthdateOfChildEditText.getText().toString());
                 FirebaseUtils.saveUserProfile(userProfile);
-                LastActiveMessageWidgetProvider.updateAllWidgets(getContext());
+                ActiveMessagesWidgetProvider.updateAllWidgets(getContext());
 
                 Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
                         R.string.message_save_successful, Snackbar.LENGTH_LONG);

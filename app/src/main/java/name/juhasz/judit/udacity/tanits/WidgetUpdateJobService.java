@@ -6,7 +6,7 @@ import com.firebase.jobdispatcher.JobService;
 public class WidgetUpdateJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters job) {
-        LastActiveMessageWidgetProvider.updateAllWidgets(this);
+        ActiveMessagesWidgetProvider.updateAllWidgets(this);
         return false;
     }
 

@@ -71,7 +71,7 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                     mLastUserId = firebaseAuth.getCurrentUser().getUid();
                 }
-                LastActiveMessageWidgetProvider.updateAllWidgets(DetailsActivity.this);
+                ActiveMessagesWidgetProvider.updateAllWidgets(DetailsActivity.this);
             }
         };
     }
@@ -92,12 +92,12 @@ public class DetailsActivity extends AppCompatActivity {
         switch (itemId) {
             case R.id.status_rejected:
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_REJECTED);
-                LastActiveMessageWidgetProvider.updateAllWidgets(this);
+                ActiveMessagesWidgetProvider.updateAllWidgets(this);
                 onBackPressed();
                 break;
             case R.id.status_done:
                 FirebaseUtils.saveMessageStatus(message.getId(), Message.STATUS_DONE);
-                LastActiveMessageWidgetProvider.updateAllWidgets(this);
+                ActiveMessagesWidgetProvider.updateAllWidgets(this);
                 onBackPressed();
                 break;
             default:

@@ -30,13 +30,13 @@ import java.util.List;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
-public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
+public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
 
     private static String JOB_SCHEDULER_ID = "LastActiveMessageWidgetProviderJobScheduler";
 
     public static void updateAllWidgets(@NonNull final Context context) {
-        final Class<LastActiveMessageWidgetProvider> widgetProviderClass =
-                LastActiveMessageWidgetProvider.class;
+        final Class<ActiveMessagesWidgetProvider> widgetProviderClass =
+                ActiveMessagesWidgetProvider.class;
         final Intent updateWidgetsIntent = new Intent(context, widgetProviderClass);
         updateWidgetsIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         final int[] appWidgetIds = AppWidgetManager.getInstance(context)
@@ -45,11 +45,11 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
         context.sendBroadcast(updateWidgetsIntent);
     }
 
-    private static final String LOG_TAG = LastActiveMessageWidgetProvider.class.getSimpleName();
+    private static final String LOG_TAG = ActiveMessagesWidgetProvider.class.getSimpleName();
 
     static void showMessageList(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId, @NonNull final List<Message> messages) {
-        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_last_active_message);
+        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_active_messages);
 
         showMessageView(views);
 
@@ -57,13 +57,13 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
         final Message lastMessage = messages.get(lastMessageIndex);
 
         final Intent remoteViewServiceIntent =
-                new Intent(context, ActiveMessagesRemoveViewsService.class);
+                new Intent(context, ActiveMessagesRemoteViewsService.class);
         remoteViewServiceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         final Message[] messagesArray = messages.toArray(new Message[messages.size()]);
         // https://stackoverflow.com/q/13363046
         final Bundle bundle = new Bundle();
-        bundle.putParcelableArray(ActiveMessagesRemoveViewsService.EXTRA_MESSAGES, messagesArray);
-        remoteViewServiceIntent.putExtra(ActiveMessagesRemoveViewsService.EXTRA_MESSAGES, bundle);
+        bundle.putParcelableArray(ActiveMessagesRemoteViewsService.EXTRA_MESSAGES, messagesArray);
+        remoteViewServiceIntent.putExtra(ActiveMessagesRemoteViewsService.EXTRA_MESSAGES, bundle);
         remoteViewServiceIntent.setData(Uri.parse(remoteViewServiceIntent.toUri(Intent.URI_INTENT_SCHEME)));
         views.setRemoteAdapter(R.id.widget_active_messages_list, remoteViewServiceIntent);
 
@@ -77,9 +77,9 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
 
     static void showAppWidgetNotification(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, final String notificationText) {
-        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_last_active_message);
+        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_active_messages);
         showNotificationView(views);
-        views.setTextViewText(R.id.widget_notification, notificationText);
+        views.setTextViewText(R.id.widget_active_messages_notification, notificationText);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -184,17 +184,17 @@ public class LastActiveMessageWidgetProvider extends AppWidgetProvider {
     }
 
     private static void showNotificationView(final RemoteViews views) {
-        views.setViewVisibility(R.id.widget_last_active_message_date, View.GONE);
-        views.setViewVisibility(R.id.widget_last_active_message_author, View.GONE);
+        views.setViewVisibility(R.id.widget_active_messages_title, View.GONE);
+        views.setViewVisibility(R.id.widget_active_messages_logo, View.GONE);
         views.setViewVisibility(R.id.widget_active_messages_list, View.GONE);
-        views.setViewVisibility(R.id.widget_notification, View.VISIBLE);
+        views.setViewVisibility(R.id.widget_active_messages_notification, View.VISIBLE);
     }
 
     private static void showMessageView(final RemoteViews views) {
-        views.setViewVisibility(R.id.widget_last_active_message_date, View.VISIBLE);
-        views.setViewVisibility(R.id.widget_last_active_message_author, View.VISIBLE);
+        views.setViewVisibility(R.id.widget_active_messages_title, View.VISIBLE);
+        views.setViewVisibility(R.id.widget_active_messages_logo, View.VISIBLE);
         views.setViewVisibility(R.id.widget_active_messages_list, View.VISIBLE);
-        views.setViewVisibility(R.id.widget_notification, View.GONE);
+        views.setViewVisibility(R.id.widget_active_messages_notification, View.GONE);
     }
 }
 

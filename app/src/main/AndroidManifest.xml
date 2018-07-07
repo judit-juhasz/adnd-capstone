@@ -30,14 +30,14 @@
                 android:value=".MainActivity" />
         </activity>
 
-        <receiver android:name=".LastActiveMessageWidgetProvider">
+        <receiver android:name=".ActiveMessagesWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_info_last_active_message" />
+                android:resource="@xml/widget_info_active_messages" />
         </receiver>
 
         <service
@@ -49,7 +49,7 @@
         </service>
 
         <service
-            android:name=".ActiveMessagesRemoveViewsService"
+            android:name=".ActiveMessagesRemoteViewsService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
