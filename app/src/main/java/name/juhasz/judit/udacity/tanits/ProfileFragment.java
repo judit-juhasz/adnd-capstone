@@ -169,7 +169,7 @@ public class ProfileFragment extends Fragment {
                 LastActiveMessageWidgetProvider.updateAllWidgets(getContext());
 
                 Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
-                        R.string.message_save_successfull, Snackbar.LENGTH_LONG);
+                        R.string.message_save_successful, Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         });

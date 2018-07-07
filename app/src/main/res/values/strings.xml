@@ -27,7 +27,7 @@
     <string name="hint_birthdate">Birthdate of your child</string>
     <string name="error_message_name">Enter your name</string>
     <string name="error_message_birthdate">Enter the birthdate of your child</string>
-    <string name="message_save_successfull">Your profile has been saved successfully.</string>
+    <string name="message_save_successful">Your profile has been saved successfully.</string>
     <string name="internet_required">Internet connection is required</string>
 
     <!-- Messages categorization menuitems -->
