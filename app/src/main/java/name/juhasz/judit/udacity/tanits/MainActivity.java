@@ -218,20 +218,20 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     }
 
     public void selectDrawerItem(final MenuItem menuItem) {
-
-        switch (menuItem.getItemId()) {
+        final int itemId = menuItem.getItemId();
+        switch (itemId) {
             case R.id.nav_messages:
-                mSelectedNavigationItem = R.id.nav_messages;
+                mSelectedNavigationItem = itemId;
                 setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
             case R.id.nav_profile:
-                mSelectedNavigationItem = R.id.nav_profile;
+                mSelectedNavigationItem = itemId;
                 setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
             case R.id.nav_about:
-                mSelectedNavigationItem = R.id.nav_about;
+                mSelectedNavigationItem = itemId;
                 setMessageDetailFragmentVisibility();
                 loadFragment();
                 break;
@@ -351,7 +351,6 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
-
         final MessagesFragment fragment = new MessagesFragment();
         final Bundle arguments = new Bundle();
         switch (itemId) {
