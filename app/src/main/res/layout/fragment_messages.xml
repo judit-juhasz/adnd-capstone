@@ -11,12 +11,14 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/empty_text"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="@string/content_description_tv_notification"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_messages"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:contentDescription="@string/content_description_fragment_messages_rv">
 
     </android.support.v7.widget.RecyclerView>
 

@@ -21,7 +21,7 @@ public class AboutFragment extends Fragment {
         final View rootView =
                 inflater.inflate(R.layout.fragment_about, container, false);
 
-        TextView displayTextView = rootView.findViewById(R.id.tv_display);
+        TextView displayTextView = rootView.findViewById(R.id.tv_introduction);
         displayTextView.setText(getResources().getString(R.string.lorem_ipsum_long));
         return rootView;
     }

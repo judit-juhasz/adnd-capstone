@@ -35,14 +35,16 @@
                     android:id="@+id/content_frame"
                     android:layout_width="@dimen/zero_width"
                     android:layout_height="match_parent"
-                    android:layout_weight="@integer/weight_one" />
+                    android:layout_weight="@integer/weight_one"
+                    android:contentDescription="@string/content_description_activity_main_content_frame"/>
 
                 <FrameLayout
                     android:id="@+id/content_message_details"
                     android:layout_width="@dimen/zero_width"
                     android:layout_height="match_parent"
                     android:layout_weight="@integer/weight_two"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:contentDescription="@string/content_description_activity_main_content_message_details"/>
 
             </LinearLayout>
 

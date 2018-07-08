@@ -82,4 +82,17 @@
 
     <string name="all_message_done">Good work! Everything is done.</string>
 
+    <!-- Content descriptions -->
+    <string name="content_description_detail_frame">Message details container</string>
+    <string name="content_description_activity_main_content_frame">List of messages</string>
+    <string name="content_description_activity_main_content_message_details">Message details container in two panel mode</string>
+    <string name="content_description_profile_cbl">Toolbar Image</string>
+    <string name="content_description_profile_tv_title">Name of business</string>
+    <string name="content_description_profile_tv_introduction">Introduction of business</string>
+    <string name="content_description_fragment_details_tv_date">Message date</string>
+    <string name="content_description_fragment_details_tv_summary">Short summery of message</string>
+    <string name="content_description_fragment_details_tv_content">Long message</string>
+    <string name="content_description_tv_notification">Notification message</string>
+    <string name="content_description_fragment_messages_rv">Message list</string>
+
 </resources>
