@@ -1,108 +1,106 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Tanits</string>
-    <string name="detail_activity_name">Message</string>
-    <string name="openDrawer">open_drawer</string>
-    <string name="closeDrawer">close_drawer</string>
+    <string name="app_name" translatable="false">Tanits</string>
+    <string name="detail_activity_name" translatable="true">Message</string>
+    <string name="openDrawer" translatable="true">open_drawer</string>
+    <string name="closeDrawer" translatable="true">close_drawer</string>
 
     <!-- Navigation Drawer menu labels -->
-    <string name="navigation_menu_item_title_messages">Messages</string>
-    <string name="navigation_menu_item_title_profile">Profile</string>
-    <string name="navigation_menu_item_title_about">About Us</string>
-    <string name="navigation_menu_item_title_logout">Logout</string>
+    <string name="navigation_menu_item_title_messages" translatable="true">Messages</string>
+    <string name="navigation_menu_item_title_profile" translatable="true">Profile</string>
+    <string name="navigation_menu_item_title_about" translatable="true">About Us</string>
+    <string name="navigation_menu_item_title_logout" translatable="true">Logout</string>
 
     <!-- Navigation header -->
-    <string name="username">Username</string>
-    <string name="email">username@emailaddress.com</string>
+    <string name="username" translatable="true">Username</string>
+    <string name="email" translatable="true">username@emailaddress.com</string>
 
-    <string name="lorem_ipsum_tiny">Lorem Ipsum</string>
-    <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porttitor pulvinar orci, sit amet luctus dolor cursus at. Nam non augue dolor. Praesent aliquet dictum rutrum. Fusce in rhoncus lacus, non convallis velit. Aenean metus ex, tempus eget augue nec, finibus laoreet libero. Sed eget iaculis nisi. Maecenas ut diam dictum, rutrum tellus at, blandit mauris. Duis congue massa eu turpis scelerisque, et convallis felis tempus. In non iaculis tellus. Duis justo diam, sollicitudin id lectus ac, consectetur aliquam dolor. Etiam ullamcorper finibus massa, ut elementum lectus tincidunt sed. Aliquam iaculis eu tellus sit amet laoreet. Quisque vehicula, neque sit amet tincidunt ullamcorper, tortor est ullamcorper arcu, at finibus neque elit id diam.\nFusce efficitur luctus turpis at mollis. Etiam sagittis, est sed mattis bibendum, est sapien lobortis nunc, suscipit condimentum ante risus eget lorem. In sit amet convallis nunc, eget porttitor tortor. Proin ornare lorem quam, ac maximus tortor tempus eget. Nam suscipit sed ex ut aliquam. Phasellus mattis efficitur elementum. Nam in dui erat. Fusce et felis at ligula accumsan accumsan at a massa. Cras vel enim tempor, tincidunt lacus nec, aliquet augue. Curabitur semper risus in odio tristique, eu ornare risus blandit.\nQuisque massa nunc, fringilla a tristique ac, tempus in diam. Morbi in velit eros. Donec hendrerit nibh aliquet, accumsan lectus vitae, dictum ante. Ut dictum vehicula nisl id suscipit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam sit amet erat ornare, ultrices arcu et, interdum lectus. Integer rhoncus sed ex quis vehicula.\nFusce tristique justo at tellus laoreet dictum. Aenean id ligula sollicitudin, pulvinar turpis in, semper libero. Nam non tristique felis. Aliquam auctor sem nec lorem laoreet lobortis. Donec eu consectetur mi. Nulla rhoncus sodales nulla, sed maximus arcu aliquet non. Suspendisse quis libero sit amet magna tempor volutpat. Nam posuere, ex non congue cursus, nisl metus aliquam risus, et condimentum leo turpis sed lacus. Praesent lobortis nunc ac metus posuere, placerat pretium diam scelerisque. Donec rhoncus ut orci eu auctor. Etiam laoreet erat purus.</string>
+    <string name="lorem_ipsum_tiny" translatable="true">Lorem Ipsum</string>
+    <string name="lorem_ipsum_long" translatable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porttitor pulvinar orci, sit amet luctus dolor cursus at. Nam non augue dolor. Praesent aliquet dictum rutrum. Fusce in rhoncus lacus, non convallis velit. Aenean metus ex, tempus eget augue nec, finibus laoreet libero. Sed eget iaculis nisi. Maecenas ut diam dictum, rutrum tellus at, blandit mauris. Duis congue massa eu turpis scelerisque, et convallis felis tempus. In non iaculis tellus. Duis justo diam, sollicitudin id lectus ac, consectetur aliquam dolor. Etiam ullamcorper finibus massa, ut elementum lectus tincidunt sed. Aliquam iaculis eu tellus sit amet laoreet. Quisque vehicula, neque sit amet tincidunt ullamcorper, tortor est ullamcorper arcu, at finibus neque elit id diam.\nFusce efficitur luctus turpis at mollis. Etiam sagittis, est sed mattis bibendum, est sapien lobortis nunc, suscipit condimentum ante risus eget lorem. In sit amet convallis nunc, eget porttitor tortor. Proin ornare lorem quam, ac maximus tortor tempus eget. Nam suscipit sed ex ut aliquam. Phasellus mattis efficitur elementum. Nam in dui erat. Fusce et felis at ligula accumsan accumsan at a massa. Cras vel enim tempor, tincidunt lacus nec, aliquet augue. Curabitur semper risus in odio tristique, eu ornare risus blandit.\nQuisque massa nunc, fringilla a tristique ac, tempus in diam. Morbi in velit eros. Donec hendrerit nibh aliquet, accumsan lectus vitae, dictum ante. Ut dictum vehicula nisl id suscipit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam sit amet erat ornare, ultrices arcu et, interdum lectus. Integer rhoncus sed ex quis vehicula.\nFusce tristique justo at tellus laoreet dictum. Aenean id ligula sollicitudin, pulvinar turpis in, semper libero. Nam non tristique felis. Aliquam auctor sem nec lorem laoreet lobortis. Donec eu consectetur mi. Nulla rhoncus sodales nulla, sed maximus arcu aliquet non. Suspendisse quis libero sit amet magna tempor volutpat. Nam posuere, ex non congue cursus, nisl metus aliquam risus, et condimentum leo turpis sed lacus. Praesent lobortis nunc ac metus posuere, placerat pretium diam scelerisque. Donec rhoncus ut orci eu auctor. Etiam laoreet erat purus.</string>
 
-    <string name="exception_text"> must implement </string>
+    <string name="exception_text" translatable="true"> must implement </string>
 
     <!-- Profile fragment -->
-    <string name="button_text_save">Save</string>
-    <string name="hint_name">Name</string>
-    <string name="hint_email">Email</string>
-    <string name="hint_birthdate">Birthdate of your child</string>
-    <string name="error_message_name">Enter your name</string>
-    <string name="error_message_birthdate">Enter the birthdate of your child</string>
-    <string name="message_save_successful">Your profile has been saved successfully.</string>
-    <string name="internet_required">Internet connection is required</string>
+    <string name="button_text_save" translatable="true">Save</string>
+    <string name="hint_name" translatable="true">Name</string>
+    <string name="hint_email" translatable="true">Email</string>
+    <string name="hint_birthdate" translatable="true">Birthdate of your child</string>
+    <string name="error_message_name" translatable="true">Enter your name</string>
+    <string name="error_message_birthdate" translatable="true">Enter the birthdate of your child</string>
+    <string name="message_save_successful" translatable="true">Your profile has been saved successfully.</string>
+    <string name="internet_required" translatable="true">Internet connection is required</string>
 
     <!-- Messages categorization menu_items -->
-    <string name="menu_item_categorization_all">All</string>
-    <string name="menu_item_categorization_active">Active</string>
-    <string name="menu_item_categorization_done">Done</string>
-    <string name="menu_item_categorization_rejected">Rejected</string>
+    <string name="menu_item_categorization_all" translatable="true">All</string>
+    <string name="menu_item_categorization_active" translatable="true">Active</string>
+    <string name="menu_item_categorization_done" translatable="true">Done</string>
+    <string name="menu_item_categorization_rejected" translatable="true">Rejected</string>
 
     <!-- Log and other messages -->
-    <string name="log_messages_menu_selection">Menu selection is not handled. ItemId: <xliff:g example="100" id="itemid">%d</xliff:g></string>
-    <string name="log_messages_status_settings">Status setting is not handled. ItemId: <xliff:g example="100" id="itemid">%d</xliff:g></string>
-    <string name="log_user_profile_data">User profile data is not available</string>
-    <string name="log_unknown_message_status">Internal error: unknown message status: <xliff:g example="100" id="statusid">%d</xliff:g></string>
-    <string name="log_unknown_message_status_string">Internal error: unknown message status: <xliff:g example="100" id="statusid">%s</xliff:g></string>
-    <string name="log_internal_error_unknown_message_status_filter">Internal error: unknown message status filter: <xliff:g example="100" id="statusfilter">%d</xliff:g></string>
-    <string name="log_error_unknown_message_status_filter">Error: unknown message status filter: <xliff:g example="1" id="filter">%d</xliff:g></string>
-    <string name="log_user_profile">User profile is not available</string>
-    <string name="log_user_birthday">User birthdate is not available</string>
-    <string name="no_messages">No messages</string>
-    <string name="no_message_detail">Cannot retrieve message detail</string>
-    <string name="log_error_login">Internal error at login:</string>
-    <string name="log_error_missing_message_data">Internal error, missing message data in message details fragment</string>
-    <string name="error_unknown">Unknown error</string>
-    <string name="log_message_query_canceled">Messages query is canceled with database error: </string>
-    <string name="log_user_profile_query_canceled">User profile query is canceled with database error: </string>
-    <string name="error_internal">We are sorry, internal error</string>
+    <string name="log_messages_menu_selection" translatable="true">Menu selection is not handled. ItemId: <xliff:g example="100" id="itemid">%d</xliff:g></string>
+    <string name="log_messages_status_settings" translatable="true">Status setting is not handled. ItemId: <xliff:g example="100" id="itemid">%d</xliff:g></string>
+    <string name="log_user_profile_data" translatable="true">User profile data is not available</string>
+    <string name="log_unknown_message_status" translatable="true">Internal error: unknown message status: <xliff:g example="100" id="statusid">%d</xliff:g></string>
+    <string name="log_unknown_message_status_string" translatable="true">Internal error: unknown message status: <xliff:g example="100" id="statusid">%s</xliff:g></string>
+    <string name="log_internal_error_unknown_message_status_filter" translatable="true">Internal error: unknown message status filter: <xliff:g example="100" id="statusfilter">%d</xliff:g></string>
+    <string name="log_error_unknown_message_status_filter" translatable="true">Error: unknown message status filter: <xliff:g example="1" id="filter">%d</xliff:g></string>
+    <string name="log_user_profile" translatable="true">User profile is not available</string>
+    <string name="log_user_birthday" translatable="true">User birthdate is not available</string>
+    <string name="no_messages" translatable="true">No messages</string>
+    <string name="no_message_detail" translatable="true">Cannot retrieve message detail</string>
+    <string name="log_error_login" translatable="true">Internal error at login:</string>
+    <string name="log_error_missing_message_data" translatable="true">Internal error, missing message data in message details fragment</string>
+    <string name="error_unknown" translatable="true">Unknown error</string>
+    <string name="log_message_query_canceled" translatable="true">Messages query is canceled with database error: </string>
+    <string name="log_user_profile_query_canceled" translatable="true">User profile query is canceled with database error: </string>
+    <string name="error_internal" translatable="true">We are sorry, internal error</string>
 
     <!-- Email data -->
-    <string name="subject_feedback">Feedback</string>
-    <string name="subject_question">Question</string>
-    <string name="email_address">judit@juhasz.name</string>
-    <string name="no_email_client_selected">Choose an Email client</string>
-    <string name="email_scheme">mailto</string>
+    <string name="subject_feedback" translatable="true">Feedback</string>
+    <string name="subject_question" translatable="true">Question</string>
+    <string name="email_address" translatable="false">judit@juhasz.name</string>
+    <string name="no_email_client_selected" translatable="true">Choose an Email client</string>
+    <string name="email_scheme" translatable="false">mailto</string>
 
-    <string name="path_profile">profiles/</string>
-    <string name="path_messageExtract">messageExtract</string>
-    <string name="path_messageStatus">messageStatus/</string>
-    <string name="path_messageDetail">messageDetail/</string>
-    <string name="message_content">content</string>
-    <string name="message_status">status</string>
-    <string name="message_subject">subject</string>
-    <string name="message_summary">summary</string>
-    <string name="message_dayOffset">dayOffset</string>
-    <string name="save_message_status">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
-    <string name="empty_text">No more messages</string>
-    <string name="set_birthdate">You are almost ready to start.\nPlease set your child\'s birthdate on your profile\nin order to get messages.</string>
-    <string name="date_format_with_year">MMMM d, Y</string>
-    <string name="date_format_without_year">MMMM d</string>
-    <string name="appwidget_text_author">Tanits</string>
-    <string name="widget_login_notification">Login to show the active messages</string>
-    <string name="all_message_done">Good work! Everything is done.</string>
-    <string name="widget_title">Messages</string>
+    <string name="path_profile" translatable="false">profiles/</string>
+    <string name="path_messageExtract" translatable="false">messageExtract</string>
+    <string name="path_messageStatus" translatable="false">messageStatus/</string>
+    <string name="path_messageDetail" translatable="false">messageDetail/</string>
+    <string name="message_content" translatable="false">content</string>
+    <string name="message_status" translatable="false">status</string>
+    <string name="message_subject" translatable="false">subject</string>
+    <string name="message_summary" translatable="false">summary</string>
+    <string name="message_dayOffset" translatable="false">dayOffset</string>
+    <string name="save_message_status" translatable="false">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
+    <string name="empty_text" translatable="true">No more messages</string>
+    <string name="set_birthdate" translatable="true">You are almost ready to start.\nPlease set your child\'s birthdate on your profile\nin order to get messages.</string>
+    <string name="date_format_with_year" translatable="false">MMMM d, Y</string>
+    <string name="date_format_without_year" translatable="false">MMMM d</string>
+    <string name="appwidget_text_author" translatable="false">Tanits</string>
+    <string name="widget_login_notification" translatable="true">Login to show the active messages</string>
+    <string name="all_message_done" translatable="true">Good work! Everything is done.</string>
+    <string name="widget_title" translatable="true">Messages</string>
 
     <!-- Content descriptions -->
-    <string name="content_description_detail_frame">Message details container</string>
-    <string name="content_description_activity_main_content_frame">List of messages</string>
-    <string name="content_description_activity_main_content_message_details">Message details container in two panel mode</string>
-    <string name="content_description_fab">Fab Write Message</string>
-    <string name="content_description_fab_feedback">Feedback fab</string>
-    <string name="content_description_fab_question">Question fab</string>
-    <string name="content_description_about_cbl">Toolbar Image</string>
-    <string name="content_description_about_tv_title">Business name text</string>
-    <string name="content_description_about_tv_introduction">Introduction text</string>
-    <string name="content_description_tv_date">Message date</string>
-    <string name="content_description_tv_summary">Summary of message</string>
-    <string name="content_description_tv_message_content">Long message</string>
-    <string name="content_description_tv_notification">Notification text</string>
-    <string name="content_description_progressbar">Loading</string>
-    <string name="content_description_fragment_messages_rv">Message list</string>
-    <string name="content_description_name">Username</string>
-    <string name="content_description_email">User email address</string>
-    <string name="content_description_fragment_profile_birthdate">Child"s birthdate</string>
-    <string name="content_description_save_button">Save Button</string>
-    <string name="content_description_item_messages_image">Message status indicator</string>
-    <string name="content_description_logo">Logo</string>
-    <string name="content_description_widget_list">Widget content (messages)</string>
-
-
+    <string name="content_description_detail_frame" translatable="true">Message details container</string>
+    <string name="content_description_activity_main_content_frame" translatable="true">List of messages</string>
+    <string name="content_description_activity_main_content_message_details" translatable="true">Message details container in two panel mode</string>
+    <string name="content_description_fab" translatable="true">FAB Write Message</string>
+    <string name="content_description_fab_feedback" translatable="true">Feedback FAB</string>
+    <string name="content_description_fab_question" translatable="true">Question FAB</string>
+    <string name="content_description_about_cbl" translatable="true">Toolbar Image</string>
+    <string name="content_description_about_tv_title" translatable="true">Business name text</string>
+    <string name="content_description_about_tv_introduction" translatable="true">Introduction text</string>
+    <string name="content_description_tv_date" translatable="true">Date of message</string>
+    <string name="content_description_tv_summary" translatable="true">Summary of message</string>
+    <string name="content_description_tv_message_content" translatable="true">Long message</string>
+    <string name="content_description_tv_notification" translatable="true">Notification</string>
+    <string name="content_description_progressbar" translatable="true">Loading</string>
+    <string name="content_description_fragment_messages_rv" translatable="true">Message list</string>
+    <string name="content_description_name" translatable="true">Username</string>
+    <string name="content_description_email" translatable="true">User email address</string>
+    <string name="content_description_fragment_profile_birthdate" translatable="true">Child"s birthdate</string>
+    <string name="content_description_save_button" translatable="true">Save Button</string>
+    <string name="content_description_item_messages_image" translatable="true">Message status indicator</string>
+    <string name="content_description_logo" translatable="true">Logo</string>
+    <string name="content_description_widget_list" translatable="true">Widget content (messages)</string>
 </resources>
