@@ -2,6 +2,7 @@ package name.juhasz.judit.udacity.tanits;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     private static final String SAVE_SELECTED_NAVIGATION_ITEM = "SAVE_SELECTED_NAVIGATION_ITEM";
     private static final String SAVE_SELECTED_MESSAGE_FILTER = "SAVE_SELECTED_MESSAGE_FILTER";
     private static final String SAVE_LAST_USER_ID = "SAVE_LAST_USER_ID";
+    public static final String COLOR_FAB_LABEL_TEXT = "#212121";
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1;
@@ -167,6 +169,12 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 startActivity(Intent.createChooser(sendEmailIntent, getResources().getString(R.string.no_email_client_selected)));
             }
         });
+
+        mFeedbackFloatingActionButton.setLabelColors(0Xffffffff, 0Xffffffff, 0Xffffffff);
+        mFeedbackFloatingActionButton.setLabelTextColor(Color.parseColor(COLOR_FAB_LABEL_TEXT));
+
+        mQuestionFloatingActionButton.setLabelColors(0Xffffffff, 0Xffffffff, 0Xffffffff);
+        mQuestionFloatingActionButton.setLabelTextColor(Color.parseColor(COLOR_FAB_LABEL_TEXT));
     }
 
     @Override
