@@ -59,7 +59,7 @@
                 android:layout_marginStart="@dimen/fab_margin"
                 fab:menu_colorNormal="@color/colorAccent"
                 fab:menu_fab_size="normal"
-                fab:menu_icon="@drawable/ic_email"
+                fab:menu_icon="@drawable/ic_write_message"
                 android:contentDescription="@string/content_description_fab">
 
                 <com.github.clans.fab.FloatingActionButton
