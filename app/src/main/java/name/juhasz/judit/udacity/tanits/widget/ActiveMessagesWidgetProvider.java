@@ -1,4 +1,4 @@
-package name.juhasz.judit.udacity.tanits;
+package name.juhasz.judit.udacity.tanits.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -27,6 +27,10 @@ import org.joda.time.LocalDate;
 
 import java.util.List;
 
+import name.juhasz.judit.udacity.tanits.data.Message;
+import name.juhasz.judit.udacity.tanits.R;
+import name.juhasz.judit.udacity.tanits.data.UserProfile;
+import name.juhasz.judit.udacity.tanits.activity.MainActivity;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 

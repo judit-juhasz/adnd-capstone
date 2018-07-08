@@ -1,4 +1,4 @@
-package name.juhasz.judit.udacity.tanits;
+package name.juhasz.judit.udacity.tanits.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

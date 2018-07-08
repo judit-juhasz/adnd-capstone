@@ -1,4 +1,4 @@
-package name.juhasz.judit.udacity.tanits;
+package name.juhasz.judit.udacity.tanits.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -29,6 +29,9 @@ import org.joda.time.LocalDate;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import name.juhasz.judit.udacity.tanits.widget.ActiveMessagesWidgetProvider;
+import name.juhasz.judit.udacity.tanits.R;
+import name.juhasz.judit.udacity.tanits.data.UserProfile;
 import name.juhasz.judit.udacity.tanits.util.DateTimeUtils;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 import name.juhasz.judit.udacity.tanits.util.NetworkUtils;

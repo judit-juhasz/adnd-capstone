@@ -1,4 +1,4 @@
-package name.juhasz.judit.udacity.tanits;
+package name.juhasz.judit.udacity.tanits.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,6 +24,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import name.juhasz.judit.udacity.tanits.data.Message;
+import name.juhasz.judit.udacity.tanits.data.MessageAdapter;
+import name.juhasz.judit.udacity.tanits.R;
+import name.juhasz.judit.udacity.tanits.data.UserProfile;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 

@@ -1,4 +1,4 @@
-package name.juhasz.judit.udacity.tanits;
+package name.juhasz.judit.udacity.tanits.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseError;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import name.juhasz.judit.udacity.tanits.data.Message;
+import name.juhasz.judit.udacity.tanits.R;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 

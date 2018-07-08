@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import name.juhasz.judit.udacity.tanits.Message;
+import name.juhasz.judit.udacity.tanits.data.Message;
 import name.juhasz.judit.udacity.tanits.R;
-import name.juhasz.judit.udacity.tanits.UserProfile;
+import name.juhasz.judit.udacity.tanits.data.UserProfile;
 
 public class FirebaseUtils {
     private static String TAG = FirebaseUtils.class.getSimpleName();

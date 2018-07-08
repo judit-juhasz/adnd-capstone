@@ -1,4 +1,4 @@
-package name.juhasz.judit.udacity.tanits;
+package name.juhasz.judit.udacity.tanits.data;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 

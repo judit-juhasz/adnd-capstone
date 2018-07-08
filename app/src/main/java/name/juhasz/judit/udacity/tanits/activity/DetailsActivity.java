@@ -1,4 +1,4 @@
-package name.juhasz.judit.udacity.tanits;
+package name.juhasz.judit.udacity.tanits.activity;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,6 +15,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import name.juhasz.judit.udacity.tanits.widget.ActiveMessagesWidgetProvider;
+import name.juhasz.judit.udacity.tanits.data.Message;
+import name.juhasz.judit.udacity.tanits.R;
+import name.juhasz.judit.udacity.tanits.fragment.MessageDetailsFragment;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 
 public class DetailsActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package name.juhasz.judit.udacity.tanits;
+package name.juhasz.judit.udacity.tanits.widget;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import name.juhasz.judit.udacity.tanits.data.Message;
+import name.juhasz.judit.udacity.tanits.R;
+import name.juhasz.judit.udacity.tanits.data.UserProfile;
 import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
 import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
