@@ -32,7 +32,8 @@ import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
 public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
 
-    private static String JOB_SCHEDULER_ID = "ActiveMessagesWidgetProviderJobScheduler";
+    private static final String LOG_TAG = ActiveMessagesWidgetProvider.class.getSimpleName();
+    private static final String JOB_SCHEDULER_ID = "ActiveMessagesWidgetProviderJobScheduler";
 
     public static void updateAllWidgets(@NonNull final Context context) {
         final Class<ActiveMessagesWidgetProvider> widgetProviderClass =
@@ -44,8 +45,6 @@ public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
         updateWidgetsIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
         context.sendBroadcast(updateWidgetsIntent);
     }
-
-    private static final String LOG_TAG = ActiveMessagesWidgetProvider.class.getSimpleName();
 
     static void showMessageList(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId, @NonNull final List<Message> messages) {
@@ -76,6 +75,7 @@ public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
         views.setPendingIntentTemplate(R.id.widget_active_messages_list, startActivityPendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_active_messages_list);
     }
 
     static void showAppWidgetNotification(Context context, AppWidgetManager appWidgetManager,

@@ -3,12 +3,29 @@ package name.juhasz.judit.udacity.tanits;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+
+import org.joda.time.LocalDate;
+
+import java.util.List;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+import name.juhasz.judit.udacity.tanits.util.FirebaseUtils;
+import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
+
 public class ActiveMessagesRemoteViewsService extends RemoteViewsService {
-    public static String EXTRA_MESSAGES = "EXTRA_MESSAGES";
+    public static final String EXTRA_MESSAGES = "EXTRA_MESSAGES";
+    private static final String LOG_TAG = ActiveMessagesRemoteViewsService.class.getSimpleName();
+    private static final int ON_DATA_SET_CHANGED_TIMEOUT_IN_SECONDS = 15;
 
     private class ActiveMessagesRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         private Message[] mMessages = null;
@@ -19,17 +36,69 @@ public class ActiveMessagesRemoteViewsService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-
         }
 
         @Override
         public void onDataSetChanged() {
+            FirebaseUtils.initialize(ActiveMessagesRemoteViewsService.this);
+            if (!NetworkUtils.isNetworkAvailable(ActiveMessagesRemoteViewsService.this)) {
+                return;
+            }
+            final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (null == currentFirebaseUser) {
+                mMessages = null;
+                return;
+            }
+            // Need to wait for the result, because the other functions will be called after this
+            // onDataSetChanged() call. Unfortunately, Firebase Realtime Database doesn't provide
+            // synchronous calls by default. How to access Firebase realtime DB synchronously:
+            // https://stackoverflow.com/a/31702957
+            final Semaphore queryResultWaiter = new Semaphore(0);
+            FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
+                @Override
+                public void onReceive(UserProfile userProfile) {
+                    if (null == userProfile || null == userProfile.getChildBirthdate()) {
+                        queryResultWaiter.release();
+                        return;
+                    }
+                    final LocalDate childBirthdate = new LocalDate(userProfile.getChildBirthdate());
+                    FirebaseUtils.queryMessages(childBirthdate, FirebaseUtils.MESSAGE_STATUS_FILTER_ACTIVE,
+                            new FirebaseUtils.MessageListListener() {
+                                @Override
+                                public void onReceive(List<Message> messageList) {
+                                    if (null == messageList || messageList.isEmpty()) {
+                                        mMessages = null;
+                                    } else {
+                                        mMessages = messageList.toArray(new Message[messageList.size()]);
+                                    }
+                                    queryResultWaiter.release();
+                                }
 
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        Log.w(LOG_TAG, getString(R.string.log_message_query_canceled),
+                                            databaseError.toException());
+                                    queryResultWaiter.release();
+                                }
+                            }, false);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.w(LOG_TAG, getString(R.string.log_user_profile_query_canceled),
+                            databaseError.toException());
+                    queryResultWaiter.release();
+                }
+            }, false);
+            try {
+                queryResultWaiter.tryAcquire(ON_DATA_SET_CHANGED_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
+            } catch (final InterruptedException e) {
+                Log.i(LOG_TAG, "Messages query was interrupted ", e);
+            }
         }
 
         @Override
         public void onDestroy() {
-
         }
 
         @Override
