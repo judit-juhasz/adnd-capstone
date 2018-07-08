@@ -1,7 +1,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Tanits</string>
     <string name="detail_activity_name">Message</string>
-
     <string name="openDrawer">open_drawer</string>
     <string name="closeDrawer">close_drawer</string>
 
@@ -13,7 +12,7 @@
 
     <!-- Navigation header -->
     <string name="username">Username</string>
-    <string name="email">username</string>
+    <string name="email">username@emailaddress.com</string>
 
     <string name="lorem_ipsum_tiny">Lorem Ipsum</string>
     <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porttitor pulvinar orci, sit amet luctus dolor cursus at. Nam non augue dolor. Praesent aliquet dictum rutrum. Fusce in rhoncus lacus, non convallis velit. Aenean metus ex, tempus eget augue nec, finibus laoreet libero. Sed eget iaculis nisi. Maecenas ut diam dictum, rutrum tellus at, blandit mauris. Duis congue massa eu turpis scelerisque, et convallis felis tempus. In non iaculis tellus. Duis justo diam, sollicitudin id lectus ac, consectetur aliquam dolor. Etiam ullamcorper finibus massa, ut elementum lectus tincidunt sed. Aliquam iaculis eu tellus sit amet laoreet. Quisque vehicula, neque sit amet tincidunt ullamcorper, tortor est ullamcorper arcu, at finibus neque elit id diam.\nFusce efficitur luctus turpis at mollis. Etiam sagittis, est sed mattis bibendum, est sapien lobortis nunc, suscipit condimentum ante risus eget lorem. In sit amet convallis nunc, eget porttitor tortor. Proin ornare lorem quam, ac maximus tortor tempus eget. Nam suscipit sed ex ut aliquam. Phasellus mattis efficitur elementum. Nam in dui erat. Fusce et felis at ligula accumsan accumsan at a massa. Cras vel enim tempor, tincidunt lacus nec, aliquet augue. Curabitur semper risus in odio tristique, eu ornare risus blandit.\nQuisque massa nunc, fringilla a tristique ac, tempus in diam. Morbi in velit eros. Donec hendrerit nibh aliquet, accumsan lectus vitae, dictum ante. Ut dictum vehicula nisl id suscipit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam sit amet erat ornare, ultrices arcu et, interdum lectus. Integer rhoncus sed ex quis vehicula.\nFusce tristique justo at tellus laoreet dictum. Aenean id ligula sollicitudin, pulvinar turpis in, semper libero. Nam non tristique felis. Aliquam auctor sem nec lorem laoreet lobortis. Donec eu consectetur mi. Nulla rhoncus sodales nulla, sed maximus arcu aliquet non. Suspendisse quis libero sit amet magna tempor volutpat. Nam posuere, ex non congue cursus, nisl metus aliquam risus, et condimentum leo turpis sed lacus. Praesent lobortis nunc ac metus posuere, placerat pretium diam scelerisque. Donec rhoncus ut orci eu auctor. Etiam laoreet erat purus.</string>
@@ -74,27 +73,36 @@
     <string name="save_message_status">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
     <string name="empty_text">No more messages</string>
     <string name="set_birthdate">You are almost ready to start.\nPlease set your child\'s birthdate on your profile\nin order to get messages.</string>
-
     <string name="date_format_with_year">MMMM d, Y</string>
     <string name="date_format_without_year">MMMM d</string>
     <string name="appwidget_text_author">Tanits</string>
     <string name="widget_login_notification">Login to show the active messages</string>
-
     <string name="all_message_done">Good work! Everything is done.</string>
-
     <string name="widget_title">Messages</string>
 
     <!-- Content descriptions -->
     <string name="content_description_detail_frame">Message details container</string>
     <string name="content_description_activity_main_content_frame">List of messages</string>
     <string name="content_description_activity_main_content_message_details">Message details container in two panel mode</string>
-    <string name="content_description_profile_cbl">Toolbar Image</string>
-    <string name="content_description_profile_tv_title">Name of business</string>
-    <string name="content_description_profile_tv_introduction">Introduction of business</string>
-    <string name="content_description_fragment_details_tv_date">Message date</string>
-    <string name="content_description_fragment_details_tv_summary">Short summery of message</string>
-    <string name="content_description_fragment_details_tv_content">Long message</string>
-    <string name="content_description_tv_notification">Notification message</string>
+    <string name="content_description_fab">Fab Write Message</string>
+    <string name="content_description_fab_feedback">Feedback fab</string>
+    <string name="content_description_fab_question">Question fab</string>
+    <string name="content_description_about_cbl">Toolbar Image</string>
+    <string name="content_description_about_tv_title">Business name text</string>
+    <string name="content_description_about_tv_introduction">Introduction text</string>
+    <string name="content_description_tv_date">Message date</string>
+    <string name="content_description_tv_summary">Summary of message</string>
+    <string name="content_description_tv_message_content">Long message</string>
+    <string name="content_description_tv_notification">Notification text</string>
+    <string name="content_description_progressbar">Loading</string>
     <string name="content_description_fragment_messages_rv">Message list</string>
+    <string name="content_description_name">Username</string>
+    <string name="content_description_email">User email address</string>
+    <string name="content_description_fragment_profile_birthdate">Child"s birthdate</string>
+    <string name="content_description_save_button">Save Button</string>
+    <string name="content_description_item_messages_image">Message status indicator</string>
+    <string name="content_description_logo">Logo</string>
+    <string name="content_description_widget_list">Widget content (messages)</string>
+
 
 </resources>

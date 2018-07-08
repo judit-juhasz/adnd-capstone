@@ -24,7 +24,8 @@
             android:gravity="center_vertical"
             android:text="@string/widget_title"
             android:textColor="@color/colorWhite"
-            android:paddingStart="@dimen/widget_padding"/>
+            android:paddingStart="@dimen/widget_padding"
+            android:contentDescription="@string/widget_title"/>
 
         <ImageView
             android:id="@+id/widget_active_messages_logo"
@@ -33,7 +34,8 @@
             android:layout_weight="1"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/logo" />
+            android:src="@drawable/logo"
+            android:contentDescription="@string/content_description_logo"/>
 
     </LinearLayout>
 
@@ -50,7 +52,8 @@
         tools:listitem="@layout/widget_list_elem_message"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:paddingStart="@dimen/widget_padding"
-        android:paddingEnd="@dimen/widget_padding"/>
+        android:paddingEnd="@dimen/widget_padding"
+        android:contentDescription="content_description_widget_list"/>
 
     <TextView
         android:id="@+id/widget_active_messages_notification"
@@ -60,6 +63,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:gravity="center" />
+        android:gravity="center"
+        android:contentDescription="@string/content_description_tv_notification"/>
 
 </RelativeLayout>

@@ -59,7 +59,8 @@
                 android:layout_marginStart="@dimen/fab_margin"
                 fab:menu_colorNormal="@color/colorAccent"
                 fab:menu_fab_size="normal"
-                fab:menu_icon="@drawable/ic_email">
+                fab:menu_icon="@drawable/ic_email"
+                android:contentDescription="@string/content_description_fab">
 
                 <com.github.clans.fab.FloatingActionButton
                     android:id="@+id/fab_question"
@@ -68,7 +69,8 @@
                     android:src="@drawable/ic_question"
                     app:fab_colorNormal="@color/colorAccent"
                     fab:fab_label="Question"
-                    fab:fab_size="mini" />
+                    fab:fab_size="mini"
+                    android:contentDescription="@string/content_description_fab_question"/>
 
                 <com.github.clans.fab.FloatingActionButton
                     android:id="@+id/fab_feedback"
@@ -77,7 +79,8 @@
                     android:src="@drawable/ic_feedback"
                     app:fab_colorNormal="@color/colorAccent"
                     fab:fab_label="Feedback"
-                    fab:fab_size="mini" />
+                    fab:fab_size="mini"
+                    android:contentDescription="@string/content_description_fab_feedback"/>
 
             </com.github.clans.fab.FloatingActionMenu>
 

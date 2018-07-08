@@ -16,7 +16,8 @@
         android:maxLines="2"
         android:layout_marginEnd="8dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/content_description_tv_summary"/>
 
     <TextView
         android:id="@+id/widget_list_elem_message_date"
@@ -27,6 +28,7 @@
         android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:gravity="end"/>
+        android:gravity="end"
+        android:contentDescription="@string/content_description_tv_date"/>
 
 </LinearLayout>

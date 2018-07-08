@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal">
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:contentDescription="@string/content_description_name">
 
             <EditText
                 android:id="@+id/et_name"
@@ -34,7 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal">
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:contentDescription="@string/content_description_email">
 
             <EditText
                 android:id="@+id/et_email"
@@ -49,7 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal">
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:contentDescription="@string/content_description_fragment_profile_birthdate">
 
             <EditText
                 android:id="@+id/et_birthdate_of_child"
@@ -71,7 +74,8 @@
             android:background="@drawable/shape_background_button"
             android:paddingRight="@dimen/padding_save_button"
             android:paddingLeft="@dimen/padding_save_button"
-            android:layout_marginTop="@dimen/margin_top_save_button"/>
+            android:layout_marginTop="@dimen/margin_top_save_button"
+            android:contentDescription="@string/content_description_save_button"/>
 
     </LinearLayout>
 
@@ -83,7 +87,8 @@
         android:layout_alignParentStart="true"
         android:layout_marginLeft="@dimen/keyline"
         android:layout_marginRight="@dimen/keyline"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:contentDescription="@string/content_description_tv_notification"/>
 
     <ProgressBar
         android:id="@+id/pb_profile_loading_indicator"
@@ -91,6 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="@string/content_description_progressbar"/>
 
 </android.support.design.widget.CoordinatorLayout>
