@@ -4,34 +4,38 @@
     android:id="@+id/widget_active_messages"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWidgetBackground"
-    android:padding="@dimen/widget_padding"
-    android:layout_margin="@dimen/widget_margin">
+    android:background="@color/colorWidgetBackground">
 
-    <TextView
-        android:id="@+id/widget_active_messages_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/widget_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textStyle="bold"
-        android:text="Active messages"
-        android:visibility="gone"
-        android:textColor="@color/colorPrimaryText"
+        android:orientation="horizontal"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@color/colorWidgetTitleBackground">
 
-    <TextView
-        android:id="@+id/widget_active_messages_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/appwidget_text_author"
-        android:text="@string/appwidget_text_author"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/colorPrimaryText"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/widget_active_messages_title"
+            android:layout_width="@dimen/zero_width"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:gravity="center_vertical"
+            android:text="@string/widget_title"
+            android:textColor="@color/colorWhite"
+            android:paddingStart="@dimen/widget_padding"/>
+
+        <ImageView
+            android:id="@+id/widget_active_messages_logo"
+            android:layout_width="@dimen/zero_width"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/logo" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/widget_active_messages_list"
@@ -41,9 +45,12 @@
         android:layout_alignParentStart="true"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:layout_below="@id/widget_active_messages_title"
+        android:layout_below="@id/widget_header"
         android:layout_marginTop="@dimen/widget_padding"
-        tools:listitem="@layout/widget_list_elem_message"/>
+        tools:listitem="@layout/widget_list_elem_message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:paddingStart="@dimen/widget_padding"
+        android:paddingEnd="@dimen/widget_padding"/>
 
     <TextView
         android:id="@+id/widget_active_messages_notification"

@@ -82,6 +82,8 @@
 
     <string name="all_message_done">Good work! Everything is done.</string>
 
+    <string name="widget_title">Messages</string>
+
     <!-- Content descriptions -->
     <string name="content_description_detail_frame">Message details container</string>
     <string name="content_description_activity_main_content_frame">List of messages</string>
