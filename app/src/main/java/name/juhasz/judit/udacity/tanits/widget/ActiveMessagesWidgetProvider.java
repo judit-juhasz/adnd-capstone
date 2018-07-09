@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -27,6 +28,7 @@ import org.joda.time.LocalDate;
 
 import java.util.List;
 
+import name.juhasz.judit.udacity.tanits.activity.DetailsActivity;
 import name.juhasz.judit.udacity.tanits.data.Message;
 import name.juhasz.judit.udacity.tanits.R;
 import name.juhasz.judit.udacity.tanits.data.UserProfile;
@@ -68,15 +70,16 @@ public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
         views.setRemoteAdapter(R.id.widget_active_messages_list, remoteViewServiceIntent);
 
         final Intent mainActivityIntent = new Intent(context, MainActivity.class);
-        final PendingIntent pendingIntent =
+        final PendingIntent mainActivityPendingIntent =
                 PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
-        views.setOnClickPendingIntent(R.id.widget_active_messages, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_active_messages, mainActivityPendingIntent);
 
         // https://stackoverflow.com/a/14811595
-        final PendingIntent startActivityPendingIntent =
-                PendingIntent.getActivity(context, 0, mainActivityIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setPendingIntentTemplate(R.id.widget_active_messages_list, startActivityPendingIntent);
+        final Intent messageDetailsIntent = new Intent(context, DetailsActivity.class);
+        final PendingIntent detailsActivityPendingIntent = TaskStackBuilder.create(context)
+                .addNextIntentWithParentStack(messageDetailsIntent)
+                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_active_messages_list, detailsActivityPendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_active_messages_list);

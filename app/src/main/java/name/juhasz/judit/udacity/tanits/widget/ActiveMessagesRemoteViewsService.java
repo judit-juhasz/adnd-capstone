@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import name.juhasz.judit.udacity.tanits.activity.DetailsActivity;
 import name.juhasz.judit.udacity.tanits.data.Message;
 import name.juhasz.judit.udacity.tanits.R;
 import name.juhasz.judit.udacity.tanits.data.UserProfile;
@@ -123,6 +124,7 @@ public class ActiveMessagesRemoteViewsService extends RemoteViewsService {
 
             // https://stackoverflow.com/a/14811595
             final Intent fillInIntent = new Intent();
+            fillInIntent.putExtra(DetailsActivity.MESSAGE_DATA, mMessages[position]);
             views.setOnClickFillInIntent(R.id.widget_list_elem_message, fillInIntent);
 
             return views;
