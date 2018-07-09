@@ -2,38 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/keyline"
-    android:layout_marginRight="@dimen/keyline">
+    android:layout_marginEnd="@dimen/keyline"
+    android:layout_marginStart="@dimen/keyline">
 
     <ImageView
         android:id="@+id/iv_status_image"
         android:layout_width="@dimen/message_item_size_image"
         android:layout_height="@dimen/message_item_size_image"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:contentDescription="content_description_item_messages_image"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:contentDescription="@string/content_description_item_messages_image" />
 
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:layout_toEndOf="@id/iv_status_image"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/margin_normal"
         android:layout_marginStart="@dimen/margin_normal"
-        android:textStyle="bold"
-        android:contentDescription="@string/content_description_tv_date"/>
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_toEndOf="@id/iv_status_image"
+        android:contentDescription="@string/content_description_tv_date"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:layout_below="@id/tv_date"
         android:layout_marginStart="@dimen/margin_normal"
         android:layout_toEndOf="@id/iv_status_image"
-        android:layout_below="@id/tv_date"
-        android:contentDescription="content_description_fragment_details_tv_summary"/>
+        android:contentDescription="@string/content_description_tv_summary"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
 </RelativeLayout>

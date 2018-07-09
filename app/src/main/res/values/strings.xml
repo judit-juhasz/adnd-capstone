@@ -75,7 +75,6 @@
     <string name="set_birthdate" translatable="true">You are almost ready to start.\nPlease set your child\'s birthdate on your profile\nin order to get messages.</string>
     <string name="date_format_with_year" translatable="false">MMMM d, Y</string>
     <string name="date_format_without_year" translatable="false">MMMM d</string>
-    <string name="appwidget_text_author" translatable="false">Tanits</string>
     <string name="widget_login_notification" translatable="true">Login to show the active messages</string>
     <string name="all_message_done" translatable="true">Good work! Everything is done.</string>
     <string name="widget_title" translatable="true">Messages</string>
@@ -100,7 +99,7 @@
     <string name="content_description_email" translatable="true">User email address</string>
     <string name="content_description_fragment_profile_birthdate" translatable="true">Child"s birthdate</string>
     <string name="content_description_save_button" translatable="true">Save Button</string>
-    <string name="content_description_item_messages_image" translatable="true">Message status indicator</string>
     <string name="content_description_logo" translatable="true">Logo</string>
+    <string name="content_description_item_messages_image" translatable="true">Message status indicator</string>
     <string name="content_description_widget_list" translatable="true">Widget content (messages)</string>
 </resources>

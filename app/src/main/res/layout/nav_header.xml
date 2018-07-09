@@ -3,24 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/navigation_header_height"
     android:background="?attr/colorPrimary"
-    android:padding="@dimen/navigation_header_padding"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:gravity="bottom"
     android:orientation="vertical"
-    android:gravity="bottom">
+    android:padding="@dimen/navigation_header_padding"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
         android:id="@+id/tv_username"
-        android:text="@string/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:contentDescription="@string/content_description_name"/>
+        android:contentDescription="@string/content_description_name"
+        android:text="@string/username"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/tv_email"
-        android:text="@string/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/content_description_email"/>
+        android:contentDescription="@string/content_description_email"
+        android:text="@string/email" />
 
 </LinearLayout>

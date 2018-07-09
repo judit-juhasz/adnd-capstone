@@ -36,15 +36,15 @@
                     android:layout_width="@dimen/zero_width"
                     android:layout_height="match_parent"
                     android:layout_weight="@integer/weight_one"
-                    android:contentDescription="@string/content_description_activity_main_content_frame"/>
+                    android:contentDescription="@string/content_description_activity_main_content_frame" />
 
                 <FrameLayout
                     android:id="@+id/content_message_details"
                     android:layout_width="@dimen/zero_width"
                     android:layout_height="match_parent"
                     android:layout_weight="@integer/weight_two"
-                    android:visibility="gone"
-                    android:contentDescription="@string/content_description_activity_main_content_message_details"/>
+                    android:contentDescription="@string/content_description_activity_main_content_message_details"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -57,30 +57,30 @@
                 android:layout_marginBottom="@dimen/fab_margin"
                 android:layout_marginEnd="@dimen/fab_margin"
                 android:layout_marginStart="@dimen/fab_margin"
+                android:contentDescription="@string/content_description_fab"
                 fab:menu_colorNormal="@color/colorAccent"
                 fab:menu_fab_size="normal"
-                fab:menu_icon="@drawable/ic_write_message"
-                android:contentDescription="@string/content_description_fab">
+                fab:menu_icon="@drawable/ic_write_message">
 
                 <com.github.clans.fab.FloatingActionButton
                     android:id="@+id/fab_question"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/content_description_fab_question"
                     android:src="@drawable/ic_question"
                     app:fab_colorNormal="@color/colorAccent"
                     fab:fab_label="Question"
-                    fab:fab_size="mini"
-                    android:contentDescription="@string/content_description_fab_question"/>
+                    fab:fab_size="mini" />
 
                 <com.github.clans.fab.FloatingActionButton
                     android:id="@+id/fab_feedback"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/content_description_fab_feedback"
                     android:src="@drawable/ic_feedback"
                     app:fab_colorNormal="@color/colorAccent"
                     fab:fab_label="Feedback"
-                    fab:fab_size="mini"
-                    android:contentDescription="@string/content_description_fab_feedback"/>
+                    fab:fab_size="mini" />
 
             </com.github.clans.fab.FloatingActionMenu>
 

@@ -10,32 +10,31 @@
         android:id="@+id/widget_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:background="@color/colorWidgetTitleBackground">
+        android:layout_alignParentTop="true"
+        android:background="@color/colorWidgetTitleBackground"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/widget_active_messages_title"
             android:layout_width="@dimen/zero_width"
             android:layout_height="match_parent"
             android:layout_weight="@integer/weight_three"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:contentDescription="@string/widget_title"
             android:gravity="center_vertical"
-            android:text="@string/widget_title"
-            android:textColor="@color/colorPrimaryDark"
+            android:paddingEnd="@dimen/widget_padding"
             android:paddingStart="@dimen/widget_padding"
-            android:contentDescription="@string/widget_title"/>
+            android:text="@string/widget_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark" />
 
         <ImageView
             android:id="@+id/widget_active_messages_logo"
             android:layout_width="@dimen/zero_width"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/weight_one"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/logo"
-            android:contentDescription="@string/content_description_logo"/>
+            android:contentDescription="@string/content_description_logo"
+            android:src="@drawable/logo" />
 
     </LinearLayout>
 
@@ -43,27 +42,27 @@
         android:id="@+id/widget_active_messages_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorSecondaryText"
         android:layout_alignParentStart="true"
-        android:divider="@null"
-        android:dividerHeight="@dimen/zero_height"
         android:layout_below="@id/widget_header"
         android:layout_marginTop="@dimen/widget_padding"
-        tools:listitem="@layout/widget_list_elem_message"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:paddingStart="@dimen/widget_padding"
+        android:contentDescription="@string/content_description_widget_list"
+        android:divider="@null"
+        android:dividerHeight="@dimen/zero_height"
         android:paddingEnd="@dimen/widget_padding"
-        android:contentDescription="content_description_widget_list"/>
+        android:paddingStart="@dimen/widget_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorSecondaryText"
+        tools:listitem="@layout/widget_list_elem_message" />
 
     <TextView
         android:id="@+id/widget_active_messages_notification"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/colorSecondaryText"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:layout_below="@id/widget_header"
         android:layout_alignParentStart="true"
+        android:layout_below="@id/widget_header"
+        android:contentDescription="@string/content_description_tv_notification"
         android:gravity="center"
-        android:contentDescription="@string/content_description_tv_notification"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorSecondaryText" />
 
 </RelativeLayout>

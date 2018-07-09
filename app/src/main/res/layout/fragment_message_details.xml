@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,9 +11,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_normal"
-            android:layout_marginLeft="@dimen/keyline"
-            android:layout_marginRight="@dimen/keyline">
+            android:layout_marginEnd="@dimen/keyline"
+            android:layout_marginStart="@dimen/keyline"
+            android:paddingTop="@dimen/margin_normal">
 
             <TextView
                 android:id="@+id/tv_date"
@@ -32,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/tv_date"
-                android:paddingTop="@dimen/margin_medium"
                 android:contentDescription="@string/content_description_tv_summary"
+                android:paddingTop="@dimen/margin_medium"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
@@ -42,9 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/tv_summary"
-                android:paddingTop="@dimen/margin_medium"
-                android:paddingBottom="@dimen/margin_normal"
                 android:contentDescription="@string/content_description_tv_message_content"
+                android:paddingBottom="@dimen/margin_normal"
+                android:paddingTop="@dimen/margin_medium"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         </RelativeLayout>
@@ -55,12 +54,12 @@
         android:id="@+id/tv_notification_message_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:gravity="center"
-        android:layout_marginLeft="@dimen/keyline"
-        android:layout_marginRight="@dimen/keyline"
-        android:contentDescription="@string/content_description_tv_notification"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="@dimen/keyline"
+        android:layout_marginStart="@dimen/keyline"
+        android:contentDescription="@string/content_description_tv_notification"
+        android:gravity="center" />
 
     <ProgressBar
         android:id="@+id/pb_message_details_loading_indicator"
@@ -68,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:contentDescription="@string/content_description_progressbar"/>
+        android:contentDescription="@string/content_description_progressbar"
+        android:visibility="gone" />
 
 </RelativeLayout>
