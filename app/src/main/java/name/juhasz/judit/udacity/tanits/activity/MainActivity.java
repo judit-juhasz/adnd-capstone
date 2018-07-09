@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     private static final String SAVE_SELECTED_NAVIGATION_ITEM = "SAVE_SELECTED_NAVIGATION_ITEM";
     private static final String SAVE_SELECTED_MESSAGE_FILTER = "SAVE_SELECTED_MESSAGE_FILTER";
     private static final String SAVE_LAST_USER_ID = "SAVE_LAST_USER_ID";
+    private static final String SAVE_FAB_OPENED = "SAVE_FAB_OPENED";
     public static final String COLOR_FAB_LABEL_TEXT = "#212121";
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -116,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                 final int previouslySelectedNavigationItem =
                         savedInstanceState.getInt(SAVE_SELECTED_NAVIGATION_ITEM);
                 loadActivityContentForNavigationItemId(previouslySelectedNavigationItem);
+            }
+            if (savedInstanceState.containsKey(SAVE_FAB_OPENED) && savedInstanceState.getBoolean(SAVE_FAB_OPENED)) {
+                mGroupFloatingActionButton.open(false);
             }
         }
 
@@ -208,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         outState.putInt(SAVE_SELECTED_NAVIGATION_ITEM, mSelectedNavigationItem);
         outState.putInt(SAVE_SELECTED_MESSAGE_FILTER, mSelectedMessageFilter);
         outState.putString(SAVE_LAST_USER_ID, mLastUserId);
+        outState.putBoolean(SAVE_FAB_OPENED, mGroupFloatingActionButton.isOpened());
         super.onSaveInstanceState(outState);
     }
 
