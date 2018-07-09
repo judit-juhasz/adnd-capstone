@@ -96,7 +96,7 @@ public class ActiveMessagesRemoteViewsService extends RemoteViewsService {
             try {
                 queryResultWaiter.tryAcquire(ON_DATA_SET_CHANGED_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
             } catch (final InterruptedException e) {
-                Log.i(LOG_TAG, "Messages query was interrupted ", e);
+                Log.i(LOG_TAG, getString(R.string.log_message_query_interrupted), e);
             }
         }
 

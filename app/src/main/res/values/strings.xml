@@ -52,6 +52,7 @@
     <string name="error_unknown" translatable="true">Unknown error</string>
     <string name="log_message_query_canceled" translatable="true">Messages query is canceled with database error: </string>
     <string name="log_user_profile_query_canceled" translatable="true">User profile query is canceled with database error: </string>
+    <string name="log_message_query_interrupted" translatable="true">Messages query was interrupted </string>
     <string name="error_internal" translatable="true">We are sorry, internal error</string>
 
     <!-- Email data -->
