@@ -23,7 +23,7 @@
                 android:contentDescription="@string/content_description_about_cbl"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/image_about"
+                android:src="@mipmap/about_image"
                 app:layout_collapseMode="parallax" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
