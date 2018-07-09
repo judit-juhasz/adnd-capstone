@@ -11,14 +11,16 @@
     <dimen name="navigation_header_height">176dp</dimen>
     <dimen name="navigation_header_padding">16dp</dimen>
     <dimen name="zero_width">0dp</dimen>
+    <dimen name="zero_height">0dp</dimen>
     <item name="weight_one" format="integer" type="integer">1</item>
     <item name="weight_two" format="integer" type="integer">2</item>
-    <item name="weight_four" format="integer" type="integer">4</item>
+    <item name="weight_three" format="integer" type="integer">3</item>
+    <item name="maxlines_widget_summary" format="integer" type="integer">2</item>
     <dimen name="keyline">16dp</dimen>
 
     <dimen name="widget_margin">8dp</dimen>
-    <dimen name="widget_min_width">110dp</dimen>
-    <dimen name="widget_min_height">40dp</dimen>
+    <dimen name="widget_min_width">180dp</dimen>
+    <dimen name="widget_min_height">110dp</dimen>
     <dimen name="widget_padding">8dp</dimen>
 
 </resources>

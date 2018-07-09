@@ -9,4 +9,5 @@
     <color name="colorWidgetBackground">#FFFFFF</color>
     <color name="colorWidgetTitleBackground">#B0C1D4</color>
     <color name="colorWidgetTitle">#65788F</color>
+    <color name="colorWidgetDate">#29B6F6</color>
 </resources>

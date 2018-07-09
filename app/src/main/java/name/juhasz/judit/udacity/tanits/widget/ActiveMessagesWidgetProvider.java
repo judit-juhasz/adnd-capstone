@@ -191,15 +191,11 @@ public class ActiveMessagesWidgetProvider extends AppWidgetProvider {
     }
 
     private static void showNotificationView(final RemoteViews views) {
-        views.setViewVisibility(R.id.widget_active_messages_title, View.GONE);
-        views.setViewVisibility(R.id.widget_active_messages_logo, View.GONE);
         views.setViewVisibility(R.id.widget_active_messages_list, View.GONE);
         views.setViewVisibility(R.id.widget_active_messages_notification, View.VISIBLE);
     }
 
     private static void showMessageView(final RemoteViews views) {
-        views.setViewVisibility(R.id.widget_active_messages_title, View.VISIBLE);
-        views.setViewVisibility(R.id.widget_active_messages_logo, View.VISIBLE);
         views.setViewVisibility(R.id.widget_active_messages_list, View.VISIBLE);
         views.setViewVisibility(R.id.widget_active_messages_notification, View.GONE);
     }
