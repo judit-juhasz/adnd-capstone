@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,11 @@ import android.widget.TextView;
 import name.juhasz.judit.udacity.tanits.R;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+    private static final String LOG_TAG = MessageAdapter.class.getSimpleName();
 
-    public static final String COLOR_ACTIVE = "#81D4FA";
-    public static final String COLOR_DONE = "#A5D6A7";
-    public static final String COLOR_REJECTED = "#B0BEC5";
+    private static final String COLOR_ACTIVE = "#81D4FA";
+    private static final String COLOR_DONE = "#A5D6A7";
+    private static final String COLOR_REJECTED = "#B0BEC5";
 
     private Message[] mMessages = null;
 
@@ -38,8 +41,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
 
         final int layoutIdForListItem = R.layout.item_messages;
@@ -54,7 +58,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(MessageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         holder.bind(position);
     }
 
@@ -91,21 +95,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             switch (message.getStatus()) {
                 case Message.STATUS_ACTIVE:
                     drawable.getPaint().setColor(Color.parseColor(COLOR_ACTIVE));
-                    statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_DONE:
                     drawable.getPaint().setColor(Color.parseColor(COLOR_DONE));
-                    statusImageView.setBackground(drawable);
                     break;
                 case Message.STATUS_REJECTED:
                     drawable.getPaint().setColor(Color.parseColor(COLOR_REJECTED));
-                    statusImageView.setBackground(drawable);
                     break;
                 default:
-                    // log the message & fallback to STATUS_ACTIVE
-                    drawable.getPaint().setColor(Color.parseColor(COLOR_DONE));
-                    statusImageView.setBackground(drawable);
+                    Log.w(LOG_TAG, mContext.getString(R.string.log_unknown_message_status, message.getStatus()));
+                    drawable.getPaint().setColor(Color.parseColor(COLOR_ACTIVE));
             }
+            statusImageView.setBackground(drawable);
         }
 
         @Override
