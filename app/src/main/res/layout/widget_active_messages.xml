@@ -31,7 +31,7 @@
         <ImageView
             android:id="@+id/widget_active_messages_logo"
             android:layout_width="@dimen/zero_width"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/widget_header_height"
             android:layout_weight="@integer/weight_one"
             android:contentDescription="@string/content_description_logo"
             android:src="@drawable/logo" />

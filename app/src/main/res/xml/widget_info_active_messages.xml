@@ -4,6 +4,6 @@
     android:initialLayout="@layout/widget_active_messages"
     android:minHeight="@dimen/widget_min_height"
     android:minWidth="@dimen/widget_min_width"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@drawable/widget_preview"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"></appwidget-provider>

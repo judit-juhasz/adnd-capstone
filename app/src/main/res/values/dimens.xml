@@ -18,6 +18,7 @@
     <item name="maxlines_widget_summary" format="integer" type="integer">2</item>
     <dimen name="keyline">16dp</dimen>
 
+    <dimen name="widget_header_height">32dp</dimen>
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_min_width">180dp</dimen>
     <dimen name="widget_min_height">110dp</dimen>
