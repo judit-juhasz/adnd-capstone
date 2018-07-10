@@ -39,6 +39,9 @@ import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = ProfileFragment.class.getSimpleName();
+    private static final String SAVE_NAME_KEY = "SAVE_NAME_KEY";
+    private static final String SAVE_EMAIL_KEY = "SAVE_EMAIL_KEY";
+    private static final String SAVE_BIRTHDATE_KEY = "SAVE_BIRTHDATE_KEY";
 
     @BindView(R.id.et_name)
     EditText mNameEditText;
@@ -72,7 +75,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+                             @Nullable final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         ButterKnife.bind(this, rootView);
@@ -91,7 +94,14 @@ public class ProfileFragment extends Fragment {
                     setupNameField();
                     setupBirthdateCalendarPopup();
                     setupSavePopup();
-                    queryUserProfileData();
+                    if (null == savedInstanceState) {
+                        queryUserProfileData();
+                    } else {
+                        mNameEditText.setText(savedInstanceState.getString(SAVE_NAME_KEY, ""));
+                        mEmailEditText.setText(savedInstanceState.getString(SAVE_EMAIL_KEY, ""));
+                        mBirthdateOfChildEditText.setText(savedInstanceState.getString(SAVE_BIRTHDATE_KEY, ""));
+                        showProfile();
+                    }
                     updateSaveButtonStatus();
                 } else {
                     if (null != mUserProfileListenerDetacher) {
@@ -113,6 +123,14 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(SAVE_NAME_KEY, mNameEditText.getText().toString());
+        outState.putString(SAVE_EMAIL_KEY, mEmailEditText.getText().toString());
+        outState.putString(SAVE_BIRTHDATE_KEY, mBirthdateOfChildEditText.getText().toString());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if (null != mUserProfileListenerDetacher) {
@@ -121,6 +139,7 @@ public class ProfileFragment extends Fragment {
         }
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+            mAuthStateListener = null;
         }
     }
 

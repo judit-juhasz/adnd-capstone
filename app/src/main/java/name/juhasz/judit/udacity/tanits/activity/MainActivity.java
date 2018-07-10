@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
             if (savedInstanceState.containsKey(SAVE_SELECTED_NAVIGATION_ITEM)) {
                 final int previouslySelectedNavigationItem =
                         savedInstanceState.getInt(SAVE_SELECTED_NAVIGATION_ITEM);
-                loadActivityContentForNavigationItemId(previouslySelectedNavigationItem);
+                loadActivityContentForNavigationItemId(previouslySelectedNavigationItem, false);
             }
             if (savedInstanceState.containsKey(SAVE_FAB_OPENED) && savedInstanceState.getBoolean(SAVE_FAB_OPENED)) {
                 mGroupFloatingActionButton.open(false);
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
                             }, true);
                     final String currentUserId = firebaseAuth.getCurrentUser().getUid();
                     if (!currentUserId.equals(mLastUserId)) {
-                        loadActivityContentForNavigationItemId(R.id.nav_messages);
+                        loadActivityContentForNavigationItemId(R.id.nav_messages, true);
                     }
                     mLastUserId = firebaseAuth.getCurrentUser().getUid();
                 }
@@ -251,17 +251,17 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         switch (itemId) {
             case R.id.nav_messages:
                 if (itemId != mSelectedNavigationItem) {
-                    loadActivityContentForNavigationItemId(itemId);
+                    loadActivityContentForNavigationItemId(itemId, true);
                 }
                 break;
             case R.id.nav_profile:
                 if (itemId != mSelectedNavigationItem) {
-                    loadActivityContentForNavigationItemId(itemId);
+                    loadActivityContentForNavigationItemId(itemId, true);
                 }
                 break;
             case R.id.nav_about:
                 if (itemId != mSelectedNavigationItem) {
-                    loadActivityContentForNavigationItemId(itemId);
+                    loadActivityContentForNavigationItemId(itemId, true);
                 }
                 break;
             case R.id.nav_logout:
@@ -321,12 +321,15 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         }
     }
 
-    private void loadActivityContentForNavigationItemId(@NonNull final int navigationItemId) {
+    private void loadActivityContentForNavigationItemId(@NonNull final int navigationItemId,
+                                                        @NonNull final boolean reloadFragment) {
         setMessageDetailFragmentVisibility(navigationItemId);
         selectNavigationMenu(navigationItemId);
         setToolbarTitles(navigationItemId);
         setFabVisibilityForNavigationItemId(navigationItemId);
-        setFragmentForNavigationItemId(navigationItemId);
+        if (reloadFragment) {
+            setFragmentForNavigationItemId(navigationItemId);
+        }
         mSelectedNavigationItem = navigationItemId;
         invalidateOptionsMenu();
     }
@@ -388,25 +391,25 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
             case R.id.messages_all:
                 if (itemId != mSelectedMessageFilter) {
                     mSelectedMessageFilter = MessagesFragment.FILTER_ALL;
-                    loadActivityContentForNavigationItemId(R.id.nav_messages);
+                    loadActivityContentForNavigationItemId(R.id.nav_messages, true);
                 }
                 break;
             case R.id.messages_active:
                 if (itemId != mSelectedMessageFilter) {
                     mSelectedMessageFilter = MessagesFragment.FILTER_ACTIVE;
-                    loadActivityContentForNavigationItemId(R.id.nav_messages);
+                    loadActivityContentForNavigationItemId(R.id.nav_messages, true);
                 }
                 break;
             case R.id.messages_done:
                 if (itemId != mSelectedMessageFilter) {
                     mSelectedMessageFilter = MessagesFragment.FILTER_DONE;
-                    loadActivityContentForNavigationItemId(R.id.nav_messages);
+                    loadActivityContentForNavigationItemId(R.id.nav_messages, true);
                 }
                 break;
             case R.id.messages_rejected:
                 if (itemId != mSelectedMessageFilter) {
                     mSelectedMessageFilter = MessagesFragment.FILTER_REJECTED;
-                    loadActivityContentForNavigationItemId(R.id.nav_messages);
+                    loadActivityContentForNavigationItemId(R.id.nav_messages, true);
                 }
                 break;
             case R.id.status_rejected:
