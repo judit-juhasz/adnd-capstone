@@ -69,7 +69,6 @@
     <string name="path_messageDetail" translatable="false">messageDetail/</string>
     <string name="message_content" translatable="false">content</string>
     <string name="message_status" translatable="false">status</string>
-    <string name="message_subject" translatable="false">subject</string>
     <string name="message_summary" translatable="false">summary</string>
     <string name="message_dayOffset" translatable="false">dayOffset</string>
     <string name="save_message_status" translatable="false">messageStatus/<xliff:g example="1" id="userid">%s</xliff:g>/<xliff:g example="1" id="messageid">%s</xliff:g>/status</string>
@@ -89,7 +88,6 @@
     <string name="content_description_fab_feedback" translatable="true">Feedback FAB</string>
     <string name="content_description_fab_question" translatable="true">Question FAB</string>
     <string name="content_description_about_cbl" translatable="true">Toolbar Image</string>
-    <string name="content_description_about_tv_title" translatable="true">Business name text</string>
     <string name="content_description_about_tv_introduction" translatable="true">Introduction text</string>
     <string name="content_description_tv_date" translatable="true">Date of message</string>
     <string name="content_description_tv_summary" translatable="true">Summary of message</string>
