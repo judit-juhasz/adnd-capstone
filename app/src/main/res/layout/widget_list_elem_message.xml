@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="@dimen/widget_margin"
         android:layout_toStartOf="@id/widget_list_elem_message_date"
         android:contentDescription="@string/content_description_tv_summary"
         android:ellipsize="end"
@@ -24,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:contentDescription="@string/content_description_tv_date"
+        android:layout_marginStart="@dimen/widget_margin"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/colorSecondaryText"
         android:textStyle="bold" />
