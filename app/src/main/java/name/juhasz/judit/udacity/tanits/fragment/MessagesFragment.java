@@ -33,6 +33,7 @@ import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 
 public class MessagesFragment extends Fragment implements MessageAdapter.OnClickListener {
     private static final String TAG = MessagesFragment.class.getSimpleName();
+    private static final String SAVE_LAST_MESSAGE_KEY = "SAVE_LAST_MESSAGE_KEY";
 
     public static final String PARAMETER_FILTER = "PARAMETER_FILTER";
     public static final int FILTER_ALL = 0;
@@ -94,6 +95,9 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
 
         showProgressBar();
         mOnSelectMessageListener.onSelectMessage(null, false);
+        if (null != savedInstanceState) {
+            mLastSelectedMessage = savedInstanceState.getParcelable(SAVE_LAST_MESSAGE_KEY);
+        }
 
         mMessagesRecycleView.setAdapter(mMessageAdapter);
         mMessagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -147,6 +151,12 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(SAVE_LAST_MESSAGE_KEY, mLastSelectedMessage);
+        super.onSaveInstanceState(outState);
     }
 
     private void queryMessages(final int filter) {
@@ -223,7 +233,12 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
                                         Integer.parseInt(mLastSelectedMessage.getId());
                                 for (Iterator<Message> i = messageList.iterator(); i.hasNext();) {
                                     final Message message = i.next();
-                                    if (!i.hasNext() || lastCalledMessageId < Integer.parseInt(message.getId())) {
+                                    final int messageId = Integer.parseInt(message.getId());
+                                    if (lastCalledMessageId == messageId) {
+                                        mOnSelectMessageListener.onSelectMessage(message, false);
+                                        mLastSelectedMessage = message;
+                                        break;
+                                    } else if (!i.hasNext() || lastCalledMessageId < messageId) {
                                         mOnSelectMessageListener.onSelectMessage(message, false);
                                         mLastSelectedMessage = message;
                                         break;
