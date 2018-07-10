@@ -33,11 +33,11 @@ public class FirebaseUtils {
     public static final int MESSAGE_STATUS_FILTER_ACTIVE = 1;
     public static final int MESSAGE_STATUS_FILTER_DONE = 2;
     public static final int MESSAGE_STATUS_FILTER_REJECTED = 3;
-    public static final String MESSAGE_STATUS_DONE = "done";
-    public static final String MESSAGE_STATUS_ACTIVE = "active";
-    public static final String MESSAGE_STATUS_REJECTED = "rejected";
-    public static final String DATE_TODAY = "Today";
-    public static final String DATE_YESTERDAY = "Yesterday";
+    private static final String MESSAGE_STATUS_DONE = "done";
+    private static final String MESSAGE_STATUS_ACTIVE = "active";
+    private static final String MESSAGE_STATUS_REJECTED = "rejected";
+    private static final String DATE_TODAY = "Today";
+    private static final String DATE_YESTERDAY = "Yesterday";
 
     private static Context mContext;
 
@@ -107,7 +107,7 @@ public class FirebaseUtils {
         String status;
         switch (messageStatus) {
             case Message.STATUS_ACTIVE:
-                // No status means active
+                // No status set on a message means active, don't need to do anything
                 return;
             case Message.STATUS_DONE:
                 status = MESSAGE_STATUS_DONE;
