@@ -41,7 +41,10 @@
                 android:id="@+id/et_birthdate_of_child"
                 style="@style/ProfileEditText"
                 android:clickable="true"
-                android:focusable="true"
+                android:longClickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="none"
                 android:hint="@string/hint_birthdate" />
 
         </android.support.design.widget.TextInputLayout>
