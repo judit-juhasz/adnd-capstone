@@ -2,6 +2,7 @@ package name.juhasz.judit.udacity.tanits.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,7 @@ import name.juhasz.judit.udacity.tanits.util.NetworkUtils;
 public class MessagesFragment extends Fragment implements MessageAdapter.OnClickListener {
     private static final String TAG = MessagesFragment.class.getSimpleName();
     private static final String SAVE_LAST_MESSAGE_KEY = "SAVE_LAST_MESSAGE_KEY";
+    private static final String SAVE_LAYOUT_MANAGER_STATE_KEY = "SAVE_LAYOUT_MANAGER_STATE_KEY";
 
     public static final String PARAMETER_FILTER = "PARAMETER_FILTER";
     public static final int FILTER_ALL = 0;
@@ -46,6 +48,8 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
     }
 
     private MessageAdapter mMessageAdapter;
+    private LinearLayoutManager mLayoutManager;
+    private Parcelable mLayoutManagerSavedState = null;
     @BindView(R.id.rv_messages)
     RecyclerView mMessagesRecycleView;
     @BindView(R.id.tv_notification)
@@ -95,12 +99,14 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
 
         showProgressBar();
         mOnSelectMessageListener.onSelectMessage(null, false);
-        if (null != savedInstanceState) {
-            mLastSelectedMessage = savedInstanceState.getParcelable(SAVE_LAST_MESSAGE_KEY);
-        }
 
         mMessagesRecycleView.setAdapter(mMessageAdapter);
-        mMessagesRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mMessagesRecycleView.setLayoutManager(mLayoutManager);
+        if (null != savedInstanceState) {
+            mLastSelectedMessage = savedInstanceState.getParcelable(SAVE_LAST_MESSAGE_KEY);
+            mLayoutManagerSavedState = savedInstanceState.getParcelable(SAVE_LAYOUT_MANAGER_STATE_KEY);
+        }
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -156,12 +162,16 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(SAVE_LAST_MESSAGE_KEY, mLastSelectedMessage);
+        outState.putParcelable(SAVE_LAYOUT_MANAGER_STATE_KEY, mLayoutManager.onSaveInstanceState());
         super.onSaveInstanceState(outState);
     }
 
     private void queryMessages(final int filter) {
         if (!NetworkUtils.isNetworkAvailable(getContext())) {
             showNotification(getString(R.string.internet_required));
+        }
+        if (null != mUserProfileListenerDetacher) {
+            mUserProfileListenerDetacher.detach();
         }
         mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
             @Override
@@ -177,6 +187,12 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
                         showNotification(getString(R.string.set_birthdate));
                     } else {
                         final LocalDate childBirthdate = new LocalDate(birthdate);
+                        // According to the Firebase Realtime Database documentation, the DB values
+                        // are cached (even if there is no internet access), so it is save to just
+                        // query the messages from Firebase, there is no need to save it in the
+                        // saveInstanceState (e.g. no need to store them locally).
+                        // This call also attaches the listener, so the list will be automatically
+                        // updated if something changes in the database.
                         queryMessages(childBirthdate, filter);
                     }
                 } catch (Exception e) {
@@ -214,6 +230,9 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
             }
             default:
                 Log.w(TAG, getActivity().getString(R.string.log_error_unknown_message_status_filter, filter));
+        }
+        if (null != mMessageStatusListenerDetacher) {
+            mMessageStatusListenerDetacher.detach();
         }
         mMessageStatusListenerDetacher = FirebaseUtils.queryMessages(childBirthdate, firebaseMessageStatusFilter,
                 new FirebaseUtils.MessageListListener() {
@@ -280,6 +299,10 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnClick
         mNotificationTextView.setVisibility(View.GONE);
         mMessagesRecycleView.setVisibility(View.VISIBLE);
         mMessageAdapter.setMessages(messageList.toArray(new Message[messageList.size()]));
+        if (null != mLayoutManagerSavedState) {
+            mLayoutManager.onRestoreInstanceState(mLayoutManagerSavedState);
+            mLayoutManagerSavedState = null;
+        }
     }
 
     private void showProgressBar() {
