@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_layout_height"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="@dimen/appbarelevation">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -42,11 +43,11 @@
         style="@style/IntroductionContainer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <TextView
-                android:id="@+id/tv_introduction"
-                style="@style/Introduction"
-                android:contentDescription="@string/content_description_about_tv_introduction"
-                android:text="@string/text_introduction" />
+        <TextView
+            android:id="@+id/tv_introduction"
+            style="@style/Introduction"
+            android:contentDescription="@string/content_description_about_tv_introduction"
+            android:text="@string/text_introduction" />
 
     </android.support.v4.widget.NestedScrollView>
 

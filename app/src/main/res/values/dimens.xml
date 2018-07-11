@@ -17,6 +17,7 @@
     <item name="weight_three" format="integer" type="integer">3</item>
     <item name="maxlines_widget_summary" format="integer" type="integer">2</item>
     <dimen name="keyline">16dp</dimen>
+    <dimen name="appbarelevation">4dp</dimen>
 
     <dimen name="widget_header_height">32dp</dimen>
     <dimen name="widget_margin">8dp</dimen>
