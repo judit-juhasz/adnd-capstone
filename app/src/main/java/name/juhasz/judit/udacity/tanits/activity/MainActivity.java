@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
     private static final String SAVE_SELECTED_MESSAGE_FILTER = "SAVE_SELECTED_MESSAGE_FILTER";
     private static final String SAVE_LAST_USER_ID = "SAVE_LAST_USER_ID";
     private static final String SAVE_FAB_OPENED = "SAVE_FAB_OPENED";
-    public static final String COLOR_FAB_LABEL_TEXT = "#212121";
+    private static final int COLOR_LABEL_BACKGROUND = 0Xffffffff;
+    private static final String COLOR_FAB_LABEL_TEXT = "#212121";
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1;
@@ -182,10 +183,10 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
             }
         });
 
-        mFeedbackFloatingActionButton.setLabelColors(0Xffffffff, 0Xffffffff, 0Xffffffff);
+        mFeedbackFloatingActionButton.setLabelColors(COLOR_LABEL_BACKGROUND, COLOR_LABEL_BACKGROUND, COLOR_LABEL_BACKGROUND);
         mFeedbackFloatingActionButton.setLabelTextColor(Color.parseColor(COLOR_FAB_LABEL_TEXT));
 
-        mQuestionFloatingActionButton.setLabelColors(0Xffffffff, 0Xffffffff, 0Xffffffff);
+        mQuestionFloatingActionButton.setLabelColors(COLOR_LABEL_BACKGROUND, COLOR_LABEL_BACKGROUND, COLOR_LABEL_BACKGROUND);
         mQuestionFloatingActionButton.setLabelTextColor(Color.parseColor(COLOR_FAB_LABEL_TEXT));
     }
 
