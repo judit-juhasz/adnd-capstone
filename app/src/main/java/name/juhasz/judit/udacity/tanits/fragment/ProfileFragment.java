@@ -1,6 +1,7 @@
 package name.juhasz.judit.udacity.tanits.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -42,6 +43,7 @@ public class ProfileFragment extends Fragment {
     private static final String SAVE_NAME_KEY = "SAVE_NAME_KEY";
     private static final String SAVE_EMAIL_KEY = "SAVE_EMAIL_KEY";
     private static final String SAVE_BIRTHDATE_KEY = "SAVE_BIRTHDATE_KEY";
+    private static final String SAVE_DATE_PICKER_IS_OPEN_KEY = "SAVE_DATE_PICKER_IS_OPEN_KEY";
 
     @BindView(R.id.et_name)
     EditText mNameEditText;
@@ -67,6 +69,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseUtils.ValueEventListenerDetacher mUserProfileListenerDetacher;
+    private boolean mIsDatePickerDialogOpen = false;
 
     public ProfileFragment() {
     }
@@ -101,6 +104,10 @@ public class ProfileFragment extends Fragment {
                         mEmailEditText.setText(savedInstanceState.getString(SAVE_EMAIL_KEY, ""));
                         mBirthdateOfChildEditText.setText(savedInstanceState.getString(SAVE_BIRTHDATE_KEY, ""));
                         showProfile();
+                        if (null!= savedInstanceState && savedInstanceState.getBoolean(SAVE_DATE_PICKER_IS_OPEN_KEY)) {
+                            // This function will updates the corresponding member variable
+                            showDatePickerDialog();
+                        }
                     }
                     updateSaveButtonStatus();
                 } else {
@@ -127,6 +134,7 @@ public class ProfileFragment extends Fragment {
         outState.putString(SAVE_NAME_KEY, mNameEditText.getText().toString());
         outState.putString(SAVE_EMAIL_KEY, mEmailEditText.getText().toString());
         outState.putString(SAVE_BIRTHDATE_KEY, mBirthdateOfChildEditText.getText().toString());
+        outState.putBoolean(SAVE_DATE_PICKER_IS_OPEN_KEY, mIsDatePickerDialogOpen);
         super.onSaveInstanceState(outState);
     }
 
@@ -205,24 +213,7 @@ public class ProfileFragment extends Fragment {
         mBirthdateOfChildEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String currentBirthdate = mBirthdateOfChildEditText.getText().toString();
-                final LocalDate currentLocalDate = LocalDate.now(DateTimeZone.UTC);
-                final LocalDate calendarStartDate
-                        = DateTimeUtils.parseLocalDateOrDefault(currentBirthdate, currentLocalDate);
-                final int monthFirstIndexCorrection = -1;
-                final DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), getDateChangeListener(),
-                        calendarStartDate.getYear(),
-                        calendarStartDate.getMonthOfYear() + monthFirstIndexCorrection,
-                        calendarStartDate.getDayOfMonth());
-                final int maximumChildAgeInDays = 7;
-                final LocalDate minDate = currentLocalDate.minusDays(maximumChildAgeInDays);
-                final long minDateInMillis = minDate.toDateTimeAtStartOfDay(DateTimeZone.UTC)
-                        .toInstant().getMillis();
-                datePickerDialog.getDatePicker().setMinDate(minDateInMillis);
-                final long todayInMillis = currentLocalDate.toDateTimeAtStartOfDay(DateTimeZone.UTC)
-                        .toInstant().getMillis();
-                datePickerDialog.getDatePicker().setMaxDate(todayInMillis);
-                datePickerDialog.show();
+                showDatePickerDialog();
             }
         });
         mBirthdateOfChildEditText.addTextChangedListener(new MyTextWatcher(mBirthdateOfChildEditText));
@@ -239,6 +230,34 @@ public class ProfileFragment extends Fragment {
                 mBirthdateOfChildEditText.setText(childBirthdate);
             }
         };
+    }
+
+    private void showDatePickerDialog() {
+        final String currentBirthdate = mBirthdateOfChildEditText.getText().toString();
+        final LocalDate currentLocalDate = LocalDate.now(DateTimeZone.UTC);
+        final LocalDate calendarStartDate
+                = DateTimeUtils.parseLocalDateOrDefault(currentBirthdate, currentLocalDate);
+        final int monthFirstIndexCorrection = -1;
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), getDateChangeListener(),
+                calendarStartDate.getYear(),
+                calendarStartDate.getMonthOfYear() + monthFirstIndexCorrection,
+                calendarStartDate.getDayOfMonth());
+        final int maximumChildAgeInDays = 7;
+        final LocalDate minDate = currentLocalDate.minusDays(maximumChildAgeInDays);
+        final long minDateInMillis = minDate.toDateTimeAtStartOfDay(DateTimeZone.UTC)
+                .toInstant().getMillis();
+        datePickerDialog.getDatePicker().setMinDate(minDateInMillis);
+        final long todayInMillis = currentLocalDate.toDateTimeAtStartOfDay(DateTimeZone.UTC)
+                .toInstant().getMillis();
+        datePickerDialog.getDatePicker().setMaxDate(todayInMillis);
+        mIsDatePickerDialogOpen = true;
+        datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                mIsDatePickerDialogOpen = false;
+            }
+        });
+        datePickerDialog.show();
     }
 
     private void validateName() {
