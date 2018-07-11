@@ -6,57 +6,40 @@
 
     <LinearLayout
         android:id="@+id/ll_profile_data"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="@dimen/keyline"
-        android:layout_marginStart="@dimen/keyline"
-        android:orientation="vertical">
+        style="@style/ProfileDataContainer"
+        android:contentDescription="@string/content_description_profile_data_container">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
+            style="@style/TextInputLayout"
             android:contentDescription="@string/content_description_name">
 
             <EditText
                 android:id="@+id/et_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/ProfileEditText"
                 android:hint="@string/hint_name" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
+            style="@style/TextInputLayout"
             android:contentDescription="@string/content_description_email">
 
             <EditText
                 android:id="@+id/et_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/ProfileEditText"
                 android:hint="@string/hint_email" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_birthdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
+            style="@style/TextInputLayout"
             android:contentDescription="@string/content_description_fragment_profile_birthdate">
 
             <EditText
                 android:id="@+id/et_birthdate_of_child"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/ProfileEditText"
                 android:clickable="true"
                 android:focusable="true"
                 android:hint="@string/hint_birthdate" />
@@ -65,37 +48,20 @@
 
         <Button
             android:id="@+id/button_save"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_save_height"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/margin_top_save_button"
-            android:background="@drawable/shape_background_button"
-            android:contentDescription="@string/content_description_save_button"
-            android:paddingEnd="@dimen/padding_save_button"
-            android:paddingStart="@dimen/padding_save_button"
-            android:text="@string/button_text_save"
-            android:textColor="@color/colorWhite" />
+            style="@style/ButtonSave"
+            android:contentDescription="@string/content_description_save_button" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_notification_profile"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="@dimen/keyline"
-        android:layout_marginStart="@dimen/keyline"
-        android:contentDescription="@string/content_description_tv_notification"
-        android:gravity="center" />
+        style="@style/Notification"
+        android:contentDescription="@string/content_description_tv_notification" />
 
     <ProgressBar
         android:id="@+id/pb_profile_loading_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ProgressBar"
         android:layout_gravity="center"
-        android:contentDescription="@string/content_description_progressbar"
-        android:visibility="gone" />
+        android:contentDescription="@string/content_description_progressbar" />
 
 </android.support.design.widget.CoordinatorLayout>

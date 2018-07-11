@@ -22,21 +22,13 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/AboutUsAppBarImage"
                     android:contentDescription="@string/content_description_about_cbl"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
                     android:src="@mipmap/about_image"
                     app:layout_collapseMode="parallax" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="@dimen/margin_normal"
-                    android:layout_marginStart="@dimen/margin_normal"
+                    style="@style/Logo"
                     android:contentDescription="@string/content_description_logo"
                     android:src="@drawable/logo" />
 
@@ -47,29 +39,14 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/margin_normal"
-        android:layout_marginEnd="@dimen/keyline"
-        android:layout_marginStart="@dimen/keyline"
-        android:layout_marginTop="@dimen/margin_normal"
+        style="@style/IntroductionContainer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_introduction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_normal"
+                style="@style/Introduction"
                 android:contentDescription="@string/content_description_about_tv_introduction"
-                android:text="@string/text_introduction"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-        </LinearLayout>
+                android:text="@string/text_introduction" />
 
     </android.support.v4.widget.NestedScrollView>
 

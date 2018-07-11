@@ -6,12 +6,9 @@
 
     <TextView
         android:id="@+id/tv_notification"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        style="@style/NotificationMessages"
         android:contentDescription="@string/content_description_tv_notification"
-        android:gravity="center"
-        android:text="@string/empty_text"
-        android:visibility="gone" />
+        android:text="@string/empty_text" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_messages"
@@ -23,11 +20,8 @@
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ProgressBar"
         android:layout_centerInParent="true"
-        android:contentDescription="@string/content_description_progressbar"
-        android:visibility="gone" />
+        android:contentDescription="@string/content_description_progressbar" />
 
 </RelativeLayout>

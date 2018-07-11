@@ -17,7 +17,7 @@
     <string name="exception_text" translatable="true"> must implement </string>
 
     <!-- About fragment -->
-    <string name="text_introduction" translatable="true">Our mission is to help you to bring healthy and successful children up by building your very own personalized early childhood development assistant. Our method is to combine artificial intelligence with the latest early childhood education results.\n\nEarly childhood education has significant impact on the areas of cognition, language, socioemotional health, education, and the labor market. Despite of its importance, most children do not get proper care from their parents. Some of the reasons are the lack of time to learn, the multidisciplinary nature of early childhood education, and the uniqueness of children.\n\nWith this app, we give you the right amount of information, in the right time, specifically tailored for your, your children's, and your family's situation.
+    <string name="text_introduction" translatable="true">Our mission is to help you to bring healthy and successful children up by building your very own personalized early childhood development assistant. Our method is to combine artificial intelligence with the latest early childhood education results.\n\nEarly childhood education has significant impact on the areas of cognition, language, socioemotional health, education, and the labor market. Despite of its importance, most children do not get proper care from their parents. Some of the reasons are the lack of time to learn, the multidisciplinary nature of early childhood education, and the uniqueness of children.\n\nWith this app, we give you the right amount of information, in the right time, specifically tailored for you, your children's, and your family's situation.
 </string>
 
     <!-- Profile fragment -->
@@ -102,4 +102,6 @@
     <string name="content_description_logo" translatable="true">Logo</string>
     <string name="content_description_item_messages_image" translatable="true">Message status indicator</string>
     <string name="content_description_widget_list" translatable="true">Widget content (messages)</string>
+    <string name="content_description_profile_data_container" translatable="true">Profile data container</string>
+    <string name="content_description_navigation_view" translatable="true">Navigation drawer</string>
 </resources>

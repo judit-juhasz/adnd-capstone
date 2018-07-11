@@ -12,4 +12,287 @@
         <item name="android:textColor">@color/colorPrimaryText</item>
     </style>
 
+    <style name="WidgetSummary">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_toStartOf">@id/widget_list_elem_message_date</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">@integer/maxlines_widget_summary</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+    </style>
+
+    <style name="WidgetDate">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_marginStart">@dimen/widget_margin</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WidgetNotification">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_below">@id/widget_header</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="WidgetMessageList">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_below">@id/widget_header</item>
+        <item name="android:layout_marginTop">@dimen/widget_padding</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">@dimen/zero_height</item>
+        <item name="android:paddingEnd">@dimen/widget_padding</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:paddingStart">@dimen/widget_padding</item>
+    </style>
+
+    <style name="WidgetTitle">
+        <item name="android:layout_width">@dimen/zero_width</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">@integer/weight_three</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingEnd">@dimen/widget_padding</item>
+        <item name="android:paddingStart">@dimen/widget_padding</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:text">@string/widget_title</item>
+    </style>
+
+    <style name="WidgetLogo">
+        <item name="android:layout_width">@dimen/zero_width</item>
+        <item name="android:layout_height">@dimen/widget_header_height</item>
+        <item name="android:layout_weight">@integer/weight_one</item>
+    </style>
+
+    <style name="WidgetHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:background">@color/colorWidgetTitleBackground</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="NavigationHeaderUsername">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/username</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+    </style>
+
+
+    <style name="NavigationHeaderEmail">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/email</item>
+    </style>
+
+    <style name="NavigationHeaderContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/navigation_header_height</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:padding">@dimen/navigation_header_padding</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
+    </style>
+
+
+    <style name="MessageStatusImage">
+        <item name="android:layout_width">@dimen/message_item_size_image</item>
+        <item name="android:layout_height">@dimen/message_item_size_image</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginTop">@dimen/margin_padding_normal</item>
+    </style>
+
+    <style name="ItemMessageDate">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginStart">@dimen/margin_padding_normal</item>
+        <item name="android:layout_marginTop">@dimen/margin_padding_normal</item>
+        <item name="android:layout_toEndOf">@id/iv_status_image</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+    </style>
+
+    <style name="ItemMessageSummary">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/tv_date</item>
+        <item name="android:layout_marginStart">@dimen/margin_padding_normal</item>
+        <item name="android:layout_toEndOf">@id/iv_status_image</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+    </style>
+
+    <style name="ProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="Notification">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_marginEnd">@dimen/keyline</item>
+        <item name="android:layout_marginStart">@dimen/keyline</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ButtonSave">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/button_save_height</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_save_button</item>
+        <item name="android:background">@drawable/shape_background_button</item>
+        <item name="android:paddingEnd">@dimen/padding_save_button</item>
+        <item name="android:paddingStart">@dimen/padding_save_button</item>
+        <item name="android:text">@string/button_text_save</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="TextInputLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/margin_padding_normal</item>
+        <item name="android:layout_marginTop">@dimen/margin_padding_normal</item>
+    </style>
+
+    <style name="ProfileDataContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_marginEnd">@dimen/keyline</item>
+        <item name="android:layout_marginStart">@dimen/keyline</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="ProfileEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="NotificationMessages">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="MessageDetailDate">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MessageDetailSummary">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@+id/tv_date</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name=" android:paddingTop">@dimen/margin_medium</item>
+    </style>
+
+    <style name="MessageDetailContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@+id/tv_summary</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name=" android:paddingTop">@dimen/margin_medium</item>
+        <item name=" android:paddingBottom">@dimen/margin_padding_normal</item>
+    </style>
+
+    <style name="Logo">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_marginBottom">@dimen/margin_padding_normal</item>
+        <item name="android:layout_marginStart">@dimen/margin_padding_normal</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:text">@string/widget_title</item>
+    </style>
+
+    <style name="AboutUsAppBarImage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="Introduction">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/margin_padding_normal</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+    </style>
+
+    <style name="IntroductionContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginBottom">@dimen/margin_padding_normal</item>
+        <item name="android:layout_marginEnd">@dimen/keyline</item>
+        <item name="android:layout_marginStart">@dimen/keyline</item>
+        <item name="android:layout_marginTop">@dimen/margin_padding_normal</item>
+    </style>
+
+    <style name="NavigationView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:layout_gravity">start</item>
+    </style>
+
+    <style name="FabMenu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_marginBottom">@dimen/fab_margin</item>
+        <item name="android:layout_marginStart">@dimen/fab_margin</item>
+        <item name="android:layout_marginEnd">@dimen/fab_margin</item>
+    </style>
+
+    <style name="MainContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:baselineAligned">false</item>
+        <item name="android:divider">?android:attr/dividerHorizontal</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:showDividers">middle</item>
+    </style>
+
+    <style name="FrameContent">
+        <item name="android:layout_width">@dimen/zero_width</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">@integer/weight_one</item>
+    </style>
+
+    <style name="FrameMessageDetails">
+        <item name="android:layout_width">@dimen/zero_width</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">@integer/weight_two</item>
+        <item name="android:visibility">gone</item>
+    </style>
 </resources>

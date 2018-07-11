@@ -23,40 +23,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:baselineAligned="false"
-                android:divider="?android:attr/dividerHorizontal"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+            <LinearLayout style="@style/MainContainer">
 
                 <FrameLayout
                     android:id="@+id/content_frame"
-                    android:layout_width="@dimen/zero_width"
-                    android:layout_height="match_parent"
-                    android:layout_weight="@integer/weight_one"
+                    style="@style/FrameContent"
                     android:contentDescription="@string/content_description_activity_main_content_frame" />
 
                 <FrameLayout
                     android:id="@+id/content_message_details"
-                    android:layout_width="@dimen/zero_width"
-                    android:layout_height="match_parent"
-                    android:layout_weight="@integer/weight_two"
-                    android:contentDescription="@string/content_description_activity_main_content_message_details"
-                    android:visibility="gone" />
+                    style="@style/FrameMessageDetails"
+                    android:contentDescription="@string/content_description_activity_main_content_message_details" />
 
             </LinearLayout>
 
             <com.github.clans.fab.FloatingActionMenu
                 android:id="@+id/fab_menu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginStart="@dimen/fab_margin"
+                style="@style/FabMenu"
                 android:contentDescription="@string/content_description_fab"
                 fab:menu_colorNormal="@color/colorAccent"
                 fab:menu_fab_size="normal"
@@ -90,10 +73,8 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
+        style="@style/NavigationView"
+        android:contentDescription="@string/content_description_navigation_view"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_view" />
 
