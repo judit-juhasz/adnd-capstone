@@ -257,6 +257,12 @@ public class ProfileFragment extends Fragment {
                 mIsDatePickerDialogOpen = false;
             }
         });
+        datePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                mIsDatePickerDialogOpen = false;
+            }
+        });
         datePickerDialog.show();
     }
 
