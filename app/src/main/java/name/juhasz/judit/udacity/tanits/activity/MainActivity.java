@@ -1,7 +1,6 @@
 package name.juhasz.judit.udacity.tanits.activity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -92,10 +91,6 @@ public class MainActivity extends AppCompatActivity implements MessagesFragment.
         ButterKnife.bind(this);
         JodaTimeAndroid.init(this);
         FirebaseUtils.initialize(this);
-
-        if (getResources().getBoolean(R.bool.portrait_only)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         mTwoPaneMode = ConfigurationUtils.isTwoPaneMode(this);
 

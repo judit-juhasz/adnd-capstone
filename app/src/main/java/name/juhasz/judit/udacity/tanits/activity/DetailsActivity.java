@@ -1,7 +1,6 @@
 package name.juhasz.judit.udacity.tanits.activity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -40,25 +39,23 @@ public class DetailsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        if (getResources().getBoolean(R.bool.portrait_only)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Intent intent = getIntent();
         final boolean hasMessageExtra = (null != intent && intent.hasExtra(MESSAGE_DATA));
         if (hasMessageExtra) {
-            final Bundle arguments = new Bundle();
-            final Message message = intent.getParcelableExtra(MESSAGE_DATA);
-            arguments.putParcelable(MessageDetailsFragment.MESSAGE_DATA, message);
-            final MessageDetailsFragment fragment = new MessageDetailsFragment();
-            fragment.setArguments(arguments);
-            final FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .add(R.id.content_frame_detail, fragment)
-                    .commit();
+            if (null == savedInstanceState) {
+                final Bundle arguments = new Bundle();
+                final Message message = intent.getParcelableExtra(MESSAGE_DATA);
+                arguments.putParcelable(MessageDetailsFragment.MESSAGE_DATA, message);
+                final MessageDetailsFragment fragment = new MessageDetailsFragment();
+                fragment.setArguments(arguments);
+                final FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.content_frame_detail, fragment)
+                        .commit();
+            }
         } else {
             Log.w(LOG_TAG, getString(R.string.log_error_missing_message_data));
             onBackPressed();
