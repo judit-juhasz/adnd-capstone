@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment {
     private static final String SAVE_NAME_KEY = "SAVE_NAME_KEY";
     private static final String SAVE_EMAIL_KEY = "SAVE_EMAIL_KEY";
     private static final String SAVE_BIRTHDATE_KEY = "SAVE_BIRTHDATE_KEY";
+    private static final String SAVE_BIRTHDATE_EDIT_KEY = "SAVE_BIRTHDATE_EDIT_KEY";
     private static final String SAVE_DATE_PICKER_IS_OPEN_KEY = "SAVE_DATE_PICKER_IS_OPEN_KEY";
 
     @BindView(R.id.et_name)
@@ -102,12 +103,14 @@ public class ProfileFragment extends Fragment {
                     } else {
                         mNameEditText.setText(savedInstanceState.getString(SAVE_NAME_KEY, ""));
                         mEmailEditText.setText(savedInstanceState.getString(SAVE_EMAIL_KEY, ""));
+                        mEmailEditText.setEnabled(false);
                         mBirthdateOfChildEditText.setText(savedInstanceState.getString(SAVE_BIRTHDATE_KEY, ""));
-                        showProfile();
-                        if (null!= savedInstanceState && savedInstanceState.getBoolean(SAVE_DATE_PICKER_IS_OPEN_KEY)) {
+                        mBirthdateOfChildEditText.setEnabled(savedInstanceState.getBoolean(SAVE_BIRTHDATE_EDIT_KEY, true));
+                        if (savedInstanceState.getBoolean(SAVE_DATE_PICKER_IS_OPEN_KEY, false)) {
                             // This function will updates the corresponding member variable
                             showDatePickerDialog();
                         }
+                        showProfile();
                     }
                     updateSaveButtonStatus();
                 } else {
@@ -134,6 +137,7 @@ public class ProfileFragment extends Fragment {
         outState.putString(SAVE_NAME_KEY, mNameEditText.getText().toString());
         outState.putString(SAVE_EMAIL_KEY, mEmailEditText.getText().toString());
         outState.putString(SAVE_BIRTHDATE_KEY, mBirthdateOfChildEditText.getText().toString());
+        outState.putBoolean(SAVE_BIRTHDATE_EDIT_KEY, mBirthdateOfChildEditText.isEnabled());
         outState.putBoolean(SAVE_DATE_PICKER_IS_OPEN_KEY, mIsDatePickerDialogOpen);
         super.onSaveInstanceState(outState);
     }
