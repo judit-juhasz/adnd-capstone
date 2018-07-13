@@ -101,8 +101,13 @@ public class ProfileFragment extends Fragment {
                     if (null == savedInstanceState) {
                         queryUserProfileData();
                     } else {
+                        final String savedEmail = savedInstanceState.getString(SAVE_EMAIL_KEY, "");
+                        final boolean rotatedOnErrorMessageOrProgressBar = ("".equals(savedEmail));
+                        if (rotatedOnErrorMessageOrProgressBar) {
+                            return;
+                        }
                         mNameEditText.setText(savedInstanceState.getString(SAVE_NAME_KEY, ""));
-                        mEmailEditText.setText(savedInstanceState.getString(SAVE_EMAIL_KEY, ""));
+                        mEmailEditText.setText(savedEmail);
                         mEmailEditText.setEnabled(false);
                         mBirthdateOfChildEditText.setText(savedInstanceState.getString(SAVE_BIRTHDATE_KEY, ""));
                         mBirthdateOfChildEditText.setEnabled(savedInstanceState.getBoolean(SAVE_BIRTHDATE_EDIT_KEY, true));
