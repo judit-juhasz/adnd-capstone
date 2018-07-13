@@ -24,6 +24,8 @@ public class MessageDetailsFragment extends Fragment {
 
     public static final String MESSAGE_DATA = "MESSAGE_DATA";
 
+    private static final String SAVE_MESSAGE_CONTENT_KEY = "SAVE_MESSAGE_CONTENT_KEY";
+
     @BindView(R.id.tv_date)
     TextView mDateTextView;
     @BindView(R.id.tv_content)
@@ -57,10 +59,17 @@ public class MessageDetailsFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         if (null != mMessage) {
-            if (NetworkUtils.isNetworkAvailable(getContext())) {
-                showProgressBar();
-            } else {
+            final boolean hasValidSavedData =
+                    (null != savedInstanceState && savedInstanceState.containsKey(SAVE_MESSAGE_CONTENT_KEY));
+            if (!NetworkUtils.isNetworkAvailable(getContext()) && !hasValidSavedData) {
                 showNotification(getString(R.string.internet_required));
+            } else if (hasValidSavedData) {
+                mDateTextView.setText(mMessage.getDate());
+                mSummaryTextView.setText(mMessage.getSummary());
+                mContentTextView.setText(savedInstanceState.getString(SAVE_MESSAGE_CONTENT_KEY));
+                showMessageDetails();
+            } else {
+                showProgressBar();
             }
             FirebaseUtils.queryMessageContent(mMessage.getId(), new FirebaseUtils.StringListener() {
                 @Override
@@ -79,6 +88,12 @@ public class MessageDetailsFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(SAVE_MESSAGE_CONTENT_KEY, mContentTextView.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 
     private void showNotification(@NonNull final String notificationText) {
