@@ -98,16 +98,13 @@ public class ProfileFragment extends Fragment {
                     setupNameField();
                     setupBirthdateCalendarPopup();
                     setupSavePopup();
-                    if (null == savedInstanceState) {
-                        queryUserProfileData();
-                    } else {
-                        final String savedEmail = savedInstanceState.getString(SAVE_EMAIL_KEY, "");
-                        final boolean rotatedOnErrorMessageOrProgressBar = ("".equals(savedEmail));
-                        if (rotatedOnErrorMessageOrProgressBar) {
-                            return;
-                        }
+                    // Email must always exist, if it doesn't exist, then the user profile has never
+                    // received from the server
+                    final boolean hasValidSavedProfileData = (null != savedInstanceState &&
+                            !savedInstanceState.getString(SAVE_EMAIL_KEY, "").equals(""));
+                    if (hasValidSavedProfileData) {
                         mNameEditText.setText(savedInstanceState.getString(SAVE_NAME_KEY, ""));
-                        mEmailEditText.setText(savedEmail);
+                        mEmailEditText.setText(savedInstanceState.getString(SAVE_EMAIL_KEY, ""));
                         mEmailEditText.setEnabled(false);
                         mBirthdateOfChildEditText.setText(savedInstanceState.getString(SAVE_BIRTHDATE_KEY, ""));
                         mBirthdateOfChildEditText.setEnabled(savedInstanceState.getBoolean(SAVE_BIRTHDATE_EDIT_KEY, true));
@@ -116,6 +113,8 @@ public class ProfileFragment extends Fragment {
                             showDatePickerDialog();
                         }
                         showProfile();
+                    } else {
+                        queryUserProfileData();
                     }
                     updateSaveButtonStatus();
                 } else {
