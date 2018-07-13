@@ -91,6 +91,9 @@ public class ProfileFragment extends Fragment {
         }
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        if (null == mAuthStateListener) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -155,11 +158,14 @@ public class ProfileFragment extends Fragment {
         }
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-            mAuthStateListener = null;
         }
     }
 
     private void queryUserProfileData() {
+        if (null != mUserProfileListenerDetacher) {
+            mUserProfileListenerDetacher.detach();
+            mUserProfileListenerDetacher = null;
+        }
         mUserProfileListenerDetacher = FirebaseUtils.queryUserProfile(new FirebaseUtils.UserProfileListener() {
             @Override
             public void onReceive(UserProfile userProfile) {
