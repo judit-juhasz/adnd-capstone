@@ -246,6 +246,9 @@ public class ProfileFragment extends Fragment {
                 calendarStartDate.getYear(),
                 calendarStartDate.getMonthOfYear() + monthFirstIndexCorrection,
                 calendarStartDate.getDayOfMonth());
+        // At the beginning the app can only handle the case when it start with the messages from
+        // more or less from the birth of the child. I don't want to flood the user with many
+        // thousands of messages at registration. It needs to be fixed in the near future.
         final int maximumChildAgeInDays = 7;
         final LocalDate minDate = currentLocalDate.minusDays(maximumChildAgeInDays);
         final long minDateInMillis = minDate.toDateTimeAtStartOfDay(DateTimeZone.UTC)
