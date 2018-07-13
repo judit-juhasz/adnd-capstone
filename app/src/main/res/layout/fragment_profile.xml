@@ -4,57 +4,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/ll_profile_data"
-        style="@style/ProfileDataContainer"
-        android:contentDescription="@string/content_description_profile_data_container">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_name"
-            style="@style/TextInputLayout"
-            android:contentDescription="@string/content_description_name">
+        <LinearLayout
+            android:id="@+id/ll_profile_data"
+            style="@style/ProfileDataContainer"
+            android:contentDescription="@string/content_description_profile_data_container">
 
-            <EditText
-                android:id="@+id/et_name"
-                style="@style/ProfileEditText"
-                android:hint="@string/hint_name" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name"
+                style="@style/TextInputLayout"
+                android:contentDescription="@string/content_description_name">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_name"
+                    style="@style/ProfileEditText"
+                    android:hint="@string/hint_name" />
 
-        <android.support.design.widget.TextInputLayout
-            style="@style/TextInputLayout"
-            android:contentDescription="@string/content_description_email">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/et_email"
-                style="@style/ProfileEditText"
-                android:hint="@string/hint_email" />
+            <android.support.design.widget.TextInputLayout
+                style="@style/TextInputLayout"
+                android:contentDescription="@string/content_description_email">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_email"
+                    style="@style/ProfileEditText"
+                    android:hint="@string/hint_email" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_birthdate"
-            style="@style/TextInputLayout"
-            android:contentDescription="@string/content_description_fragment_profile_birthdate">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/et_birthdate_of_child"
-                style="@style/ProfileEditText"
-                android:clickable="true"
-                android:longClickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:inputType="none"
-                android:hint="@string/hint_birthdate" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_birthdate"
+                style="@style/TextInputLayout"
+                android:contentDescription="@string/content_description_fragment_profile_birthdate">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_birthdate_of_child"
+                    style="@style/ProfileEditText"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/hint_birthdate"
+                    android:inputType="none"
+                    android:longClickable="false" />
 
-        <Button
-            android:id="@+id/button_save"
-            style="@style/ButtonSave"
-            android:contentDescription="@string/content_description_save_button" />
+            </android.support.design.widget.TextInputLayout>
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/button_save"
+                style="@style/ButtonSave"
+                android:contentDescription="@string/content_description_save_button" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <TextView
         android:id="@+id/tv_notification_profile"
