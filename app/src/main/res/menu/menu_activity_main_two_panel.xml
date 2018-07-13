@@ -5,36 +5,38 @@
     <item
         android:id="@+id/status_rejected"
         android:icon="@drawable/ic_reject"
+        android:orderInCategory="1"
         android:title="@string/menu_item_categorization_rejected"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/status_done"
         android:icon="@drawable/ic_done"
+        android:orderInCategory="2"
         android:title="@string/menu_item_categorization_done"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/messages_all"
-        android:orderInCategory="1"
+        android:orderInCategory="3"
         android:title="@string/menu_item_categorization_all"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/messages_active"
-        android:orderInCategory="2"
+        android:orderInCategory="4"
         android:title="@string/menu_item_categorization_active"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/messages_done"
-        android:orderInCategory="3"
+        android:orderInCategory="5"
         android:title="@string/menu_item_categorization_done"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/messages_rejected"
-        android:orderInCategory="4"
+        android:orderInCategory="6"
         android:title="@string/menu_item_categorization_rejected"
         app:showAsAction="never" />
 
